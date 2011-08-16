@@ -89,7 +89,7 @@ public class TyNumber extends TyValue<Double> {
 	};
 	return new TyNumber(clc.second());
     }
-
+/*
     public TyNumber maximum(Double value) {
 	final Double fvalue = value;
 	Double n = get();
@@ -166,7 +166,10 @@ public class TyNumber extends TyValue<Double> {
 	};
 	return new TyNumber(clc.second());
     }
-
+    */
+    
+    
+/*
     public TyNumber minimum(Double value) {
 	final Double fvalue = value;
 	Double n = get();
@@ -243,7 +246,7 @@ public class TyNumber extends TyValue<Double> {
 	};
 	return new TyNumber(clc.second());
     }
-
+*/
     public TyNumber multiply(Double value) {
 	final Double fvalue = value;
 	return new TyNumber(new TyCalculation<Double>(this, new TyValue<Double>(get() * fvalue)) {
@@ -394,32 +397,8 @@ public class TyNumber extends TyValue<Double> {
 	}
 	return _string;
     }
-    /*public static TyNumber fromDouble(TyValue<Double> i) {
-    TyNumber ii = new TyNumber(i.get().DoubleValue());
-    return ii;
-    }*/
 
     public static void main(String a[]) {
-	//TyNumber ii = new TyNumber(2.0);
-	/*TyValue<Double> dbl = new TyValue<Double>(ii.asDouble());
-	TyValue<String> ss = new TyValue<String>(ii.asString());
-	System.out.prDoubleln(ii.get() + ", " + dbl.get() + ", " + ss.get());
-	dbl.set(444444.0);
-	System.out.prDoubleln(ii.get() + ", " + dbl.get() + ", " + ss.get());
-	ii.set(2);
-	System.out.prDoubleln(ii.get() + ", " + dbl.get() + ", " + ss.get());
-	ss.set("33");
-	System.out.prDoubleln(ii.get() + ", " + dbl.get() + ", " + ss.get());*/
-	/*TyValue<Double> plu = new TyValue<Double>(3.0);
-	TyValue<Double> nn = ii.maximum(plu);
-	System.out.println(ii.get() + ", " + nn.get() + ", " + plu.get());
-	//System.out.prDoubleln(">");
-	nn.set(21.0);
-	System.out.println(ii.get() + ", " + nn.get() + ", " + plu.get());
-	ii.set(122.0);
-	System.out.println(ii.get() + ", " + nn.get() + ", " + plu.get());
-	plu.set(500.0);
-	System.out.println(ii.get() + ", " + nn.get() + ", " + plu.get());*/
 	TyNumber tCelsius = new TyNumber(0);
 	TyNumber tFahrenheit = new TyNumber(tCelsius).multiply(9.0).divide(5.0).plus(32.0);
 	System.out.println("tFahrenheit: " + tFahrenheit.get() + ", tCelsius: " + tCelsius.get());
@@ -427,15 +406,5 @@ public class TyNumber extends TyValue<Double> {
 	System.out.println("tFahrenheit: " + tFahrenheit.get() + ", tCelsius: " + tCelsius.get());
 	tCelsius.set(100);
 	System.out.println("tFahrenheit: " + tFahrenheit.get() + ", tCelsius: " + tCelsius.get());
-/*
-	TyNumber n1 = new TyNumber(0);
-	TyNumber n2 = new TyNumber(0);
-	n1.bind(n2.plus(9.0).negativePositive(1.0, 2.0));
-	System.out.println("1: " + n1.get() + ", 2: " + n2.get());
-	n1.set(100);
-	System.out.println("1: " + n1.get() + ", 2: " + n2.get());
-	n2.set(100);
-	System.out.println("1: " + n1.get() + ", 2: " + n2.get());
-*/
     }
 }
