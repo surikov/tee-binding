@@ -62,20 +62,20 @@ public class TyGroup<Kind> {
 
     public static void main(String[] a) {
 	TyGroup<String> g = new TyGroup<String>();
-	g.add("lower", "first", "one");
-	g.add("upper", "first", "ONE");
-	g.add("lower", "second", "two");
-	g.add("upper", "second", "TWO");
-	g.add("lower", "third", "three");
-	g.add("upper", "third", "THREE");
-	TyValue<String> first = new TyValue<String>(g.get("first"));
-	TyValue<String> second = new TyValue<String>(g.get("second"));
-	TyValue<String> third = new TyValue<String>(g.get("third"));
-	g.current().set("lower");
-	System.out.println(first.get() + " / " + second.get() + " / " + third.get());
-	g.current().set("upper");
-	System.out.println(first.get() + " / " + second.get() + " / " + third.get());
-	g.current().set("unknown");
-	System.out.println(first.get() + " / " + second.get() + " / " + third.get());
+	g.add("English", "w1", "First");	
+	g.add("English", "w2", "Second");
+	g.add("English", "w3", "Third");
+	g.add("Spain", "w1", "Primero");
+	g.add("Spain", "w2", "Segundo");	
+	g.add("Spain", "w3", "Tercera");
+	TyValue<String> s1 = new TyValue<String>(g.get("w1"));
+	TyValue<String> s2 = new TyValue<String>(g.get("w2"));
+	TyValue<String> s3 = new TyValue<String>(g.get("w3"));
+	System.out.println("set English");
+	g.current().set("English");
+	System.out.println(s1.get() + " / " + s2.get() + " / " + s3.get());
+	System.out.println("set Spain");
+	g.current().set("Spain");
+	System.out.println(s1.get() + " / " + s2.get() + " / " + s3.get());
     }
 }
