@@ -3,21 +3,17 @@ package tee.binding;
 import java.util.*;
 
 public class Fit<Kind> {
-
     Hashtable<String, It<Kind>> currentValues = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
-    Characters _current = new Characters() {
-
+    Characters _current = new Characters().afterChange(new Task() {
 	@Override
-	public void afterChange() {
+	public void job() {
 	    refreshSet();
 	}
-    }.value("");
-
+    }).value("");
     public Characters current() {
 	return _current;
     }
-
     public It<Kind> get(String key) {
 	It<Kind> v = currentValues.get(key);
 	if (v == null) {
@@ -26,7 +22,6 @@ public class Fit<Kind> {
 	currentValues.put(key, v);
 	return v;
     }
-
     private void refreshSet() {
 	if (_current == null) {
 	    return;
@@ -39,7 +34,6 @@ public class Fit<Kind> {
 	    //System.out.println(k);
 	}
     }
-
     private Hashtable<String, It<Kind>> findSet(String group) {
 	Hashtable<String, It<Kind>> s = sets.get(group);
 	if (s == null) {
@@ -48,7 +42,6 @@ public class Fit<Kind> {
 	}
 	return s;
     }
-
     public void add(String group, String key, Kind value) {
 	Hashtable<String, It<Kind>> s = findSet(group);
 	It<Kind> v = s.get(key);
@@ -59,18 +52,17 @@ public class Fit<Kind> {
 	v.value(value);
 	refreshSet();
     }
-
     public static void main(String[] a) {
 	Fit<String> g = new Fit<String>();
-	g.add("English", "w1", "First");	
+	g.add("English", "w1", "First");
 	g.add("English", "w2", "Second");
 	g.add("English", "w3", "Third");
 	g.add("Spain", "w1", "Primero");
-	g.add("Spain", "w2", "Segundo");	
+	g.add("Spain", "w2", "Segundo");
 	g.add("Spain", "w3", "Tercera");
-	It<String> s1 = new It<String>(g.get("w1"));
-	It<String> s2 = new It<String>(g.get("w2"));
-	It<String> s3 = new It<String>(g.get("w3"));
+	It<String> s1 = new It<String>().tie(g.get("w1"));
+	It<String> s2 = new It<String>().tie(g.get("w2"));
+	It<String> s3 = new It<String>().tie(g.get("w3"));
 	System.out.println("set English");
 	g.current().value("English");
 	System.out.println(s1.value() + " / " + s2.value() + " / " + s3.value());
