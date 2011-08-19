@@ -1,6 +1,6 @@
 package tee.binding;
 
-public class Bi extends It<Boolean> {
+public class Toggle extends It<Boolean> {
     /*
     public TyBoolean() {
     super(false);
@@ -14,19 +14,20 @@ public class Bi extends It<Boolean> {
     super(i);
     }
      */
-
-    public Bi equals() {
+    @Override public Toggle afterChange(Task newValue) {
+	super.afterChange(newValue);
 	return this;
     }
-
+    public Toggle equals() {
+	return this;
+    }
     @Override
-    public Bi value(Boolean newValue) {
+    public Toggle value(Boolean newValue) {
 	super.value(newValue);
 	return this;
     }
-
     public static void main(String a[]) {
-	Bi b = new Bi().value(true);
+	Toggle b = new Toggle().value(true);
 	System.out.println(b.value());
     }
 }

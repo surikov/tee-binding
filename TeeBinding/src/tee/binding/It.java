@@ -3,52 +3,52 @@ package tee.binding;
 import java.util.*;
 
 public class It<Kind> {
-
     private Vector<It> _binded = new Vector<It>();
     private Kind _value = null;
-
+    private Task afterChange = null;
     public It() {
     }
-/*
-    public It(Kind initVal) {
-	value(initVal);
-    }
-*/
-    public It(It<Kind> bindVal) {
+    /*public It(It<Kind> bindVal) {
 	this.tie(bindVal);
-    }
-
+    }*/
     public Kind value() {
 	return _value;
     }
-
     public It<Kind> value(Kind newValue) {
 	setForEachBindedItem(newValue, new Vector<It>());
 	return this;
     }
-
     private void setForEachBindedItem(Kind newValue, Vector<It> cashe) {
 	if (value() == null && newValue == null) {
 	    return;
 	}
-	if (value() != null && value().equals(newValue)) {
+	if (value() != null && value().
+		equals(newValue)) {
 	    return;
 	}
 	this._value = newValue;
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
 	    if (!cashe.contains(_binded.get(i))) {
-		_binded.get(i).setForEachBindedItem(newValue, cashe);
+		_binded.get(i).
+			setForEachBindedItem(newValue, cashe);
 	    }
 	}
 	cashe.remove(this);
-	afterChange();
+	doAfterChange();
     }
-
-    public void afterChange() {
+    public It<Kind> afterChange(Task it) {
+	this.afterChange = it;
+	doAfterChange();
+	return this;
     }
+    private void doAfterChange() {
+	if (this.afterChange != null) {
+	    afterChange.job();
+	}
 
-    public It<Kind>  tie(It<Kind> to) {
+    }
+    public It<Kind> tie(It<Kind> to) {
 	if (to == null) {
 	    return this;
 	}
@@ -61,7 +61,6 @@ public class It<Kind> {
 	this.value(to.value());
 	return this;
     }
-
     public void untie(It<Kind> to) {
 	if (to == null) {
 	    return;
@@ -69,36 +68,32 @@ public class It<Kind> {
 	this._binded.remove(to);
 	to._binded.remove(this);
     }
-
     public void untie() {
 	for (int i = 0; i < _binded.size(); i++) {
-	    _binded.get(i).untie(this);
+	    _binded.get(i).
+		    untie(this);
 	}
     }
-
     public static void main(String[] args) {
-	System.out.println("Simple tying example\n-----");
-	It<String> a = new It<String>() {
-
-	    @Override
-	    public void afterChange() {
-		System.out.println("[a]: someone changed value to " + value());
+	System.out.println("\nIt\n");
+	final It<String> a = new It<String>().value("A");
+	final It<String> b = new It<String>().value("B");
+	final It<String> c = new It<String>().value("C");
+	a.afterChange(new Task() {
+	    @Override public void job() {
+		System.out.println("[a]: someone changed value to " + a.value());
 	    }
-	}.value("A");
-	It<String> b = new It<String>() {
-
-	    @Override
-	    public void afterChange() {
-		System.out.println("[b]: someone changed value to " + value());
+	});
+	b.afterChange(new Task() {
+	    @Override public void job() {
+		System.out.println("[b]: someone changed value to " + b.value());
 	    }
-	}.value("B");
-	It<String> c = new It<String>() {
-
-	    @Override
-	    public void afterChange() {
-		System.out.println("[c]: someone changed value to " + value());
+	});
+	a.afterChange(new Task() {
+	    @Override public void job() {
+		System.out.println("[c]: someone changed value to " + c.value());
 	    }
-	}.value("C");
+	});
 	System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
 	System.out.println("#tie variables");
 	a.tie(b);
@@ -124,6 +119,6 @@ public class It<Kind> {
 	System.out.println("#let b=H");
 	b.value("H");
 	System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
-	System.out.println("-----");
+	
     }
 }
