@@ -55,13 +55,13 @@ public class Characters extends It<String> {
 	Characters item = new Characters();
 	Characters s = new Characters().tie(new Characters().value("A ").append(item).append(" apple."));
 	System.out.println(s.value());
-	System.out.println("let item = red");
+	System.out.println("/let item = red");
 	item.value("red");
 	System.out.println(s.value());
-	System.out.println("let item = green");
+	System.out.println("/let item = green");
 	item.value("green");
 	System.out.println(s.value());
-	System.out.println("let item = yellow");
+	System.out.println("/let item = yellow");
 	item.value("yellow");
 	System.out.println(s.value());
     }
