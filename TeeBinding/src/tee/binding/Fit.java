@@ -5,69 +5,64 @@ import java.util.*;
 public class Fit<Kind> {
     Hashtable<String, It<Kind>> currentValues = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
-    Characters _current = new Characters().afterChange(new Task() {
-	@Override
-	public void job() {
-	    refreshSet();
-	}
+    Characters _selector = new Characters().afterChange(new Task() {
+        @Override
+        public void job() {
+            refreshSet();
+        }
     }).value("");
-    public Characters current() {
-	return _current;
+    public Characters selector() {
+        return _selector;
     }
-    public It<Kind> get(String key) {
-	It<Kind> v = currentValues.get(key);
-	if (v == null) {
-	    v = new It<Kind>();
-	}
-	currentValues.put(key, v);
-	return v;
+    public It<Kind> find(String key) {
+        It<Kind> v = currentValues.get(key);
+        if (v == null) {
+            v = new It<Kind>();
+        }
+        currentValues.put(key, v);
+        return v;
     }
     private void refreshSet() {
-	if (_current == null) {
-	    return;
-	}
-	//System.out.println(_current.get());
-	Hashtable<String, It<Kind>> choosenSet = findSet(_current.value());
-	for (Enumeration<String> e = choosenSet.keys(); e.hasMoreElements();) {
-	    String k = e.nextElement();
-	    get(k).value(choosenSet.get(k).value());
-	    //System.out.println(k);
-	}
+        if (_selector == null) {
+            return;
+        }
+        Hashtable<String, It<Kind>> choosenSet = findSet(_selector.value());
+        for (Enumeration<String> e = choosenSet.keys(); e.hasMoreElements();) {
+            String k = e.nextElement();
+            find(k).value(choosenSet.get(k).value());
+        }
     }
     private Hashtable<String, It<Kind>> findSet(String group) {
-	Hashtable<String, It<Kind>> s = sets.get(group);
-	if (s == null) {
-	    s = new Hashtable<String, It<Kind>>();
-	    sets.put(group, s);
-	}
-	return s;
+        Hashtable<String, It<Kind>> s = sets.get(group);
+        if (s == null) {
+            s = new Hashtable<String, It<Kind>>();
+            sets.put(group, s);
+        }
+        return s;
     }
-    public void add(String group, String key, Kind value) {
-	Hashtable<String, It<Kind>> s = findSet(group);
-	It<Kind> v = s.get(key);
-	if (v == null) {
-	    v = new It< Kind>();
-	    s.put(key, v);
-	}
-	v.value(value);
-	refreshSet();
+    public Fit<Kind> item(String group, String key, Kind value) {
+        Hashtable<String, It<Kind>> s = findSet(group);
+        It<Kind> v = s.get(key);
+        if (v == null) {
+            v = new It< Kind>();
+            s.put(key, v);
+        }
+        v.value(value);
+        refreshSet();
+        return this;
     }
     public static void main(String[] a) {
-	Fit<String> g = new Fit<String>();
-	g.add("English", "w1", "First");
-	g.add("English", "w2", "Second");
-	g.add("English", "w3", "Third");
-	g.add("Spain", "w1", "Primero");
-	g.add("Spain", "w2", "Segundo");
-	g.add("Spain", "w3", "Tercera");
-	It<String> s1 = new It<String>().tie(g.get("w1"));
-	It<String> s2 = new It<String>().tie(g.get("w2"));
-	It<String> s3 = new It<String>().tie(g.get("w3"));
-	System.out.println("set English");
-	g.current().value("English");
-	System.out.println(s1.value() + " / " + s2.value() + " / " + s3.value());
-	System.out.println("set Spain");
-	g.current().value("Spain");
-	System.out.println(s1.value() + " / " + s2.value() + " / " + s3.value());
+        System.out.println("\nFit\n");
+        Fit<String> g = new Fit<String>().item("English", "w1", "First").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
+        Characters s1 = new Characters().tie(g.find("w1"));
+        Characters s2 = new Characters().tie(g.find("w2"));
+        Characters s3 = new Characters().tie(g.find("w3"));
+        Characters s4 = new Characters().tie(g.find("w4"));
+        System.out.println("/set English");
+        g.selector().value("English");
+        System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
+        System.out.println("/set Spain");
+        g.selector().value("Spain");
+        System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
     }
 }
