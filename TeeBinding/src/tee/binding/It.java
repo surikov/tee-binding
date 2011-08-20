@@ -44,7 +44,7 @@ public class It<Kind> {
             afterChange.job();
         }
     }
-    public It<Kind> tie(It<Kind> to) {
+    public It<Kind> bind(It<Kind> to) {
         if (to == null) {
             return this;
         }
@@ -57,17 +57,17 @@ public class It<Kind> {
         this.value(to.value());
         return this;
     }
-    public void untie(It<Kind> to) {
+    public void unbind(It<Kind> to) {
         if (to == null) {
             return;
         }
         this._binded.remove(to);
         to._binded.remove(this);
     }
-    public void untie() {
+    public void unbind() {
         for (int i = 0; i < _binded.size(); i++) {
             _binded.get(i).
-                    untie(this);
+                    unbind(this);
         }
     }
     public static void main(String[] args) {
@@ -91,24 +91,24 @@ public class It<Kind> {
             }
         });
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
-        System.out.println("#tie variables");
-        a.tie(b);
-        b.tie(c);
-        c.tie(a);
+        System.out.println("#bind variables");
+        a.bind(b);
+        b.bind(c);
+        c.bind(a);
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
         System.out.println("#let a=D");
         a.value("D");
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
-        System.out.println("#a untie b");
-        a.untie(b);
+        System.out.println("#a unbind b");
+        a.unbind(b);
         System.out.println("#let a=E");
         a.value("E");
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
         System.out.println("#let b=F");
         b.value("F");
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());
-        System.out.println("#a untie c");
-        a.untie(c);
+        System.out.println("#a unbind c");
+        a.unbind(c);
         System.out.println("#let a=G");
         a.value("G");
         System.out.println("a: " + a.value() + ", b: " + b.value() + ", c: " + c.value());

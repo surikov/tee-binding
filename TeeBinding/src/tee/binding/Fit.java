@@ -54,10 +54,10 @@ public class Fit<Kind> {
     public static void main(String[] a) {
         System.out.println("\nFit\n");
         Fit<String> g = new Fit<String>().item("English", "w1", "First").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
-        Characters s1 = new Characters().tie(g.find("w1"));
-        Characters s2 = new Characters().tie(g.find("w2"));
-        Characters s3 = new Characters().tie(g.find("w3"));
-        Characters s4 = new Characters().tie(g.find("w4"));
+        Characters s1 = new Characters().bind(g.find("w1"));
+        Characters s2 = new Characters().bind(g.find("w2"));
+        Characters s3 = new Characters().bind(g.find("w3"));
+        Characters s4 = new Characters().bind(g.find("w4"));
         System.out.println("/set English");
         g.selector().value("English");
         System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());

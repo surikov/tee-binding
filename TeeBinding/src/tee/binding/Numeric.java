@@ -11,12 +11,12 @@ public class Numeric extends It<Double> {
         super.value(newValue.doubleValue());
         return this;
     }
-    public Numeric tie(Numeric it) {
-        super.tie(it);
+    public Numeric bind(Numeric it) {
+        super.bind(it);
         return this;
     }
-    @Override public Numeric tie(It<Double> it) {
-        super.tie(it);
+    @Override public Numeric bind(It<Double> it) {
+        super.bind(it);
         return this;
     }
     public Numeric plus(int value) {
@@ -53,12 +53,12 @@ public class Numeric extends It<Double> {
                 return first().value() + fvalue.value();
             }
         };
-        new It<Double>().tie(fvalue).afterChange(new Task() {
+        new It<Double>().bind(fvalue).afterChange(new Task() {
             @Override public void job() {
                 clc.second().value(clc.first().value() + fvalue.value());
             }
         });
-        return new Numeric().tie(clc.second());
+        return new Numeric().bind(clc.second());
     }
     public Numeric multiply(double value) {
         Numeric n = new Numeric().value(value);
@@ -93,12 +93,12 @@ public class Numeric extends It<Double> {
                 return first().value() * fvalue.value();
             }
         };
-        new It<Double>().tie(fvalue).afterChange(new Task() {
+        new It<Double>().bind(fvalue).afterChange(new Task() {
             @Override public void job() {
                 clc.second().value(clc.first().value() * fvalue.value());
             }
         });
-        return new Numeric().tie(clc.second());
+        return new Numeric().bind(clc.second());
     }
     public Numeric divide(double value) {
         Numeric n = new Numeric().value(value);
@@ -137,8 +137,8 @@ public class Numeric extends It<Double> {
             @Override public void job() {
                 clc.second().value(clc.first().value() / fvalue.value());
             }
-        }).tie(fvalue);
-        return new Numeric().tie(clc.second());
+        }).bind(fvalue);
+        return new Numeric().bind(clc.second());
     }
     public Numeric minus(double value) {
         Numeric n = new Numeric().value(value);
@@ -170,12 +170,12 @@ public class Numeric extends It<Double> {
                 return first().value() - fvalue.value();
             }
         };
-        new It<Double>().tie(fvalue).afterChange(new Task() {
+        new It<Double>().bind(fvalue).afterChange(new Task() {
             @Override public void job() {
                 clc.second().value(clc.first().value() - fvalue.value());
             }
         });
-        return new Numeric().tie(clc.second());
+        return new Numeric().bind(clc.second());
     }
     public It<String> asString() {
         if (_string == null) {
@@ -194,7 +194,7 @@ public class Numeric extends It<Double> {
                     }
                 }
             }).value("" + value());
-            new It<Double>().tie(this).afterChange(new Task() {
+            new It<Double>().bind(this).afterChange(new Task() {
                 @Override public void job() {
                     _string.value("" + value());
                 }
@@ -205,7 +205,7 @@ public class Numeric extends It<Double> {
     public static void main(String a[]) {
         System.out.println("\nNumeric\n");
         Numeric tCelsius = new Numeric().value(0);
-        Numeric tFahrenheit = new Numeric().tie(tCelsius.multiply(9.0).divide(5.0).plus(32.0));
+        Numeric tFahrenheit = new Numeric().bind(tCelsius.multiply(9.0).divide(5.0).plus(32.0));
         System.out.println("/tFahrenheit is tCelsius * 9 / 5 + 32");
         System.out.println("tFahrenheit: " + tFahrenheit.value() + ", tCelsius: " + tCelsius.value());
         System.out.println("/let tFahrenheit = 100 ");

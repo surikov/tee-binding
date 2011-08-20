@@ -27,15 +27,15 @@ public class Fork<Kind> extends It<Kind> {
         }
     }
     public Fork condition(Toggle it) {
-        condition.tie(it);
+        condition.bind(it);
         return this;
     }
     public Fork then(It<Kind> it) {
-        then.tie(it);
+        then.bind(it);
         return this;
     }
     public Fork otherwise(It<Kind> it) {
-        otherwise.tie(it);
+        otherwise.bind(it);
         return this;
     }
     public static void main(String a[]) {
