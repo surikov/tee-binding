@@ -32,8 +32,8 @@ public class Calculation<Kind> {
         }
     });
     public Calculation(It<Kind> f, It<Kind> s) {
-        first().tie(f);
-        second().tie(s);
+        first().bind(f);
+        second().bind(s);
     }
     public Kind calculateFirst() {
         return second().value();

@@ -5,9 +5,13 @@ public class About {
         System.out.println("Examples of using");
         It.main(args);
         Calculation.main(args);
-        Characters.main(args);
+        
         Numeric.main(args);
         Fit.main(args);
+        
+        
+        Characters.main(args);
+        
         Toggle.main(args);
     }
 }
