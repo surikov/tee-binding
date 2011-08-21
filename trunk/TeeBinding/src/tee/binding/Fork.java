@@ -50,7 +50,7 @@ public class Fork<Kind> extends It<Kind> {
         System.out.println("\nFork\n");
         System.out.println("/n = -10");
         Numeric n = new Numeric().value(-10);
-        Note r = new Note().bind(new Fork<String>()//
+        Note r = new Note().bind(new Fork<String>()
                 .condition(new Toggle().less(n, -5))
                 .then("Frost")
                 .otherwise(new Fork<String>()
