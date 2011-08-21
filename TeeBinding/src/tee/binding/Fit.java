@@ -5,13 +5,13 @@ import java.util.*;
 public class Fit<Kind> {
     Hashtable<String, It<Kind>> currentValues = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
-    Characters _selector = new Characters().afterChange(new Task() {
+    Note _selector = new Note().afterChange(new Task() {
         @Override
         public void job() {
             refreshSet();
         }
     }).value("");
-    public Characters selector() {
+    public Note selector() {
         return _selector;
     }
     public It<Kind> find(String key) {
@@ -54,10 +54,10 @@ public class Fit<Kind> {
     public static void main(String[] a) {
         System.out.println("\nFit\n");
         Fit<String> g = new Fit<String>().item("English", "w1", "First").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
-        Characters s1 = new Characters().bind(g.find("w1"));
-        Characters s2 = new Characters().bind(g.find("w2"));
-        Characters s3 = new Characters().bind(g.find("w3"));
-        Characters s4 = new Characters().bind(g.find("w4"));
+        Note s1 = new Note().bind(g.find("w1"));
+        Note s2 = new Note().bind(g.find("w2"));
+        Note s3 = new Note().bind(g.find("w3"));
+        Note s4 = new Note().bind(g.find("w4"));
         System.out.println("/set English");
         g.selector().value("English");
         System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());

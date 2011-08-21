@@ -1,26 +1,26 @@
 package tee.binding;
 
-public class Characters extends It<String> {
-    @Override public Characters afterChange(Task newValue) {
+public class Note extends It<String> {
+    @Override public Note afterChange(Task newValue) {
         super.afterChange(newValue);
         return this;
     }
-    @Override public Characters value(String newValue) {
+    @Override public Note value(String newValue) {
         super.value(newValue);
         return this;
     }
-    public Characters bind(Characters it) {
+    public Note bind(Note it) {
         super.bind(it);
         return this;
     }
-    public Characters bind(It<String> it) {
+    public Note bind(It<String> it) {
         super.bind(it);
         return this;
     }
-    public Characters append(String value) {
+    public Note append(String value) {
         final String fvalue = value;
-        Characters s = new Characters().bind(
-                new Calculation<String>(this, new Characters().value(value() + fvalue)) {
+        Note s = new Note().bind(
+                new Calculation<String>(this, new Note().value(value() + fvalue)) {
                     @Override public String calculateFirst() {
                         if (second() == null) {
                             return "";
@@ -38,11 +38,11 @@ public class Characters extends It<String> {
                 }.second());
         return s;
     }
-    public Characters append(Characters value) {
-        final Characters fvalue = value;
-        final Characters me = this;
-        final Characters retvalue = new Characters().value(value() + fvalue.value());
-        new Characters().bind(fvalue).afterChange(new Task() {
+    public Note append(Note value) {
+        final Note fvalue = value;
+        final Note me = this;
+        final Note retvalue = new Note().value(value() + fvalue.value());
+        new Note().bind(fvalue).afterChange(new Task() {
             @Override public void job() {
                 retvalue.value(me.value() + fvalue.value());
             }
@@ -51,8 +51,8 @@ public class Characters extends It<String> {
     }
     public static void main(String a[]) {
         System.out.println("\nCharacters\n");
-        Characters item = new Characters();
-        Characters s = new Characters().bind(new Characters().value("A ").append(item).append(" apple."));
+        Note item = new Note();
+        Note s = new Note().bind(new Note().value("A ").append(item).append(" apple."));
         System.out.println(s.value());
         System.out.println("/let item = red");
         item.value("red");
