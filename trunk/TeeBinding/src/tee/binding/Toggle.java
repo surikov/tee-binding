@@ -27,30 +27,112 @@ public class Toggle extends It<Boolean> {
         });
         return retvalue;
     }
-    public Toggle similar(String a, Characters b) {
-        return similar(new Characters().value(a), b);
+    public Toggle similar(String a, Note b) {
+        return similar(new Note().value(a), b);
     }
-    public Toggle similar(Characters a, String b) {
-        return similar(a, new Characters().value(b));
+    public Toggle similar(Note a, String b) {
+        return similar(a, new Note().value(b));
     }
-    public Toggle similar(Characters a, Characters b) {
-        final Characters aa = a;
-        final Characters bb = b;
-        final Toggle retvalue = new Toggle().value(a.value().equals(b));
-        new Characters().bind(a).afterChange(new Task() {
+    public Toggle similar(Note a, Note b) {
+        final Note aa = a;
+        final Note bb = b;
+        final Toggle retvalue = new Toggle().value(a.value().equals(b.value()));
+        new Note().bind(a).afterChange(new Task() {
             @Override public void job() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
-        new Characters().bind(b).afterChange(new Task() {
+        new Note().bind(b).afterChange(new Task() {
             @Override public void job() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
         return retvalue;
     }
-    //public Toggle equal(Numeric a, Numeric b) {
-    //}
+    public Toggle equal(double a, Numeric b) {
+        return equal(new Numeric().value(a), b);
+    }
+    public Toggle equal(int a, Numeric b) {
+        return equal(new Numeric().value(a), b);
+    }
+    public Toggle equal(Numeric a, double b) {
+        return equal(a, new Numeric().value(b));
+    }
+    public Toggle equal(Numeric a, int b) {
+        return equal(a, new Numeric().value(b));
+    }
+    public Toggle equal(Numeric a, Numeric b) {
+        final Numeric aa = a;
+        final Numeric bb = b;
+        final Toggle retvalue = new Toggle().value(a.value().equals(b.value()));
+        new Numeric().bind(a).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value().equals(bb.value()));
+            }
+        });
+        new Numeric().bind(b).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value().equals(bb.value()));
+            }
+        });
+        return retvalue;
+    }
+    public Toggle less(double a, Numeric b) {
+        return less(new Numeric().value(a), b);
+    }
+    public Toggle less(int a, Numeric b) {
+        return less(new Numeric().value(a), b);
+    }
+    public Toggle less(Numeric a, double b) {
+        return less(a, new Numeric().value(b));
+    }
+    public Toggle less(Numeric a, int b) {
+        return less(a, new Numeric().value(b));
+    }
+    public Toggle less(Numeric a, Numeric b) {
+        final Numeric aa = a;
+        final Numeric bb = b;
+        final Toggle retvalue = new Toggle().value(a.value() < b.value());
+        new Numeric().bind(a).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value() < bb.value());
+            }
+        });
+        new Numeric().bind(b).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value() < bb.value());
+            }
+        });
+        return retvalue;
+    }
+    public Toggle more(double a, Numeric b) {
+        return less(new Numeric().value(a), b);
+    }
+    public Toggle more(int a, Numeric b) {
+        return less(new Numeric().value(a), b);
+    }
+    public Toggle more(Numeric a, double b) {
+        return less(a, new Numeric().value(b));
+    }
+    public Toggle more(Numeric a, int b) {
+        return less(a, new Numeric().value(b));
+    }
+    public Toggle more(Numeric a, Numeric b) {
+        final Numeric aa = a;
+        final Numeric bb = b;
+        final Toggle retvalue = new Toggle().value(a.value() > b.value());
+        new Numeric().bind(a).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value() > bb.value());
+            }
+        });
+        new Numeric().bind(b).afterChange(new Task() {
+            @Override public void job() {
+                retvalue.value(aa.value() > bb.value());
+            }
+        });
+        return retvalue;
+    }
     @Override public Toggle value(Boolean newValue) {
         super.value(newValue);
         return this;
@@ -77,11 +159,21 @@ public class Toggle extends It<Boolean> {
         a.value(false);
         System.out.println("c is " + c.value());
         System.out.println("/let cc = aa similar bb");
-        Characters aa = new Characters().value("X");
-        Characters bb = new Characters().value("Y");
+        Note aa = new Note().value("X");
+        Note bb = new Note().value("Y");
         Toggle cc = new Toggle().similar(aa, bb);
         System.out.println("cc is " + cc.value());
         bb.value("X");
         System.out.println("cc is " + cc.value());
+
+        System.out.println("/let c2 = a2 less b2");
+        System.out.println("/let a2 = 100, b2 = 200");
+        Numeric a2 = new Numeric().value(100);
+        Numeric b2 = new Numeric().value(200);
+        Toggle c2 = new Toggle().less(a2, b2);
+        System.out.println("c2 is " + c2.value());
+        System.out.println("/let b2 = 0");
+        b2.value(0);
+        System.out.println("c2 is " + c2.value());
     }
 }
