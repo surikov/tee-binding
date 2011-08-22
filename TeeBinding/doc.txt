@@ -1,0 +1,129 @@
+﻿Функциональное программирование в Java
+
+Сейчас появляются новые модные языки использующие парадигму функционального программирования. Тем не менее, в обычной Java
+можно использовать функции для описания поведения объектов. Причём делать это можно полность в рамках синтаксиса Java.
+
+Я опубликовал Java-библиотеку позволяющую связывать (binding) объекты через функции (см. https://code.google.com/p/tee-binding/ )
+
+Описание классов
+
+public class It‹E›
+- основной класс, содержит ссылку на объект любого типа и обновляет все связи при изменении значений в одном из экземпляров. Пример
+
+	It‹String› a1 = new It‹String›().value("A");
+	It‹String› a2 = new It‹String›().value("B");
+	System.out.println("a1: "+a1.value()+", a2: "+a2.value());
+	a1.bind(a2);
+	System.out.println("a1: "+a1.value()+", a2: "+a2.value());
+	a1.value("C");
+	System.out.println("a1: "+a1.value()+", a2: "+a2.value());
+	a2.value("D");
+	System.out.println("a1: "+a1.value()+", a2: "+a2.value());
+	
+результат:
+
+a1: A, a2: B
+a1: B, a2: B
+a1: C, a2: C
+a1: D, a2: D
+
+Класссы Number, Note, Toggle являются производными класса It для хранения значений конкретного типа (соответственно для Double, String и Boolean)
+и содержат методы задания связывания с использованием функций. Пример:
+
+	Numeric c = new Numeric().value(0);
+	Numeric f = c.multiply(9.0).divide(5.0).plus(32.0);
+	System.out.println("f: " + f.value() + ", c: " + c.value());
+	System.out.println("/let f = 100 ");
+	f.value(100);
+	System.out.println("f: " + f.value() + ", c: " + c.value());	
+	System.out.println("/let c = 100 ");
+	c.value(100);
+	System.out.println("f: " + f.value() + ", c: " + c.value());
+
+результат:
+f: 32.0, c: 0.0
+/let f = 100 
+f: 100.0, c: 37.77777777777778
+/let c = 100 
+f: 212.0, c: 100.0
+
+как видно, это функция конвертации температуры из шкалы Цельсия в шкалу Фаренгейта (F' = C' * 9 / 5 + 32). Из определения переменной
+Numeric f = c.multiply(9.0).divide(5.0).plus(32.0);
+это вполне очевидно. Также можно отметить что связывание через функцию является двунаправленным.
+
+Примечание: псевдооператоры функции вычисляются последовательно без учёта приориетета операций.
+
+Для более сложных случаев можно использовать класс Fork. Он позволяет использовать в связывании условия, пример:
+
+	System.out.println("/n = -10");
+	Numeric n = new Numeric().value(-10);
+	Note r = new Note().bind(new Fork‹String›()
+			.condition(new Toggle().less(n, -5))
+			.then("Frost")
+			.otherwise(new Fork‹String›()
+				.condition(new Toggle().less(n, +15))
+				.then("Cold")
+				.otherwise(new Fork‹String›()
+					.condition(new Toggle().less(n, +30))
+					.then("Warm")
+					.otherwise("Hot")
+					)));
+	System.out.println(r.value());
+	System.out.println("/let n = +10");
+	n.value(10);
+	System.out.println(r.value());
+	System.out.println("/let n = +20");
+	n.value(20);
+	System.out.println(r.value());
+	System.out.println("/let n = +40");
+	n.value(40);
+	System.out.println(r.value());
+
+результат
+
+/n = -10
+Frost
+/let n = +10
+Cold
+/let n = +20
+Warm
+/let n = +40
+Hot
+
+Запись условия вполне наглядна, в зависимости от значения переменной n, в переменную r заносится текст Frost, Cold, Warm или Hot.
+
+Применение библиотеки
+
+К сожалению, связывание и функции нельзя использовать непосредственно. Рассмотрим модификации необходимые для применения связывания в Swing:
+
+class BindableLabel extends JLabel {
+    private Note bindableValue = new Note().value("").afterChange(new Task() {
+		@Override public void job() {
+			if (bindableValue != null) {
+			setText(bindableValue.value());
+			}
+		}
+    });
+    public Note bindableValue() {
+		return bindableValue;
+    }
+    public BindableLabel() {
+		super();
+    }
+}
+
+это класс расширяющий стандартный JLabel. Он позволяет обновлять связывать текст надписи с переменно имеющий тип Note.
+Для редактируемых Swing-компонентов также придётся добавить ChangeListener. Пример определения поведения компонентов из формы на скриншоте:
+
+    void bindComponents() {
+		Numeric celsius = new Numeric().value(0);
+		Numeric fahrenheit = celsius.multiply(9.0).divide(5.0).plus(32.0);
+		fahrenheitSlider.bindableValue().bind(fahrenheit);
+		fahrenheitSpinner.bindableValue().bind(fahrenheit);
+		celsiusSlider.bindableValue().bind(celsius);
+		celsiusSpinner.bindableValue().bind(celsius);
+
+- как видно, это занимает всего несколько строк и при редактировании любого значения в форме (или перемещения ползунка слайдера) остальные компоненты
+мгновенно обновляют своё состояние.
+
+
