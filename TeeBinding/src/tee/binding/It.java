@@ -71,6 +71,7 @@ public class It<Kind> {
         }
     }
     public static void main(String[] args) {
+	
         System.out.println("\nIt\n");
         final It<String> a = new It<String>().value("A");
         final It<String> b = new It<String>().value("B");
