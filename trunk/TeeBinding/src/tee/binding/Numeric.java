@@ -219,9 +219,10 @@ public class Numeric extends It<Double> {
 	return _string;
     }
     public static void main(String a[]) {
+	
 	System.out.println("\nNumeric\n");
 	Numeric tCelsius = new Numeric().value(0);
-	Numeric tFahrenheit = new Numeric().bind(tCelsius.multiply(9.0).divide(5.0).plus(32.0));
+	Numeric tFahrenheit = tCelsius.multiply(9.0).divide(5.0).plus(32.0);
 	System.out.println("/tFahrenheit is tCelsius * 9 / 5 + 32");
 	System.out.println("tFahrenheit: " + tFahrenheit.value() + ", tCelsius: " + tCelsius.value());
 	System.out.println("/let tFahrenheit = 100 ");
