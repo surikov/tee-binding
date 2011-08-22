@@ -10,5 +10,6 @@ public class About {
         Note.main(args);        
         Toggle.main(args);
         Fork.main(args);
+	Serie.main(args);
     }
 }
