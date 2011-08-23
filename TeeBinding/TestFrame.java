@@ -107,6 +107,22 @@ public class TestFrame extends JFrame {
 	celsiusSlider.bindableValue().bind(celsius);
 	celsiusSpinner.bindableValue().bind(celsius);
 	descriptionLabel.bindableValue().bind(description);
+/*
+descriptionLabel.bindableValue().bind(
+	Note.iF(n.less(-5))
+	.then("Frost")
+	.otherwise(
+		Note.iF(n.less(+15))
+		.then("Cold")
+		.otherwise(
+			Note.iF(n.less(+30))
+			.then("Warm")
+			.otherwise("Hot")
+			)
+		)
+	);
+*/	    
+	    
     }
     void composeComponents() {
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
