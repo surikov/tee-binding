@@ -204,7 +204,7 @@ public class Numeric extends It<Double> {
 			    try {
 				me.value(Double.parseDouble(_string.value()));
 			    } catch (Throwable t) {
-				//ignore
+				t.printStackTrace();
 			    }
 			}
 		    }
