@@ -279,30 +279,30 @@ public class Numeric extends It<Double> {
         tCelsius.value(100);
         System.out.println("/let tCelsius = 100 ");
         System.out.println("tFahrenheit: " + tFahrenheit.value() + ", tCelsius: " + tCelsius.value());
-        
-        Numeric n = new Numeric().value(-10);
-        Note r = new Note().bind(Note
-                .iF(n.less(-5))
+        System.out.println("/condition example");
+        Numeric temperature = new Numeric().value(-10);
+        Note description = new Note().bind(Note
+                .iF(temperature.less(-5))
                 .then("Frost")
                 .otherwise(Note
-                    .iF(n.less(+15))
+                    .iF(temperature.less(+15))
                     .then("Cold")
                     .otherwise(Note
-                        .iF(n.less(+30))
+                        .iF(temperature.less(+30))
                         .then("Warm")
                         .otherwise("Hot")
                         )
                     )
                 );
-        System.out.println(r.value());
+        System.out.println(description.value());
         System.out.println("/let n = +10");
-        n.value(10);
-        System.out.println(r.value());
+        temperature.value(10);
+        System.out.println(description.value());
         System.out.println("/let n = +20");
-        n.value(20);
-        System.out.println(r.value());
+        temperature.value(20);
+        System.out.println(description.value());
         System.out.println("/let n = +40");
-        n.value(40);
-        System.out.println(r.value());
+        temperature.value(40);
+        System.out.println(description.value());
     }
 }
