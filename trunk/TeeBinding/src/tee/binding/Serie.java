@@ -9,7 +9,7 @@ public class Serie<Kind> {
     public Serie<Kind> item(Kind it) {
         serie.add(it);
         if (afterAppend != null) {
-            afterAppend.job();
+            afterAppend.start();
         }
         return this;
     }
@@ -24,7 +24,7 @@ public class Serie<Kind> {
     public Serie<Kind> clear() {
         serie.clear();
         if (afterClear != null) {
-            afterClear.job();
+            afterClear.start();
         }
         return this;
     }

@@ -4,7 +4,7 @@ public class Calculation<Kind> {
     private boolean lockFirst = false;
     private boolean lockSecond = false;
     private It<Kind> _first = new It<Kind>().afterChange(new Task() {
-	@Override public void job() {
+	@Override public void doTask() {
 	    if (lockFirst) {
 		return;
 	    }
@@ -18,7 +18,7 @@ public class Calculation<Kind> {
 	}
     });
     private It<Kind> _second = new It<Kind>().afterChange(new Task() {
-	@Override public void job() {
+	@Override public void doTask() {
 	    if (lockSecond) {
 		return;
 	    }

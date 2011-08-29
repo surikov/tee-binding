@@ -58,7 +58,7 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 clc.second().value(clc.first().value() + fvalue.value());
             }
         });
@@ -102,7 +102,7 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 clc.second().value(clc.first().value() * fvalue.value());
             }
         });
@@ -146,7 +146,7 @@ public class Numeric extends It<Double> {
             }
         };
         new Numeric().afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 clc.second().value(clc.first().value() / fvalue.value());
             }
         }).bind(fvalue);
@@ -187,7 +187,7 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 clc.second().value(clc.first().value() - fvalue.value());
             }
         });
@@ -241,7 +241,7 @@ public class Numeric extends It<Double> {
     public It<String> asString() {
         if (_string == null) {
             _string = new It<String>().afterChange(new Task() {
-                @Override public void job() {
+                @Override public void doTask() {
                     if (_string != null) {
                         if (_string.value() == null) {
                             me.value(0);
@@ -256,7 +256,7 @@ public class Numeric extends It<Double> {
                 }
             }).value("" + value());
             new It<Double>().bind(this).afterChange(new Task() {
-                @Override public void job() {
+                @Override public void doTask() {
                     _string.value("" + value());
                 }
             });

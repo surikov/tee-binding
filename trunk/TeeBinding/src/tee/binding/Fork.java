@@ -2,17 +2,17 @@ package tee.binding;
 
 public class Fork<Kind> extends It<Kind> {
     It<Kind> then = new It<Kind>().afterChange(new Task() {
-        @Override public void job() {
+        @Override public void doTask() {
             decide();
         }
     });
     It<Kind> otherwise = new It<Kind>().afterChange(new Task() {
-        @Override public void job() {
+        @Override public void doTask() {
             decide();
         }
     });
     Toggle condition = new Toggle().afterChange(new Task() {
-        @Override public void job() {
+        @Override public void doTask() {
             decide();
         }
     }).value(true);

@@ -10,7 +10,7 @@ public class Toggle extends It<Boolean> {
         final Toggle me = this;
         final Toggle retvalue = new Toggle().value(value() && fvalue.value());
         new Toggle().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(me.value() && fvalue.value());
             }
         });
@@ -21,7 +21,7 @@ public class Toggle extends It<Boolean> {
         final Toggle me = this;
         final Toggle retvalue = new Toggle().value(value() || fvalue.value());
         new Toggle().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(me.value() || fvalue.value());
             }
         });
@@ -38,12 +38,12 @@ public class Toggle extends It<Boolean> {
         final Note bb = b;
         final Toggle retvalue = new Toggle().value(a.value().equals(b.value()));
         new Note().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
         new Note().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
@@ -66,12 +66,12 @@ public class Toggle extends It<Boolean> {
         final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(a.value().equals(b.value()));
         new Numeric().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
         new Numeric().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value().equals(bb.value()));
             }
         });
@@ -94,12 +94,12 @@ public class Toggle extends It<Boolean> {
         final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(a.value() < b.value());
         new Numeric().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() < bb.value());
             }
         });
         new Numeric().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() < bb.value());
             }
         });
@@ -122,12 +122,12 @@ public class Toggle extends It<Boolean> {
         final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(a.value() <= b.value());
         new Numeric().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() <= bb.value());
             }
         });
         new Numeric().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() <= bb.value());
             }
         });
@@ -150,12 +150,12 @@ public class Toggle extends It<Boolean> {
         final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(a.value() > b.value());
         new Numeric().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() > bb.value());
             }
         });
         new Numeric().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() > bb.value());
             }
         });
@@ -178,12 +178,12 @@ public class Toggle extends It<Boolean> {
         final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(a.value() >= b.value());
         new Numeric().bind(a).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() >= bb.value());
             }
         });
         new Numeric().bind(b).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(aa.value() >= bb.value());
             }
         });

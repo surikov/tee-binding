@@ -1,6 +1,9 @@
 package tee.binding;
 
 public class Task {
-    public void job() {
+    public void start() {
+        doTask();
+    }
+    public void doTask() {
     }
 }

@@ -41,7 +41,7 @@ public class It<Kind> {
     }
     private void doAfterChange() {
         if (this.afterChange != null) {
-            afterChange.job();
+            afterChange.start();
         }
     }
     public It<Kind> bind(It<Kind> to) {
@@ -77,17 +77,17 @@ public class It<Kind> {
         final It<String> b = new It<String>().value("B");
         final It<String> c = new It<String>().value("C");
         a.afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 System.out.println("[a]: someone changed value to " + a.value());
             }
         });
         b.afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 System.out.println("[b]: someone changed value to " + b.value());
             }
         });
         a.afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 System.out.println("[c]: someone changed value to " + c.value());
             }
         });
