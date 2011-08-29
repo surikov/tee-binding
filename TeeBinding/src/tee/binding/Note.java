@@ -53,7 +53,7 @@ public class Note extends It<String> {
         final Note me = this;
         final Note retvalue = new Note().value(value() + fvalue.value());
         new Note().bind(fvalue).afterChange(new Task() {
-            @Override public void job() {
+            @Override public void doTask() {
                 retvalue.value(me.value() + fvalue.value());
             }
         });

@@ -6,8 +6,7 @@ public class Fit<Kind> {
     Hashtable<String, It<Kind>> currentValues = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
     Note _selector = new Note().afterChange(new Task() {
-        @Override
-        public void job() {
+        @Override public void doTask() {
             refreshSet();
         }
     }).value("");
