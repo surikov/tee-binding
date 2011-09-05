@@ -2,11 +2,11 @@ package tee.binding;
 
 import java.util.*;
 
-public class Serie<Kind> {
+public class Serie<Kind > {
     private Vector<Kind> serie = new Vector<Kind>();
     private Task afterAppend = null;
     private Task afterClear = null;
-    public Serie<Kind> item(Kind it) {
+    public Serie<Kind> append(Kind it) {
         serie.add(it);
         if (afterAppend != null) {
             afterAppend.start();
@@ -34,7 +34,7 @@ public class Serie<Kind> {
     public int size() {
         return serie.size();
     }
-    public Serie where(Approver<Kind> a) {
+    /*public Serie where(Approver<Kind> a) {
         Serie s = new Serie();
         for (int i = 0; i < size(); i++) {
             if (a.approve(item(i))) {
@@ -42,7 +42,7 @@ public class Serie<Kind> {
             }
         }
         return s;
-    }
+    }*/
     public static void main(String[] args) {
         System.out.println("\nSerie\n");
     }
