@@ -76,5 +76,24 @@ public class Note extends It<String> {
         System.out.println("/let item = yellow");
         item.value("yellow");
         System.out.println(s.value());
+	
+	System.out.println("---");
+	Note dialect = new Note().value("MS SQL");
+	Note forMSSQL = new Note().value("select top 10 * from table1");
+	Note forPostgreSQL = new Note().value("select * from table1 limit 10");
+	Note command = new Note();
+	command.bind(Note
+		.iF(dialect.similar("MS SQL"))
+		.then(forMSSQL)
+		.otherwise(forPostgreSQL));
+	System.out.println("dialect: "+dialect.value()+", command: "+command.value());
+	System.out.println("/let dialect isn't MS SQL");
+	dialect.value("PostgreSQL");
+	System.out.println("dialect: "+dialect.value()+", command: "+command.value());
+	System.out.println("/let command = select field1,filed2 from table1 limit 10");
+	command.value("select field1,filed2 from table1 limit 10");
+	System.out.println("command: "+command.value());
+	System.out.println("forMSSQL: "+forMSSQL.value());
+	System.out.println("forPostgreSQL: "+forPostgreSQL.value());
     }
 }
