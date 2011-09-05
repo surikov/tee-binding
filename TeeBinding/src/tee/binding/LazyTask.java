@@ -2,7 +2,7 @@ package tee.binding;
 
 import java.util.*;
 
-public class LazyTask extends Task {
+public abstract class LazyTask extends Task {
     private Timer timer = null;
     private int laziness = 50;
     public LazyTask() {
