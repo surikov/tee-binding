@@ -52,7 +52,16 @@ public class Fork<Kind> extends It<Kind> {
         System.out.println("\nFork\n");
         System.out.println("/n = -10");
         Numeric n = new Numeric().value(-10);
-        Note r = new Note().bind(new Fork<String>().condition(new Toggle().less(n, -5)).then("Frost").otherwise(new Fork<String>().condition(new Toggle().less(n, +15)).then("Cold").otherwise(new Fork<String>().condition(new Toggle().less(n, +30)).then("Warm").otherwise("Hot"))));
+        Note r = new Note().bind(new Fork<String>()
+		.condition(new Toggle().less(n, -5))
+		.then("Frost")
+		.otherwise(new Fork<String>()
+		    .condition(new Toggle().less(n, +15))
+		    .then("Cold")
+		    .otherwise(new Fork<String>()
+			.condition(new Toggle()
+			.less(n, +30)).then("Warm")
+			.otherwise("Hot"))));
         System.out.println(r.value());
         System.out.println("/let n = +10");
         n.value(10);
