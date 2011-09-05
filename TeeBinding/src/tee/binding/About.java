@@ -11,5 +11,6 @@ public class About {
 	Toggle.main(args);
 	Fork.main(args);
 	Serie.main(args);
+	System.out.println("v1.2.1");
     }
 }
