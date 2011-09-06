@@ -37,7 +37,7 @@ public class Bough {
 	    }
 	}
 	Bough b = new Bough().name(name);
-	_children.item(b);
+	_children.append(b);
 	return b;
     }
     public Note item(String defaultValue) {
