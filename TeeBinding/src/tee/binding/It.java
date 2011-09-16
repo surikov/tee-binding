@@ -3,7 +3,7 @@ package tee.binding;
 import java.util.*;
 
 public class It<Kind> {
-    private Vector<It> _binded = new Vector<It>();
+    private Vector<It<Kind>> _binded = new Vector<It<Kind>>();
     private Kind _value = null;
     private Task afterChange = null;
     public It() {
