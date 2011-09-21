@@ -1,6 +1,9 @@
 package tee.binding;
 
 public class About {
+    public static String getVersion() {
+	return "1.2.7";
+    }
     public static void main(String[] args) {
 	System.out.println("Examples of using");
 	It.main(args);
@@ -11,6 +14,6 @@ public class About {
 	Toggle.main(args);
 	Fork.main(args);
 	Serie.main(args);
-	System.out.println("v1.2.1");
+	System.out.println(getVersion());
     }
 }
