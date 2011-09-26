@@ -4,10 +4,11 @@ import java.util.*;
 
 public class It<Kind> {
     private Vector<It<Kind>> _binded = new Vector<It<Kind>>();
-    private Kind _value = null;
+    protected Kind _value = null;
     private Task afterChange = null;
     public It() {
     }
+    protected void adjust() {}
     public Kind value() {
 	return _value;
     }
@@ -23,6 +24,7 @@ public class It<Kind> {
 	    return;
 	}
 	this._value = newValue;
+	adjust();
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
 	    if (!cashe.contains(_binded.get(i))) {
