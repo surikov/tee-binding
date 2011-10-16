@@ -55,7 +55,8 @@ public class Bough {
 	    double n = 0;
 	    if (_raw != null) {
 		try {
-		    n = Double.parseDouble(_raw);
+		    //n = Double.parseDouble(_raw);
+		    n = Numeric.string2double(_raw);
 		} catch (Throwable t) {
 		    t.printStackTrace();
 		}
