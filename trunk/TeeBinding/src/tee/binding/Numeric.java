@@ -1,5 +1,6 @@
 package tee.binding;
-
+import java.text.*;
+import java.util.*;
 public class Numeric extends It<Double> {
     private It<String> _string = null;
     private Numeric me = this;
@@ -246,18 +247,32 @@ public class Numeric extends It<Double> {
     public Toggle lessOrEquals(int it) {
 	return new Toggle().lessOrEquals(this, it);
     }
+    public static double string2double(String s) {
+	double dd = 0;
+	NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
+	try {
+	    dd = numberFormat.parse(s.replaceAll(",", "\\.")).doubleValue();
+	} catch (Throwable t) {
+	    t.printStackTrace();
+	}
+	return dd;
+    }
+    public Note asNote() {
+	return new Note().bind(asString());
+    }
     public It<String> asString() {
 	if (_string == null) {
 	    _string = new It<String>().afterChange(new Task() {
 		@Override public void doTask() {
 		    if (_string != null) {
-			if (_string.value() == null) {
+			if (_string.value() == null || _string.value().length() < 1) {
 			    me.value(0);
 			} else {
 			    try {
-				me.value(Double.parseDouble(_string.value()));
+				me.value(string2double(_string.value()));
 			    } catch (Throwable t) {
-				t.printStackTrace();
+				//t.printStackTrace();
+				System.out.println("can't parse numeric " + _string.value());
 			    }
 			}
 		    }
