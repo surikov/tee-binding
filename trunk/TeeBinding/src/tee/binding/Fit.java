@@ -6,7 +6,7 @@ public class Fit<Kind> {
 
     Hashtable<String, It<Kind>> currentSet = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
-    Fit<Kind> tie = null;
+    Fit<Kind> bindTo = null;
     //private Task afterTie = null;
     //private Task afterItem = null;
     Note _selector = new Note().afterChange(new Task() {
@@ -45,13 +45,13 @@ public class Fit<Kind> {
     }
 */
 
-    public Fit<Kind> tie(Fit<Kind> to) {
-	if (tie != null) {
-	    _selector.unbind(tie._selector);
+    public Fit<Kind> bind(Fit<Kind> to) {
+	if (bindTo != null) {
+	    _selector.unbind(bindTo._selector);
 	}
-	tie = to;
+	bindTo = to;
 	if (to != null) {
-	    _selector.bind(tie._selector);
+	    _selector.bind(bindTo._selector);
 	}
 	//refreshSet();
 
@@ -60,8 +60,8 @@ public class Fit<Kind> {
 
     public It<Kind> find(String key) {
 	It<Kind> r;
-	if (tie != null) {
-	    r = tie.find(key);
+	if (bindTo != null) {
+	    r = bindTo.find(key);
 	    //System.out.println("tied "+key+": "+r.value());
 	} else {
 	    It<Kind> v = currentSet.get(key);
@@ -81,7 +81,7 @@ public class Fit<Kind> {
 	    //System.out.println("null");
 	    return;
 	}
-	if (tie != null) {
+	if (bindTo != null) {
 	    //System.out.println("redirect");
 	    //tie.refreshSet();
 	    return;
@@ -114,8 +114,8 @@ public class Fit<Kind> {
 
     }*/
     public Fit<Kind> item(String group, String key, Kind value) {
-	if (tie != null) {
-	    tie.item(group, key, value);
+	if (bindTo != null) {
+	    bindTo.item(group, key, value);
 	} else {
 	    Hashtable<String, It<Kind>> s = findSet(group);
 	    It<Kind> v = s.get(key);
@@ -133,7 +133,7 @@ public class Fit<Kind> {
 	System.out.println("\nFit\n");
 	Fit<String> g = new Fit<String>();
 	Fit<String> data = new Fit<String>();
-	g.tie(data);
+	g.bind(data);
 	Note s1 = new Note().bind(g.find("w1"));
 	Note s2 = new Note().bind(g.find("w2"));
 	Note s3 = new Note().bind(g.find("w3"));
