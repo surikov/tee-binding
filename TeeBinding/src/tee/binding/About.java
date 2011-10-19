@@ -2,7 +2,7 @@ package tee.binding;
 
 public class About {
     public static String getVersion() {
-	return "1.2.9";
+	return "1.3.2";
     }
     public static void main(String[] args) {
 	System.out.println("Examples of using");
