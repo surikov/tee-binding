@@ -133,18 +133,27 @@ public class Fit<Kind> {
 	System.out.println("\nFit\n");
 	Fit<String> g = new Fit<String>();
 	Fit<String> data = new Fit<String>();
-	g.bind(data);
+
 	Note s1 = new Note().bind(g.find("w1"));
 	Note s2 = new Note().bind(g.find("w2"));
 	Note s3 = new Note().bind(g.find("w3"));
 	Note s4 = new Note().bind(g.find("w4"));
-	data.item("English", "w1", "First").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
+
+	g.item("English", "w1", "First").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
+	data.item("English", "w1", "First2").item("English", "w2", "Second").item("English", "w3", "Third").item("Spain", "w1", "Primero").item("Spain", "w2", "Segundo").item("Spain", "w3", "Tercera");
 
 	System.out.println("/set English");
 	g.selector().value("English");
 	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
 	System.out.println("/set Spain");
 	g.selector().value("Spain");
+	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
+
+	System.out.println("--bind--");
+	g.bind(data);
+
+	System.out.println("/set English");
+	g.selector().value("English");
 	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
     }
 }
