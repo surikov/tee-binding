@@ -17,13 +17,23 @@ public class Fit<Kind> {
     public Note selector() {
 	return _selector;
     }
-
-    private void bindChild(String groupFrom, String keyFrom, It<Kind> valueFrom, Hashtable<String, Hashtable<String, It<Kind>>> to) {
-	Hashtable<String, It<Kind>> toGroup = to.get(groupFrom);
-	if (toGroup == null) {
+/*
+    private Hashtable<String, It<Kind>>  addGroup(String groupName) {
+	Hashtable<String, It<Kind>> s = new Hashtable<String, It<Kind>>();
+	sets.put(groupName, s);
+	return s;
+    }
+*/
+    private void bindChild(String groupFrom, String keyFrom, It<Kind> valueFrom
+	    //, Hashtable<String, Hashtable<String, It<Kind>>> to
+	    ,Fit<Kind> to
+	    ) {
+	Hashtable<String, It<Kind>> toGroup = to.findSet(groupFrom);
+		//to.get(groupFrom);
+	/*if (toGroup == null) {
 	    toGroup = new Hashtable<String, It<Kind>>();
 	    to.put(groupFrom, toGroup);
-	}
+	}*/
 	It<Kind> v = toGroup.get(keyFrom);
 	if (v == null) {
 	    v = new It<Kind>();
@@ -40,7 +50,7 @@ public class Fit<Kind> {
 	    while (keys.hasMoreElements()) {
 		String keyFrom = keys.nextElement();
 		It<Kind> valueFrom = fromFit.sets.get(groupFrom).get(keyFrom);
-		bindChild(groupFrom, keyFrom, valueFrom, toFit.sets);
+		bindChild(groupFrom, keyFrom, valueFrom, toFit);
 	    }
 	}
     }
@@ -88,6 +98,7 @@ public class Fit<Kind> {
 	if (s == null) {
 	    s = new Hashtable<String, It<Kind>>();
 	    sets.put(group, s);
+	    //System.out.println("add group "+group);
 	}
 	return s;
     }
