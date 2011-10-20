@@ -92,6 +92,25 @@ public class Fit<Kind> {
 	return s;
     }
 
+    private void itemEach(It<Kind> it, String group, String key, Vector<Fit<Kind>> cashe) {
+	cashe.add(this);
+	for (int i = 0; i < _binded.size(); i++) {
+	    if (!cashe.contains(_binded.get(i))) {
+		Fit<Kind> b = _binded.get(i);
+		Hashtable<String, It<Kind>> s = b.findSet(group);
+		It<Kind> v = s.get(key);
+		if (v == null) {
+		    v = new It< Kind>();
+		    s.put(key, v);
+		}
+		v.bind(it);
+		b.refreshSet();
+		b.itemEach(v, group, key, cashe);
+	    }
+	}
+	cashe.remove(this);
+    }
+
     public Fit<Kind> item(String group, String key, Kind value) {
 	Hashtable<String, It<Kind>> s = findSet(group);
 	It<Kind> v = s.get(key);
@@ -101,6 +120,7 @@ public class Fit<Kind> {
 	}
 	v.value(value);
 	refreshSet();
+	itemEach(v, group, key, new Vector<Fit<Kind>>());
 	return this;
     }
 
@@ -126,10 +146,18 @@ public class Fit<Kind> {
 
 	System.out.println("--bind--");
 	g.bind(data);
+	//data.bind(g);
 	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
 
 	System.out.println("/set English");
 	g.selector().value("English");
 	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
+
+	System.out.println("/insert");
+	g.selector().value("Spain");
+	g.selector().value("English");
+	data.item("English", "w4", "Forth");
+	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
+
     }
 }
