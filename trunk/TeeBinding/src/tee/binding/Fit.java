@@ -6,9 +6,7 @@ public class Fit<Kind> {
 
     Hashtable<String, It<Kind>> currentSet = new Hashtable<String, It<Kind>>();
     Hashtable<String, Hashtable<String, It<Kind>>> sets = new Hashtable<String, Hashtable<String, It<Kind>>>();
-    Fit<Kind> bindTo = null;
-    //private Task afterTie = null;
-    //private Task afterItem = null;
+    private Vector<Fit<Kind>> _binded = new Vector<Fit<Kind>>();
     Note _selector = new Note().afterChange(new Task() {
 
 	@Override public void doTask() {
@@ -19,78 +17,65 @@ public class Fit<Kind> {
     public Note selector() {
 	return _selector;
     }
-    /*
-    public Fit<Kind> afterTie(Task it) {
-	this.afterTie = it;
-	doAfterTie();
-	return this;
+
+    private void bindChild(String groupFrom, String keyFrom, It<Kind> valueFrom, Hashtable<String, Hashtable<String, It<Kind>>> to) {
+	Hashtable<String, It<Kind>> toGroup = to.get(groupFrom);
+	if (toGroup == null) {
+	    toGroup = new Hashtable<String, It<Kind>>();
+	    to.put(groupFrom, toGroup);
+	}
+	It<Kind> v = toGroup.get(keyFrom);
+	if (v == null) {
+	    v = new It<Kind>();
+	    toGroup.put(keyFrom, v);
+	}
+	valueFrom.bind(v);
     }
 
-    private void doAfterTie() {
-	if (this.afterTie != null) {
-	    afterTie.start();
+    private void bindChildren(Fit<Kind> fromFit, Fit<Kind> toFit) {
+	Enumeration<String> groups = fromFit.sets.keys();
+	while (groups.hasMoreElements()) {
+	    String groupFrom = groups.nextElement();
+	    Enumeration<String> keys = fromFit.sets.get(groupFrom).keys();
+	    while (keys.hasMoreElements()) {
+		String keyFrom = keys.nextElement();
+		It<Kind> valueFrom = fromFit.sets.get(groupFrom).get(keyFrom);
+		bindChild(groupFrom, keyFrom, valueFrom, toFit.sets);
+	    }
 	}
     }
-
-    public Fit<Kind> afterItem(Task it) {
-	this.afterItem = it;
-	doAfterItem();
-	return this;
-    }
-
-    private void doAfterItem() {
-	if (this.afterItem != null) {
-	    afterItem.start();
-	}
-    }
-*/
 
     public Fit<Kind> bind(Fit<Kind> to) {
-	if (bindTo != null) {
-	    _selector.unbind(bindTo._selector);
+	if (to == null) {
+	    return this;
 	}
-	bindTo = to;
-	if (to != null) {
-	    _selector.bind(bindTo._selector);
+	if (!this._binded.contains(to)) {
+	    this._binded.add(to);
 	}
-	//refreshSet();
-
+	if (!to._binded.contains(this)) {
+	    to._binded.add(this);
+	}
+	bindChildren(this, to);
+	bindChildren(to, this);
+	_selector.bind(to._selector);
 	return this;
     }
 
     public It<Kind> find(String key) {
 	It<Kind> r;
-	if (bindTo != null) {
-	    r = bindTo.find(key);
-	    //System.out.println("tied "+key+": "+r.value());
-	} else {
-	    It<Kind> v = currentSet.get(key);
-	    if (v == null) {
-		v = new It<Kind>();
-		currentSet.put(key, v);
-	    }
-	    r = v;
-	    //System.out.println("real "+key+": "+r.value());
+	It<Kind> v = currentSet.get(key);
+	if (v == null) {
+	    v = new It<Kind>();
+	    currentSet.put(key, v);
 	}
+	r = v;
 	return r;
     }
 
     private void refreshSet() {
-	//System.out.println("refreshSet");
 	if (_selector == null) {
-	    //System.out.println("null");
 	    return;
 	}
-	if (bindTo != null) {
-	    //System.out.println("redirect");
-	    //tie.refreshSet();
-	    return;
-	}
-	/* Hashtable<String, It<Kind>> choosenSet = findSet(_selector.value());
-	 for (Enumeration<String> e = choosenSet.keys(); e.hasMoreElements();) {
-	 String k = e.nextElement();
-	 find(k).value(choosenSet.get(k).value());
-	 } */
 	Hashtable<String, It<Kind>> choosenSet = findSet(_selector.value());
 	for (Enumeration<String> e = choosenSet.keys(); e.hasMoreElements();) {
 	    String k = e.nextElement();
@@ -107,25 +92,15 @@ public class Fit<Kind> {
 	return s;
     }
 
-    /*public Hashtable<String, Hashtable<String, It<Kind>>> raw() {
-	return sets;
-    }*/
-    /*public void clear() {
-
-    }*/
     public Fit<Kind> item(String group, String key, Kind value) {
-	if (bindTo != null) {
-	    bindTo.item(group, key, value);
-	} else {
-	    Hashtable<String, It<Kind>> s = findSet(group);
-	    It<Kind> v = s.get(key);
-	    if (v == null) {
-		v = new It< Kind>();
-		s.put(key, v);
-	    }
-	    v.value(value);
-	    refreshSet();
+	Hashtable<String, It<Kind>> s = findSet(group);
+	It<Kind> v = s.get(key);
+	if (v == null) {
+	    v = new It< Kind>();
+	    s.put(key, v);
 	}
+	v.value(value);
+	refreshSet();
 	return this;
     }
 
@@ -151,6 +126,7 @@ public class Fit<Kind> {
 
 	System.out.println("--bind--");
 	g.bind(data);
+	System.out.println(s1.value() + ", " + s2.value() + ", " + s3.value() + ", " + s4.value());
 
 	System.out.println("/set English");
 	g.selector().value("English");
