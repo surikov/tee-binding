@@ -13,7 +13,7 @@ public class About {
 	Note.main(args);
 	Toggle.main(args);
 	Fork.main(args);
-	Column.main(args);
+//	Column.main(args);
 	System.out.println(getVersion());
     }
 }
