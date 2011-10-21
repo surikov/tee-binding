@@ -5,7 +5,7 @@ public class Bough {
     private Note _note;
     private Numeric _numeric;
     private String _raw;
-    private Serie<Bough> _children = new Serie<Bough>();
+    //private Attribute<Bough> _children = new Attribute<Bough>();
     public Bough name(String it) {
 	_name = it;
 	return this;
@@ -30,16 +30,16 @@ public class Bough {
             return;
         }
     }
-    public Bough child(String name) {
-	for (int i = 0; i < _children.size(); i++) {
+    /*public Bough child(String name) {
+	for (int i = 0; i < _children.size().value(); i++) {
 	    if (_children.item(i).name().equals(name)) {
 		return _children.item(i);
 	    }
 	}
 	Bough b = new Bough().name(name);
-	_children.append(b);
+	_children.item(b);
 	return b;
-    }
+    }*/
     public Note item(String defaultValue) {
 	if (_note == null) {
 	    _note = new Note().value(defaultValue);
