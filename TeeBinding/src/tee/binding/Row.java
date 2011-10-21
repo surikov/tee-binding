@@ -1,32 +1,38 @@
 package tee.binding;
-
 import java.util.*;
-
 public class Row {
-
     //private Vector<Column> columns;
-    private Vector<Item> items;
-
+    private Vector<Column> columns;
     public Row() {
-	items = new Vector<Item>();
+	columns = new Vector<Column>();
 	//columns = new Vector<Column>();
     }
-
     public int size() {
-	return items.size();
+	return columns.size();
     }
-
-    public Item item(int n) {
-	return items.get(n);
+    public void move(int nn) {
+	for (int i = 0; i < columns.size(); i++) {
+	    columns.get(i).move(nn);
+	}
     }
-/*
-    public Column column(int n) {
-	return columns.get(n);
-    }*/
-
-    public Row item(Column column, String value) {
-	items.add(new Item(this,column,value));
+    /*
+     * public Column field(Column column) { for (int i = 0; i < columns.size();
+     * i++) { if (columns.get(i).equals(column)) { return } } return
+     * columns.get(n);
+    }
+     */
+    /*
+     * public Column column(int n) { return columns.get(n); }
+     */
+    public Row column(Column column) {
+	//items.add(new Item(this,column,value));
 	//columns.add(column);
+	/*
+	 * boolean found = false; for (int i = 0; i < columns.size(); i++) { if
+	 * (columns.get(i).equals(column)) { found = true; break; } }
+	if(found){}
+	 */
+	columns.add(column);
 	return this;
     }
 }

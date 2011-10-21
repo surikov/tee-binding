@@ -1,10 +1,6 @@
 package tee.binding;
-
-public class Column<Kind> {
-
-    protected It<Kind> value;
-
+public abstract class Column {
     public Column() {
-	value=new It<Kind>();
     }
+    public abstract void move(int nn);
 }
