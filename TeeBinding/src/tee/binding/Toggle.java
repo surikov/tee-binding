@@ -134,16 +134,16 @@ public class Toggle extends It<Boolean> {
         return retvalue;
     }
     public Toggle more(double a, Numeric b) {
-        return less(new Numeric().value(a), b);
+        return more(new Numeric().value(a), b);
     }
     public Toggle more(int a, Numeric b) {
-        return less(new Numeric().value(a), b);
+        return more(new Numeric().value(a), b);
     }
     public Toggle more(Numeric a, double b) {
-        return less(a, new Numeric().value(b));
+        return more(a, new Numeric().value(b));
     }
     public Toggle more(Numeric a, int b) {
-        return less(a, new Numeric().value(b));
+        return more(a, new Numeric().value(b));
     }
     public Toggle more(Numeric a, Numeric b) {
         final Numeric aa = a;

@@ -14,22 +14,25 @@ public class ColumnNumeric extends Column {
 	    current.value(0);
 	}
     }
-    public ColumnNumeric value(double it) {
+    public ColumnNumeric is(double it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
+	current.value(it);
 	return this;
     }
-    public ColumnNumeric value(int it) {
+    public ColumnNumeric is(int it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
+	current.value(it);
 	return this;
     }
-    public ColumnNumeric value(Numeric it) {
+    public ColumnNumeric is(Numeric it) {
 	Numeric v = new Numeric().bind(it);
 	values.add(v);
+	current.value(it.value());
 	return this;
     }
-    public Numeric current() {
+    public Numeric is() {
 	return current;
     }
 }
