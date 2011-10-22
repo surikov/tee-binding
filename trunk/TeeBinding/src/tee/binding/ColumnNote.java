@@ -14,17 +14,19 @@ public class ColumnNote extends Column {
 	    current.value("");
 	}
     }
-    public ColumnNote value(String it) {
+    public ColumnNote is(String it) {
 	Note v = new Note().value(it);
 	values.add(v);
+	current.value(it);
 	return this;
     }
-    public ColumnNote value(Note it) {
+    public ColumnNote is(Note it) {
 	Note v = new Note().bind(it);
 	values.add(v);
+	current.value(it.value());
 	return this;
     }
-    public Note current() {
+    public Note is() {
 	return current;
     }
 }
