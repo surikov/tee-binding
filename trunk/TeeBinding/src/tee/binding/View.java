@@ -12,7 +12,16 @@ public class View {
 	return this;
     }
     public void move(int nn) {
-	rows.get(nn).move();
+	if (rows.size() > 0) {
+	    int k = nn;
+	    if (k < 0) {
+		k = 0;
+	    }
+	    if (k > rows.size() - 1) {
+		k = 0;
+	    }
+	    rows.get(nn).move();
+	}
     }
     public View where(Toggle toggle) {
 	View filtered = new View();
@@ -29,24 +38,26 @@ public class View {
 	ColumnNote nm = new ColumnNote();
 	ColumnNumeric age = new ColumnNumeric();
 	ColumnNote mail = new ColumnNote();
+	ColumnToggle man = new ColumnToggle();
 	View addrBook = new View()//
-		.row(new Row().field(nm.is("Vasya")).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
-		.row(new Row().field(nm.is("Petya")).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
-		.row(new Row().field(nm.is("Sasha")).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
-		.row(new Row().field(nm.is("Masha")).field(age.is(18)).field(mail.is("masha@mail.ru")))//
-		.row(new Row().field(nm.is("Kolya")).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
-		.row(new Row().field(nm.is("Vanya")).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
-		.row(new Row().field(nm.is("Olya")).field(age.is(17)).field(mail.is("olga@aol.com")))//
-		.row(new Row().field(nm.is("Vika")).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
-		.row(new Row().field(nm.is("Misha")).field(age.is(23)).field(mail.is("mike@mail.ru")))//
-		.row(new Row().field(nm.is("Glasha")).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
+		.row(new Row().field(nm.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
+		.row(new Row().field(nm.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
+		.row(new Row().field(nm.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
+		.row(new Row().field(nm.is("Masha")).field(man.is(false)).field(age.is(18)).field(mail.is("masha@mail.ru")))//
+		.row(new Row().field(nm.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
+		.row(new Row().field(nm.is("Vanya")).field(man.is(true)).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
+		.row(new Row().field(nm.is("Olya")).field(man.is(false)).field(age.is(17)).field(mail.is("olga@aol.com")))//
+		.row(new Row().field(nm.is("Vika")).field(man.is(false)).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
+		.row(new Row().field(nm.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
+		.row(new Row().field(nm.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
-	Toggle t = age.is().moreOrEquals(20);
+	Toggle t = man.is().not();
+		//age.is().moreOrEquals(20);
 	View dump = addrBook.where(t);
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    System.out.print(t.value() + ": ");
-	    System.out.print("" 
+	    System.out.print(""
 		    + ": name[" + nm.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
 		    + ": email[" + mail.is().value() + "]");
