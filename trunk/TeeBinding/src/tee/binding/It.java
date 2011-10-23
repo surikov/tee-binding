@@ -1,17 +1,30 @@
 package tee.binding;
-
 import java.util.*;
-
+/**
+ <p>Base class for binding</p>
+ @param <Kind> type of the object
+ */
 public class It<Kind> {
     private Vector<It<Kind>> _binded = new Vector<It<Kind>>();
     protected Kind _value = null;
     private Task afterChange = null;
     public It() {
     }
-    protected void adjust() {}
+    protected void adjust() {
+    }
+    /**
+     read value
+     @return current value
+     */
     public Kind value() {
 	return _value;
     }
+    /**
+     assign new value
+
+     @param newValue new value
+     @return object itself
+     */
     public It<Kind> value(Kind newValue) {
 	setForEachBindedItem(newValue, new Vector<It>());
 	return this;
@@ -35,6 +48,11 @@ public class It<Kind> {
 	cashe.remove(this);
 	doAfterChange();
     }
+    /**
+     assign trigger
+     @param it trigger
+     @return object itself
+     */
     public It<Kind> afterChange(Task it) {
 	this.afterChange = it;
 	doAfterChange();
@@ -45,6 +63,10 @@ public class It<Kind> {
 	    afterChange.start();
 	}
     }
+    /**
+     create readonly clone
+     @return object itself
+     */
     public It<Kind> read() {
 	final It<Kind> r = new It<Kind>().value(value());
 	final It<Kind> watcher = new It<Kind>().bind(this);
@@ -60,6 +82,11 @@ public class It<Kind> {
 	});
 	return r;
     }
+    /**
+     bind value to other object
+     @param to bindable object
+     @return object itself
+     */
     public It<Kind> bind(It<Kind> to) {
 	if (to == null) {
 	    return this;
@@ -73,6 +100,10 @@ public class It<Kind> {
 	this.value(to.value());
 	return this;
     }
+    /**
+     unbind value from other object
+     @param to binded object
+     */
     public void unbind(It<Kind> to) {
 	if (to == null) {
 	    return;
@@ -80,12 +111,19 @@ public class It<Kind> {
 	this._binded.remove(to);
 	to._binded.remove(this);
     }
+    /**
+     unbind value froma all objects
+     */
     public void unbind() {
 	for (int i = 0; i < _binded.size(); i++) {
 	    _binded.get(i).
 		    unbind(this);
 	}
     }
+    /**
+     for testing
+     @param args fake args
+     */
     public static void main(String[] args) {
 
 	System.out.println("\nIt\n");
