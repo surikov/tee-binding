@@ -2,13 +2,29 @@ package tee.binding;
 import java.util.*;
 public class View {
     private Vector<Row> rows;
+    private Vector<View> children;
+    private Task requery;
+    private Task afterChange;
     public View() {
 	rows = new Vector<Row>();
+	requery = null;
+	children = new Vector<View>();
+	afterChange = new Task() {
+	    @Override public void doTask() {
+		for (int i = 0; i < children.size(); i++) {
+		    //System.out.println("reread");
+		    children.get(i).clear();
+		    children.get(i).requery.start();
+		    children.get(i).afterChange.start();
+		}
+	    }
+	};
     }
     public View row(Row row) {
 	int nn = rows.size();
 	row.nn = nn;
 	rows.add(row);
+	afterChange.start();
 	return this;
     }
     public void move(int nn) {
@@ -24,14 +40,25 @@ public class View {
 	}
     }
     public View where(Toggle toggle) {
-	View filtered = new View();
-	for (int r = 0; r < this.rows.size(); r++) {
-	    this.move(r);
-	    if (toggle.value()) {
-		filtered.rows.add(rows.get(r));
+	final View filtered = new View();
+	final Toggle condition = toggle;
+	final View me = this;
+	filtered.requery = new Task() {
+	    @Override public void doTask() {
+		for (int r = 0; r < me.rows.size(); r++) {
+		    me.move(r);
+		    if (condition.value()) {
+			filtered.rows.add(rows.get(r));
+		    }
+		}
 	    }
-	}
+	};
+	this.children.add(filtered);
+	filtered.requery.start();
 	return filtered;
+    }
+    private void clear() {
+	this.rows.removeAllElements();
     }
     public static void main(String[] args) {
 	System.out.println("\nView\n");
@@ -52,11 +79,23 @@ public class View {
 		.row(new Row().field(nm.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
 	Toggle t = man.is().not();
-		//age.is().moreOrEquals(20);
+	//age.is().moreOrEquals(20);
 	View dump = addrBook.where(t);
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
-	    System.out.print(t.value() + ": ");
+	    //System.out.print(t.value() + ": ");
+	    System.out.print(""
+		    + ": name[" + nm.is().value() + "]"
+		    + ": age[" + age.is().value() + "]"
+		    + ": email[" + mail.is().value() + "]");
+	    System.out.println();
+	}
+	System.out.println("---");
+	addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
+	//dump = addrBook;
+	for (int r = 0; r < dump.rows.size(); r++) {
+	    dump.move(r);
+	    //System.out.print(t.value() + ": ");
 	    System.out.print(""
 		    + ": name[" + nm.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
