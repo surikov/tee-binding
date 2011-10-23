@@ -4,27 +4,42 @@ public class View {
     private Vector<Row> rows;
     private Vector<View> children;
     private Task requery;
-    private Task afterChange;
+    private Task afterRefresh;
     public View() {
 	rows = new Vector<Row>();
 	requery = null;
 	children = new Vector<View>();
-	afterChange = new Task() {
-	    @Override public void doTask() {
-		for (int i = 0; i < children.size(); i++) {
-		    //System.out.println("reread");
-		    children.get(i).clear();
-		    children.get(i).requery.start();
-		    children.get(i).afterChange.start();
-		}
-	    }
-	};
+	/* afterChange = new Task() {
+	 @Override public void doTask() {
+	 for (int i = 0; i < children.size(); i++) {
+	 //System.out.println("reread");
+	 children.get(i).clear();
+	 children.get(i).requery.start();
+	 children.get(i).afterChange.start();
+	 }
+	 }
+	 }; */
+    }
+    public View afterRefresh(Task it) {
+	afterRefresh = it;
+	return this;
+    }
+    private void refreshChildren() {
+	for (int i = 0; i < children.size(); i++) {
+	    //System.out.println("reread");
+	    children.get(i).clear();
+	    children.get(i).requery.start();
+	    children.get(i).refreshChildren();
+	}
+	if (afterRefresh != null) {
+	    afterRefresh.start();
+	}
     }
     public View row(Row row) {
 	int nn = rows.size();
 	row.nn = nn;
 	rows.add(row);
-	afterChange.start();
+	refreshChildren();
 	return this;
     }
     public void move(int nn) {
@@ -80,7 +95,11 @@ public class View {
 		;
 	Toggle t = man.is().not();
 	//age.is().moreOrEquals(20);
-	View dump = addrBook.where(t);
+	View dump = addrBook.where(t).afterRefresh(new Task() {
+	    @Override public void doTask() {
+		System.out.println("afterRefresh");
+	    }
+	});
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    //System.out.print(t.value() + ": ");
@@ -92,6 +111,7 @@ public class View {
 	}
 	System.out.println("---");
 	addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
+	System.out.println("---");
 	//dump = addrBook;
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
