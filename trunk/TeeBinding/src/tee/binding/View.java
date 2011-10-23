@@ -9,16 +9,6 @@ public class View {
 	rows = new Vector<Row>();
 	requery = null;
 	children = new Vector<View>();
-	/* afterChange = new Task() {
-	 @Override public void doTask() {
-	 for (int i = 0; i < children.size(); i++) {
-	 //System.out.println("reread");
-	 children.get(i).clear();
-	 children.get(i).requery.start();
-	 children.get(i).afterChange.start();
-	 }
-	 }
-	 }; */
     }
     public View afterRefresh(Task it) {
 	afterRefresh = it;
@@ -26,9 +16,10 @@ public class View {
     }
     private void refreshChildren() {
 	for (int i = 0; i < children.size(); i++) {
-	    //System.out.println("reread");
 	    children.get(i).clear();
-	    children.get(i).requery.start();
+	    if (children.get(i).requery != null) {
+		children.get(i).requery.start();
+	    }
 	    children.get(i).refreshChildren();
 	}
 	if (afterRefresh != null) {
@@ -72,6 +63,21 @@ public class View {
 	filtered.requery.start();
 	return filtered;
     }
+    public View select() {
+	final View cpy = new View();
+	final View me = this;
+	cpy.requery = new Task() {
+	    @Override public void doTask() {
+		for (int r = 0; r < me.rows.size(); r++) {
+		    me.move(r);
+		    cpy.rows.add(rows.get(r));
+		}
+	    }
+	};
+	this.children.add(cpy);
+	cpy.requery.start();
+	return cpy;
+    }
     private void clear() {
 	this.rows.removeAllElements();
     }
@@ -102,7 +108,6 @@ public class View {
 	});
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
-	    //System.out.print(t.value() + ": ");
 	    System.out.print(""
 		    + ": name[" + nm.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
@@ -112,10 +117,8 @@ public class View {
 	System.out.println("---");
 	addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
 	System.out.println("---");
-	//dump = addrBook;
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
-	    //System.out.print(t.value() + ": ");
 	    System.out.print(""
 		    + ": name[" + nm.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
