@@ -1,12 +1,17 @@
 package tee.binding;
+
 import java.util.*;
+
 public class ColumnNumeric extends Column {
+
     private Numeric current;
     private Vector<Numeric> values;
+
     public ColumnNumeric() {
 	current = new Numeric();
 	values = new Vector<Numeric>();
     }
+
     @Override public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
@@ -14,25 +19,46 @@ public class ColumnNumeric extends Column {
 	    current.value(0);
 	}
     }
+
     public ColumnNumeric is(double it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
 	current.value(it);
 	return this;
     }
+
     public ColumnNumeric is(int it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
 	current.value(it);
 	return this;
     }
+
     public ColumnNumeric is(Numeric it) {
 	Numeric v = new Numeric().bind(it);
 	values.add(v);
 	current.value(it.value());
 	return this;
     }
+
     public Numeric is() {
 	return current;
+    }
+
+    public Numeric at(Numeric nn) {
+	final Numeric columnValue = new Numeric();
+	final Numeric index = new Numeric().bind(nn);
+	index.afterChange(new Task() {
+
+	    @Override public void doTask() {
+		int nn = index.value().intValue();
+		if (nn >= 0 && nn < values.size()) {
+		    columnValue.value(values.get(nn).value());
+		} else {
+		    columnValue.value(-1);
+		}
+	    }
+	});
+	return columnValue;
     }
 }

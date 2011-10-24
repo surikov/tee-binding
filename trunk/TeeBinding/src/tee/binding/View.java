@@ -81,6 +81,23 @@ public class View {
     private void clear() {
 	this.rows.removeAllElements();
     }
+    public Numeric row(Numeric nn) {
+	final Numeric rowNumber = new Numeric();
+	final Numeric index = new Numeric().bind(nn);
+	index.afterChange(new Task() {
+
+	    @Override public void doTask() {
+		int nn = index.value().intValue();
+		if (nn >= 0 && nn < rows.size()) {
+		    rowNumber.value(rows.get(nn).nn);
+		} else {
+		    rowNumber.value(-1);
+		}
+	    }
+	});
+	return rowNumber;
+    }
+    public int  size(){return rows.size();}
     public static void main(String[] args) {
 	System.out.println("\nView\n");
 	ColumnNote nm = new ColumnNote();
@@ -99,13 +116,14 @@ public class View {
 		.row(new Row().field(nm.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
 		.row(new Row().field(nm.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
-	Toggle t = man.is().not();
+	Toggle women = man.is().not();
 	//age.is().moreOrEquals(20);
-	View dump = addrBook.where(t).afterRefresh(new Task() {
+	View womenonly = addrBook.where(women).afterRefresh(new Task() {
 	    @Override public void doTask() {
 		System.out.println("afterRefresh");
 	    }
 	});
+	View dump=womenonly.where(age.is().moreOrEquals(20));
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    System.out.print(""
@@ -119,11 +137,20 @@ public class View {
 	System.out.println("---");
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
-	    System.out.print(""
+	    System.out.print(""+dump.rows.get(r).nn
 		    + ": name[" + nm.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
 		    + ": email[" + mail.is().value() + "]");
 	    System.out.println();
 	}
+	Numeric idx=new Numeric().value(2);
+	Note curMail=mail.at(dump.row(idx));
+	System.out.println(curMail.value());
+	idx.value(1);
+	System.out.println(curMail.value());
+	idx.value(2);
+	System.out.println(curMail.value());
+	idx.value(-5);
+	System.out.println(curMail.value());
     }
 }
