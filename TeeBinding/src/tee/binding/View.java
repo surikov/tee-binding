@@ -106,39 +106,42 @@ public class View {
     }
     public static void main(String[] args) {
 	System.out.println("\nView\n");
-	ColumnNote nm = new ColumnNote();
+	ColumnNote name = new ColumnNote();
 	ColumnNumeric age = new ColumnNumeric();
 	ColumnNote mail = new ColumnNote();
 	ColumnToggle man = new ColumnToggle();
+	Note descr = new Note().bind(name.is().append(", ").append(mail.is()));
 	View addrBook = new View()//
-		.row(new Row().field(nm.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
-		.row(new Row().field(nm.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
-		.row(new Row().field(nm.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
-		.row(new Row().field(nm.is("Masha")).field(man.is(false)).field(age.is(18)).field(mail.is("masha@mail.ru")))//
-		.row(new Row().field(nm.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
-		.row(new Row().field(nm.is("Vanya")).field(man.is(true)).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
-		.row(new Row().field(nm.is("Olya")).field(man.is(false)).field(age.is(17)).field(mail.is("olga@aol.com")))//
-		.row(new Row().field(nm.is("Vika")).field(man.is(false)).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
-		.row(new Row().field(nm.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
-		.row(new Row().field(nm.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
+		.row(new Row().field(name.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
+		.row(new Row().field(name.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
+		.row(new Row().field(name.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
+		.row(new Row().field(name.is("Masha")).field(man.is(false)).field(age.is(18)).field(mail.is("masha@mail.ru")))//
+		.row(new Row().field(name.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
+		.row(new Row().field(name.is("Vanya")).field(man.is(true)).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
+		.row(new Row().field(name.is("Olya")).field(man.is(false)).field(age.is(17)).field(mail.is("olga@aol.com")))//
+		.row(new Row().field(name.is("Vika")).field(man.is(false)).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
+		.row(new Row().field(name.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
+		.row(new Row().field(name.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
 	Toggle women = man.is().not();
 	//age.is().moreOrEquals(20);
 	View womenonly = addrBook.where(women).afterRefresh(new Task() {
 	    @Override public void doTask() {
-		System.out.println("afterRefresh");
+		//System.out.println("afterRefresh");
 	    }
 	});
-	View dump = womenonly.where(age.is().moreOrEquals(20));
+	View dump = womenonly;//.where(age.is().moreOrEquals(20));
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    System.out.print(""
-		    + ": name[" + nm.is().value() + "]"
+		    + ": name[" + name.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
-		    + ": email[" + mail.is().value() + "]");
+		    + ": email[" + mail.is().value() + "]"
+		    + ": descr[" + descr.value() + "]"
+		    );
 	    System.out.println();
 	}
-	System.out.println("---");
+	/*System.out.println("---");
 	addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
 	System.out.println("---");
 	for (int r = 0; r < dump.rows.size(); r++) {
@@ -148,8 +151,8 @@ public class View {
 		    + ": age[" + age.is().value() + "]"
 		    + ": email[" + mail.is().value() + "]");
 	    System.out.println();
-	}
-	Numeric idx = new Numeric().value(2);
+	}*/
+	/*Numeric idx = new Numeric().value(2);
 	Note curMail = mail.at(dump.row(idx));
 	System.out.println(curMail.value());
 	idx.value(1);
@@ -157,6 +160,6 @@ public class View {
 	idx.value(2);
 	System.out.println(curMail.value());
 	idx.value(-5);
-	System.out.println(curMail.value());
+	System.out.println(curMail.value());*/
     }
 }
