@@ -81,7 +81,7 @@ public class Fork<Kind> extends It<Kind> {
         System.out.println("forPostgreSQL: "+forPostgreSQL.value());
         Note command = new Note();
         command.bind(Note
-                .iF(dialect.similar("MS SQL"))
+                .iF(dialect.same("MS SQL"))
                 .then(forMSSQL)
                 .otherwise(forPostgreSQL));
         System.out.println("dialect: " + dialect.value() + ", command: " + command.value());

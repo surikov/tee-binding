@@ -26,13 +26,36 @@ public class Toggle extends It<Boolean> {
 	});
 	return retvalue;
     }
-    public Toggle similar(String a, Note b) {
-	return similar(new Note().value(a), b);
+     public Toggle like(String a, Note b) {
+	return like(new Note().value(a), b);
     }
-    public Toggle similar(Note a, String b) {
-	return similar(a, new Note().value(b));
+    public Toggle like(Note a, String b) {
+	return like(a, new Note().value(b));
     }
-    public Toggle similar(Note a, Note b) {
+    public Toggle like(Note a, Note b) {
+	final Note aa = a;
+	final Note bb = b;
+	final Toggle retvalue = new Toggle().value(a.value().indexOf(b.value())>-1);
+	new Note().bind(a).afterChange(new Task() {
+	    @Override public void doTask() {
+		retvalue.value(aa.value().indexOf(bb.value())>-1);
+	    }
+	});
+	new Note().bind(b).afterChange(new Task() {
+	    @Override public void doTask() {
+		retvalue.value(aa.value().indexOf(bb.value())>-1);
+	    }
+	});
+	return retvalue;
+    }
+
+    public Toggle same(String a, Note b) {
+	return same(new Note().value(a), b);
+    }
+    public Toggle same(Note a, String b) {
+	return same(a, new Note().value(b));
+    }
+    public Toggle same(Note a, Note b) {
 	final Note aa = a;
 	final Note bb = b;
 	final Toggle retvalue = new Toggle().value(a.value().equals(b.value()));
@@ -190,7 +213,7 @@ public class Toggle extends It<Boolean> {
     }
     public Toggle not() {
 	final Toggle me = this;
-	final Toggle retvalue = new Toggle().value(!me.value());	
+	final Toggle retvalue = new Toggle().value(!me.value());
 	new Toggle().bind(this).afterChange(new Task() {
 	    @Override public void doTask() {
 		retvalue.value(!me.value());
@@ -226,11 +249,11 @@ public class Toggle extends It<Boolean> {
 	System.out.println("/let cc = aa similar bb");
 	Note aa = new Note().value("X");
 	Note bb = new Note().value("Y");
-	Toggle cc = new Toggle().similar(aa, bb);
+	Toggle cc = new Toggle().same(aa, bb);
 	System.out.println("cc is " + cc.value());
 	bb.value("X");
 	System.out.println("cc is " + cc.value());
-	
+
 	System.out.println("/let c2 = a2 less b2");
 	System.out.println("/let a2 = 100, b2 = 200");
 	Numeric a2 = new Numeric().value(100);
