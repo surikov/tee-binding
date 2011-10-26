@@ -1,19 +1,27 @@
 package tee.binding;
+
 import java.util.*;
+
 public class View {
+
     private Vector<Row> rows;
     private Vector<View> children;
     private Task requery;
     private Task afterRefresh;
+    final View me;
+
     public View() {
+	me = this;
 	rows = new Vector<Row>();
 	requery = null;
 	children = new Vector<View>();
     }
+
     public View afterRefresh(Task it) {
 	afterRefresh = it;
 	return this;
     }
+
     private void refreshChildren() {
 	for (int i = 0; i < children.size(); i++) {
 	    children.get(i).clear();
@@ -26,6 +34,7 @@ public class View {
 	    afterRefresh.start();
 	}
     }
+
     public View row(Row row) {
 	int nn = rows.size();
 	row.nn = nn;
@@ -33,6 +42,7 @@ public class View {
 	refreshChildren();
 	return this;
     }
+
     public void move(int nn) {
 	if (rows.size() > 0) {
 	    int k = nn;
@@ -45,12 +55,33 @@ public class View {
 	    rows.get(nn).move();
 	}
     }
-    public View where(Toggle toggle) {
+
+    public View sort(Comparator comparator) {
+	final View sorted = new View();
+	final Comparator c = comparator;
+	sorted.requery = new Task() {
+
+	    @Override public void doTask() {
+		sorted.clear();
+		for (int r = 0; r < me.rows.size(); r++) {
+		    me.move(r);
+		    sorted.rows.add(rows.get(r));
+		}
+		Collections.sort(sorted.rows, c);
+	    }
+	};
+	this.children.add(sorted);
+	sorted.requery.start();
+	return this;
+    }
+
+    public View select(Toggle toggle) {
 	final View filtered = new View();
 	final Toggle condition = toggle;
-	final View me = this;
 	filtered.requery = new Task() {
+
 	    @Override public void doTask() {
+		filtered.clear();
 		for (int r = 0; r < me.rows.size(); r++) {
 		    me.move(r);
 		    if (condition.value()) {
@@ -63,7 +94,7 @@ public class View {
 	filtered.requery.start();
 	return filtered;
     }
-    public View select() {
+    /*public View select() {
 	final View cpy = new View();
 	final View me = this;
 	cpy.requery = new Task() {
@@ -77,15 +108,18 @@ public class View {
 	this.children.add(cpy);
 	cpy.requery.start();
 	return cpy;
-    }
+    }*/
+
     private void clear() {
 	this.rows.removeAllElements();
     }
+
     public Numeric row(Numeric nn) {
 	final Numeric rowNumber = new Numeric();
 	final Numeric index = new Numeric().bind(nn);
 	index.afterChange(new Task() {
-	    @Override public void doTask() {		
+
+	    @Override public void doTask() {
 		if (index != null) {
 		    //System.out.println("index-----------------"+index);
 		    if (index.value() != null) {
@@ -101,9 +135,11 @@ public class View {
 	});
 	return rowNumber;
     }
+
     public int size() {
 	return rows.size();
     }
+
     public static void main(String[] args) {
 	System.out.println("\nView\n");
 	ColumnNote name = new ColumnNote();
@@ -123,43 +159,44 @@ public class View {
 		.row(new Row().field(name.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
 		.row(new Row().field(name.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
-	Toggle women = man.is().not();
-	//age.is().moreOrEquals(20);
-	View womenonly = addrBook.where(women).afterRefresh(new Task() {
-	    @Override public void doTask() {
-		//System.out.println("afterRefresh");
-	    }
-	});
-	View dump = womenonly;//.where(age.is().moreOrEquals(20));
+	/* Toggle women = man.is().not();
+	 //age.is().moreOrEquals(20);
+	 View womenonly = addrBook.select(women).afterRefresh(new Task() {
+
+	 @Override public void doTask() {
+	 //System.out.println("afterRefresh");
+	 }
+	 }); */
+	View dump = addrBook.sort(age.ascending());
+	//womenonly.select(mail.is().like("gmail.com"));//.where(age.is().moreOrEquals(20));
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    System.out.print(""
 		    + ": name[" + name.is().value() + "]"
 		    + ": age[" + age.is().value() + "]"
 		    + ": email[" + mail.is().value() + "]"
-		    + ": descr[" + descr.value() + "]"
-		    );
+		    + ": descr[" + descr.value() + "]");
 	    System.out.println();
 	}
-	/*System.out.println("---");
-	addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
-	System.out.println("---");
-	for (int r = 0; r < dump.rows.size(); r++) {
-	    dump.move(r);
-	    System.out.print("" + dump.rows.get(r).nn
-		    + ": name[" + nm.is().value() + "]"
-		    + ": age[" + age.is().value() + "]"
-		    + ": email[" + mail.is().value() + "]");
-	    System.out.println();
-	}*/
-	/*Numeric idx = new Numeric().value(2);
-	Note curMail = mail.at(dump.row(idx));
-	System.out.println(curMail.value());
-	idx.value(1);
-	System.out.println(curMail.value());
-	idx.value(2);
-	System.out.println(curMail.value());
-	idx.value(-5);
-	System.out.println(curMail.value());*/
+	/* System.out.println("---");
+	 addrBook.row(new Row().field(nm.is("Ira")).field(man.is(false)).field(age.is(21)).field(mail.is("irina@mail.ru")));
+	 System.out.println("---");
+	 for (int r = 0; r < dump.rows.size(); r++) {
+	 dump.move(r);
+	 System.out.print("" + dump.rows.get(r).nn
+	 + ": name[" + nm.is().value() + "]"
+	 + ": age[" + age.is().value() + "]"
+	 + ": email[" + mail.is().value() + "]");
+	 System.out.println();
+	 } */
+	/* Numeric idx = new Numeric().value(2);
+	 Note curMail = mail.at(dump.row(idx));
+	 System.out.println(curMail.value());
+	 idx.value(1);
+	 System.out.println(curMail.value());
+	 idx.value(2);
+	 System.out.println(curMail.value());
+	 idx.value(-5);
+	 System.out.println(curMail.value()); */
     }
 }
