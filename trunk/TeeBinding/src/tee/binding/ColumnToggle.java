@@ -54,4 +54,40 @@ public class ColumnToggle extends Column {
 	});
 	return columnValue;
     }
+
+    public Comparator<Row> ascending() {
+	return new Comparator<Row>() {
+
+	    @Override public int compare(Row o1, Row o2) {
+		boolean s1 = values.get(o1.nn).value();
+		boolean s2 = values.get(o2.nn).value();
+		int n = 0;
+		if (s1 && (!s2)) {
+		    n = 1;
+		}
+		if ((!s1) && s2) {
+		    n = -1;
+		}
+		return +n;
+	    }
+	};
+    }
+
+    public Comparator<Row> descending() {
+	return new Comparator<Row>() {
+
+	    @Override public int compare(Row o1, Row o2) {
+		boolean s1 = values.get(o1.nn).value();
+		boolean s2 = values.get(o2.nn).value();
+		int n = 0;
+		if (s1 && (!s2)) {
+		    n = 1;
+		}
+		if ((!s1) && s2) {
+		    n = -1;
+		}
+		return -n;
+	    }
+	};
+    }
 }

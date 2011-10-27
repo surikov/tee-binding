@@ -66,9 +66,8 @@ public class ColumnNumeric extends Column {
 	return new Comparator<Row>() {
 
 	    @Override public int compare(Row o1, Row o2) {
-		double n=values.get(o1.nn).value()-values.get(o2.nn).value();
-		System.out.println("ascending "+n+": " + values.get(o1.nn).value() + " / " + values.get(o2.nn).value());
-		return (int)(+n);
+		double n = values.get(o1.nn).value() - values.get(o2.nn).value();
+		return (int) (+n);
 	    }
 	};
     }
@@ -77,10 +76,10 @@ public class ColumnNumeric extends Column {
 	return new Comparator<Row>() {
 
 	    @Override public int compare(Row o1, Row o2) {
-		double n=values.get(o1.nn).value()-values.get(o2.nn).value();
-		System.out.println("descending "+n+": " + values.get(o1.nn).value() + " / " + values.get(o2.nn).value());
-		return (int)(-n);
+		double n = values.get(o1.nn).value() - values.get(o2.nn).value();
+		return (int) (-n);
 	    }
 	};
     }
+
 }

@@ -48,4 +48,27 @@ public class ColumnNote extends Column {
 	});
 	return columnValue;
     }
+    public Comparator<Row> ascending() {
+	return new Comparator<Row>() {
+
+	    @Override public int compare(Row o1, Row o2) {
+		String s1=values.get(o1.nn).value();
+		String s2=values.get(o2.nn).value();
+		double n = s1.compareTo(s2);
+		return (int) (+n);
+	    }
+	};
+    }
+
+    public Comparator<Row> descending() {
+	return new Comparator<Row>() {
+
+	    @Override public int compare(Row o1, Row o2) {
+		String s1=values.get(o1.nn).value();
+		String s2=values.get(o2.nn).value();
+		double n = s1.compareTo(s2);
+		return (int) (-n);
+	    }
+	};
+    }
 }
