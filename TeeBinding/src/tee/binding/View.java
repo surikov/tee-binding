@@ -72,7 +72,7 @@ public class View {
 	};
 	this.children.add(sorted);
 	sorted.requery.start();
-	return this;
+	return sorted;
     }
 
     public View select(Toggle toggle) {
@@ -151,12 +151,12 @@ public class View {
 		.row(new Row().field(name.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
 		.row(new Row().field(name.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
 		.row(new Row().field(name.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
-		.row(new Row().field(name.is("Masha")).field(man.is(false)).field(age.is(18)).field(mail.is("masha@mail.ru")))//
+		.row(new Row().field(name.is("Masha")).field(man.is(false)).field(age.is(21)).field(mail.is("masha@mail.ru")))//
 		.row(new Row().field(name.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
 		.row(new Row().field(name.is("Vanya")).field(man.is(true)).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
-		.row(new Row().field(name.is("Olya")).field(man.is(false)).field(age.is(17)).field(mail.is("olga@aol.com")))//
+		.row(new Row().field(name.is("Olya")).field(man.is(false)).field(age.is(19)).field(mail.is("olga@aol.com")))//
 		.row(new Row().field(name.is("Vika")).field(man.is(false)).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
-		.row(new Row().field(name.is("Misha")).field(man.is(true)).field(age.is(23)).field(mail.is("mike@mail.ru")))//
+		.row(new Row().field(name.is("Misha")).field(man.is(true)).field(age.is(21)).field(mail.is("mike@mail.ru")))//
 		.row(new Row().field(name.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
 	/* Toggle women = man.is().not();
@@ -167,8 +167,20 @@ public class View {
 	 //System.out.println("afterRefresh");
 	 }
 	 }); */
-	View dump = addrBook.sort(age.ascending());
+	View dump = addrBook;//.sort(age.ascending());
 	//womenonly.select(mail.is().like("gmail.com"));//.where(age.is().moreOrEquals(20));
+	for (int r = 0; r < dump.rows.size(); r++) {
+	    dump.move(r);
+	    System.out.print(""
+		    + ": name[" + name.is().value() + "]"
+		    + ": age[" + age.is().value() + "]"
+		    + ": email[" + mail.is().value() + "]"
+		    + ": descr[" + descr.value() + "]");
+	    System.out.println();
+	}
+	 System.out.println("==========");
+	dump = addrBook.sort(man.ascending());
+	//.select(mail.is().like("gmail.com"));//.where(age.is().moreOrEquals(20));
 	for (int r = 0; r < dump.rows.size(); r++) {
 	    dump.move(r);
 	    System.out.print(""
