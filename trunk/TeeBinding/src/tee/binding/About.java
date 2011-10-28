@@ -1,8 +1,13 @@
 package tee.binding;
 
+import tee.binding.it.Numeric;
+import tee.binding.it.Toggle;
+import tee.binding.it.Note;
+import tee.binding.it.It;
+
 public class About {
     public static String getVersion() {
-	return "1.3.9";
+	return "1.4.2";
     }
     public static void main(String[] args) {
 	System.out.println("Examples of using");

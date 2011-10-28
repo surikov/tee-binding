@@ -1,6 +1,12 @@
-package tee.binding;
+package tee.binding.it;
+import tee.binding.it.Toggle;
+import tee.binding.it.Note;
+import tee.binding.it.It;
 import java.text.*;
 import java.util.*;
+import tee.binding.Calculation;
+import tee.binding.Fork;
+import tee.binding.task.Task;
 public class Numeric extends It<Double> {
     private It<String> _string = null;
     private Numeric me = this;

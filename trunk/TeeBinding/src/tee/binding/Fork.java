@@ -1,5 +1,11 @@
 package tee.binding;
 
+import tee.binding.task.Task;
+import tee.binding.it.Numeric;
+import tee.binding.it.Toggle;
+import tee.binding.it.Note;
+import tee.binding.it.It;
+
 public class Fork<Kind> extends It<Kind> {
     It<Kind> then = new It<Kind>().afterChange(new Task() {
         @Override public void doTask() {

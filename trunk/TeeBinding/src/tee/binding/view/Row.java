@@ -1,4 +1,5 @@
-package tee.binding;
+package tee.binding.view;
+import tee.binding.view.Column;
 import java.util.*;
 public class Row {
     private Vector<Column> columns;

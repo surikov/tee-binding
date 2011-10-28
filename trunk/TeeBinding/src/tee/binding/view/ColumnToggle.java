@@ -1,6 +1,10 @@
-package tee.binding;
+package tee.binding.view;
 
+import tee.binding.view.Column;
+import tee.binding.it.Numeric;
+import tee.binding.it.Toggle;
 import java.util.*;
+import tee.binding.task.Task;
 
 public class ColumnToggle extends Column {
 

@@ -1,4 +1,9 @@
-package tee.binding;
+package tee.binding.it;
+
+import tee.binding.Calculation;
+import tee.binding.Fork;
+import tee.binding.task.Task;
+import tee.binding.it.It;
 
 public class Note extends It<String> {
     @Override public Note afterChange(Task newValue) {

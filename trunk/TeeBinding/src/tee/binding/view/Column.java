@@ -1,4 +1,4 @@
-package tee.binding;
+package tee.binding.view;
 public abstract class Column {
     public Column() {
     }

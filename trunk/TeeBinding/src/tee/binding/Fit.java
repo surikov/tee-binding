@@ -1,5 +1,8 @@
 package tee.binding;
 
+import tee.binding.task.Task;
+import tee.binding.it.Note;
+import tee.binding.it.It;
 import java.util.*;
 
 public class Fit<Kind> {

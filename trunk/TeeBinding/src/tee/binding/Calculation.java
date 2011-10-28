@@ -1,5 +1,8 @@
 package tee.binding;
 
+import tee.binding.task.Task;
+import tee.binding.it.It;
+
 public class Calculation<Kind> {
     private boolean lockFirst = false;
     private boolean lockSecond = false;

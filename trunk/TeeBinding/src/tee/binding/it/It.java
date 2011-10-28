@@ -1,5 +1,6 @@
-package tee.binding;
+package tee.binding.it;
 import java.util.*;
+import tee.binding.task.Task;
 /**
  <p>Base class for binding</p>
  @param <Kind> type of the object

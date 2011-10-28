@@ -1,4 +1,4 @@
-package tee.binding;
+package tee.binding.task;
 
 public abstract class Task {
     public void start() {

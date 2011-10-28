@@ -1,5 +1,9 @@
-package tee.binding;
+package tee.binding.view;
+import tee.binding.view.Column;
+import tee.binding.it.Numeric;
+import tee.binding.it.Note;
 import java.util.*;
+import tee.binding.task.Task;
 public class ColumnNote extends Column {
     protected Note current;
     private Vector<Note> values;
