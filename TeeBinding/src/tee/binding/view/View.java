@@ -1,6 +1,13 @@
-package tee.binding;
+package tee.binding.view;
 
+import tee.binding.view.ColumnToggle;
+import tee.binding.view.ColumnNumeric;
+import tee.binding.view.ColumnNote;
+import tee.binding.it.Numeric;
+import tee.binding.it.Toggle;
+import tee.binding.it.Note;
 import java.util.*;
+import tee.binding.task.Task;
 
 public class View {
 

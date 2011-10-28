@@ -1,6 +1,9 @@
-package tee.binding;
+package tee.binding.view;
 
+import tee.binding.view.Column;
+import tee.binding.it.Numeric;
 import java.util.*;
+import tee.binding.task.Task;
 
 public class ColumnNumeric extends Column {
 

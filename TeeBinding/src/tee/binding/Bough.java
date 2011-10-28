@@ -1,5 +1,8 @@
 package tee.binding;
 
+import tee.binding.it.Numeric;
+import tee.binding.it.Note;
+
 public class Bough {
     private String _name;
     private Note _note;
