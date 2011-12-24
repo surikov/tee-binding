@@ -1,7 +1,7 @@
 package tee.binding.it;
 
 import tee.binding.Calculation;
-import tee.binding.Fork;
+
 import tee.binding.task.Task;
 import tee.binding.it.It;
 
@@ -92,10 +92,10 @@ public class Note extends It<String> {
         });
         return retvalue;
     }
-
+/*
     public static Fork<String> iF(Toggle it) {
         return new Fork<String>().condition(it);
-    }
+    }*/
 
     public Note otherwise(Note it) {
         if (_otherwise == null) {
@@ -156,7 +156,10 @@ public class Note extends It<String> {
         Note forMSSQL = new Note().value("select top 10 * from table1");
         Note forPostgreSQL = new Note().value("select * from table1 limit 10");
         Note command = new Note();
-        command.bind(Note.iF(dialect.same("MS SQL")).then(forMSSQL).otherwise(forPostgreSQL));
+        //command.bind(Note.iF(dialect.same("MS SQL")).then(forMSSQL).otherwise(forPostgreSQL));
+        
+        command.bind(forMSSQL.when(dialect.same("MS SQL")).otherwise(forPostgreSQL));
+        
         System.out.println("dialect: " + dialect.value() + ", command: " + command.value());
         System.out.println("/let dialect isn't MS SQL");
         dialect.value("PostgreSQL");

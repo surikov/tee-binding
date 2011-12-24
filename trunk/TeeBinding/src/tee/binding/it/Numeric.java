@@ -6,13 +6,14 @@ import tee.binding.it.It;
 import java.text.*;
 import java.util.*;
 import tee.binding.Calculation;
-import tee.binding.Fork;
+
 import tee.binding.task.Task;
 
 public class Numeric extends It<Double> {
 
     private It<String> _string = null;
     private Numeric me = this;
+    private Numeric _otherwise = null;
 
     @Override
     protected void adjust() {
@@ -367,9 +368,56 @@ public class Numeric extends It<Double> {
         }
         return _string;
     }
-
+    /*
     public static Fork<Double> iF(Toggle it) {
-        return new Fork<Double>().condition(it);
+    return new Fork<Double>().condition(it);
+    }*/
+
+    public Numeric when(final Toggle it) {
+        final Numeric me = this;
+        final Numeric when = new Numeric();
+        new Toggle().bind(it).afterChange(new Task() {
+
+            @Override
+            public void doTask() {
+                //retvalue.value(me.value() + appendNote.value());
+                if (it.value()) {
+                    when.unbind(when._otherwise);
+                    when.bind(me);
+                } else {
+                    if (when._otherwise == null) {
+                        when._otherwise = new Numeric();
+                    }
+                    when.unbind(me);
+                    when.bind(when._otherwise);
+                }
+            }
+        });
+        return when;
+    }
+
+    public Numeric otherwise(Numeric it) {
+        if (_otherwise == null) {
+            _otherwise = new Numeric();
+        }
+        _otherwise.bind(it);
+        return this;
+    }
+
+    public Numeric otherwise(double it) {
+        if (_otherwise == null) {
+            _otherwise = new Numeric();
+        }
+        _otherwise.value(it);
+        return this;
+    }
+
+    public Numeric otherwise(int it) {
+        if (_otherwise == null) {
+            _otherwise = new Numeric();
+        }
+        _otherwise.value(it);
+        return this;
     }
 
     public static void main(String a[]) {
@@ -387,32 +435,37 @@ public class Numeric extends It<Double> {
         System.out.println("tFahrenheit: " + tFahrenheit.value() + ", tCelsius: " + tCelsius.value());
         System.out.println("/condition example");
         Numeric temperature = new Numeric().value(-10);
-        
+
+        Note frost = new Note().value("Frost");
+        Note cold = new Note().value("Cold");
+        Note warm = new Note().value("Warm");
+        Note hot = new Note().value("Hot");
+
         /*
         Note description = new Note().bind(Note.iF(temperature.less(-5))
-                .then("Frost")
-                .otherwise(Note.iF(temperature.less(+15))
-                    .then("Cold")
-                        .otherwise(Note.iF(temperature.less(+30))
-                        .then("Warm")
-                            .otherwise("Hot"))));
-        */
-        
-        Note description = new Note().value("Frost").when(temperature.less(-5))
-                    .otherwise(new Note().value("Cold").when(temperature.less(+15))
-                        .otherwise(new Note().value("Warm").when(temperature.less(+30))
-                        .otherwise("Hot")));
-        
-        
+        .then(frost)
+        .otherwise(Note.iF(temperature.less(+15))
+        .then(cold)
+        .otherwise(Note.iF(temperature.less(+30))
+        .then(warm)
+        .otherwise(hot))));
+         */
+
+        Note description = frost.when(temperature.less(-5)).otherwise(cold.when(temperature.less(+15)).otherwise(warm.when(temperature.less(+30)).otherwise(hot)));
+
+
+        System.out.println("/n = -10");
         System.out.println(description.value());
         System.out.println("/let n = +10");
         temperature.value(10);
         System.out.println(description.value());
-        System.out.println("/let n = +20");
-        temperature.value(20);
-        System.out.println(description.value());
         System.out.println("/let n = +40");
         temperature.value(40);
         System.out.println(description.value());
+        System.out.println("/let n = +20");
+        temperature.value(20);
+        System.out.println(description.value());
+
+
     }
 }

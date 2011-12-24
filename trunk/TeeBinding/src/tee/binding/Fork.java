@@ -34,7 +34,7 @@ public class Fork<Kind> extends It<Kind> {
             bind(otherwise);
         }
     }
-    public Fork condition(Toggle it) {
+    public Fork when(Toggle it) {
         condition.bind(it);
         return this;
     }
@@ -59,13 +59,13 @@ public class Fork<Kind> extends It<Kind> {
         System.out.println("/n = -10");
         Numeric n = new Numeric().value(-10);
         Note r = new Note().bind(new Fork<String>()
-		.condition(new Toggle().less(n, -5))
+		.when(new Toggle().less(n, -5))
 		.then("Frost")
 		.otherwise(new Fork<String>()
-		    .condition(new Toggle().less(n, +15))
+		    .when(new Toggle().less(n, +15))
 		    .then("Cold")
 		    .otherwise(new Fork<String>()
-			.condition(new Toggle()
+			.when(new Toggle()
 			.less(n, +30)).then("Warm")
 			.otherwise("Hot"))));
         System.out.println(r.value());
@@ -86,10 +86,11 @@ public class Fork<Kind> extends It<Kind> {
         System.out.println("forMSSQL: "+forMSSQL.value());
         System.out.println("forPostgreSQL: "+forPostgreSQL.value());
         Note command = new Note();
-        command.bind(Note
+        /*command.bind(Note
                 .iF(dialect.same("MS SQL"))
                 .then(forMSSQL)
-                .otherwise(forPostgreSQL));
+                .otherwise(forPostgreSQL));*/
+        command.bind(forMSSQL.when(dialect.same("MS SQL")).otherwise(forPostgreSQL));
         System.out.println("dialect: " + dialect.value() + ", command: " + command.value());
         System.out.println("/let dialect isn't MS SQL");
         dialect.value("PostgreSQL");
