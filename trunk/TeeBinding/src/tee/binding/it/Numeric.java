@@ -467,7 +467,10 @@ public class Numeric extends It<Double> {
 	.otherwise(hot))));
 	 */
 
-	Note description = frost.when(temperature.less(-5)).otherwise(cold.when(temperature.less(+15)).otherwise(warm.when(temperature.less(+30)).otherwise(hot)));
+	Note description = frost.when(temperature.less(-5))
+		.otherwise(cold.when(temperature.less(+15))
+		    .otherwise(warm.when(temperature.less(+30))
+			.otherwise(hot)));
 
 
 	System.out.println("/n = -10");
