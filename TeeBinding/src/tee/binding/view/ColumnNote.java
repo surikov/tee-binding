@@ -1,9 +1,11 @@
 package tee.binding.view;
+
 import tee.binding.view.Column;
 import tee.binding.it.Numeric;
 import tee.binding.it.Note;
 import java.util.*;
 import tee.binding.task.Task;
+
 public class ColumnNote extends Column {
     protected Note current;
     private Vector<Note> values;
@@ -14,7 +16,8 @@ public class ColumnNote extends Column {
     @Override public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
-	} else {
+	}
+	else {
 	    current.value("");
 	}
     }
@@ -33,6 +36,15 @@ public class ColumnNote extends Column {
     public Note is() {
 	return current;
     }
+    public Note at(int nn) {
+	move(nn);
+	if (nn >= 0 && nn < values.size()) {
+	    return values.get(nn);
+	}
+	else {
+	    return null;
+	}
+    }
     public Note at(Numeric nn) {
 	final Note columnValue = new Note();
 	final Numeric index = new Numeric().bind(nn);
@@ -43,7 +55,8 @@ public class ColumnNote extends Column {
 			int nn = index.value().intValue();
 			if (nn >= 0 && nn < values.size()) {
 			    columnValue.value(values.get(nn).value());
-			} else {
+			}
+			else {
 			    columnValue.value("");
 			}
 		    }
@@ -54,22 +67,19 @@ public class ColumnNote extends Column {
     }
     public Comparator<Row> ascending() {
 	return new Comparator<Row>() {
-
 	    @Override public int compare(Row o1, Row o2) {
-		String s1=values.get(o1.nn).value();
-		String s2=values.get(o2.nn).value();
+		String s1 = values.get(o1.nn).value();
+		String s2 = values.get(o2.nn).value();
 		double n = s1.compareTo(s2);
 		return (int) (+n);
 	    }
 	};
     }
-
     public Comparator<Row> descending() {
 	return new Comparator<Row>() {
-
 	    @Override public int compare(Row o1, Row o2) {
-		String s1=values.get(o1.nn).value();
-		String s2=values.get(o2.nn).value();
+		String s1 = values.get(o1.nn).value();
+		String s2 = values.get(o2.nn).value();
 		double n = s1.compareTo(s2);
 		return (int) (-n);
 	    }
