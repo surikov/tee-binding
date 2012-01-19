@@ -14,7 +14,7 @@ public class View {
     private Vector<Row> rows;
     private Vector<View> children;
     private Task requery;
-    private Task afterRefresh;
+    private Task afterChange;
     final View me;
 
     public View() {
@@ -24,8 +24,8 @@ public class View {
 	children = new Vector<View>();
     }
 
-    public View afterRefresh(Task it) {
-	afterRefresh = it;
+    public View afterChange(Task it) {
+	afterChange = it;
 	return this;
     }
 
@@ -37,8 +37,8 @@ public class View {
 	    }
 	    children.get(i).refreshChildren();
 	}
-	if (afterRefresh != null) {
-	    afterRefresh.start();
+	if (afterChange != null) {
+	    afterChange.start();
 	}
     }
 
