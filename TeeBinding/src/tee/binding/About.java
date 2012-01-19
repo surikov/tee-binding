@@ -7,7 +7,7 @@ import tee.binding.it.It;
 
 public class About {
     public static String getVersion() {
-	return "1.4.2";
+	return "1.5.2";
     }
     public static void main(String[] args) {
 	System.out.println("Examples of using");
