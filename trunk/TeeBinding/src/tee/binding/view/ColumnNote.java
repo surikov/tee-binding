@@ -1,6 +1,6 @@
 package tee.binding.view;
 
-import tee.binding.view.Column;
+
 import tee.binding.it.Numeric;
 import tee.binding.it.Note;
 import java.util.*;
@@ -33,9 +33,11 @@ public class ColumnNote extends Column {
 	current.value(it.value());
 	return this;
     }
+    @Override
     public Note is() {
 	return current;
     }
+    @Override
     public Note at(int nn) {
 	move(nn);
 	if (nn >= 0 && nn < values.size()) {
