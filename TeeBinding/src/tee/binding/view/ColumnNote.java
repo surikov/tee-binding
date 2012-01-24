@@ -47,6 +47,15 @@ public class ColumnNote extends Column {
 	    return null;
 	}
     }
+     public Note at(double nn) {
+	move((int)nn);
+	if (nn >= 0 && nn < values.size()) {
+	    return values.get((int)nn);
+	}
+	else {
+	    return null;
+	}
+    }
     public Note at(Numeric nn) {
 	final Note columnValue = new Note();
 	final Numeric index = new Numeric().bind(nn);

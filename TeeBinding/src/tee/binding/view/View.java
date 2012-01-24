@@ -50,6 +50,16 @@ public class View {
 	return this;
     }
 
+    public void drop(Row row) {
+	this.rows.remove(row);
+	refreshChildren();
+    }
+
+    public void cleanUp() {
+	this.rows.removeAllElements();
+	refreshChildren();
+    }
+
     public void move(int nn) {
 	if (rows.size() > 0) {
 	    int k = nn;
@@ -185,7 +195,7 @@ public class View {
 		    + ": descr[" + descr.value() + "]");
 	    System.out.println();
 	}
-	 System.out.println("==========");
+	System.out.println("==========");
 	dump = addrBook.sort(man.ascending());
 	//.select(mail.is().like("gmail.com"));//.where(age.is().moreOrEquals(20));
 	for (int r = 0; r < dump.rows.size(); r++) {
