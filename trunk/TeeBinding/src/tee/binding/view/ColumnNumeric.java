@@ -3,6 +3,7 @@ package tee.binding.view;
 import tee.binding.view.Column;
 import tee.binding.it.Numeric;
 import java.util.*;
+import tee.binding.it.*;
 import tee.binding.task.Task;
 
 public class ColumnNumeric extends Column {
@@ -47,7 +48,24 @@ public class ColumnNumeric extends Column {
     public Numeric is() {
 	return current;
     }
-
+ public Numeric at(int nn) {
+	move(nn);
+	if (nn >= 0 && nn < values.size()) {
+	    return values.get(nn);
+	}
+	else {
+	    return null;
+	}
+    }
+  public Numeric at(double nn) {
+	move((int)nn);
+	if (nn >= 0 && nn < values.size()) {
+	    return values.get((int)nn);
+	}
+	else {
+	    return null;
+	}
+    }
     public Numeric at(Numeric nn) {
 	final Numeric columnValue = new Numeric();
 	final Numeric index = new Numeric().bind(nn);
