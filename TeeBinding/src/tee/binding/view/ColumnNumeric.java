@@ -45,9 +45,11 @@ public class ColumnNumeric extends Column {
 	return this;
     }
 
+    @Override
     public Numeric is() {
 	return current;
     }
+    @Override
  public Numeric at(int nn) {
 	move(nn);
 	if (nn >= 0 && nn < values.size()) {
@@ -57,6 +59,7 @@ public class ColumnNumeric extends Column {
 	    return null;
 	}
     }
+    @Override
   public Numeric at(double nn) {
 	move((int)nn);
 	if (nn >= 0 && nn < values.size()) {
@@ -66,6 +69,7 @@ public class ColumnNumeric extends Column {
 	    return null;
 	}
     }
+    @Override
     public Numeric at(Numeric nn) {
 	final Numeric columnValue = new Numeric();
 	final Numeric index = new Numeric().bind(nn);

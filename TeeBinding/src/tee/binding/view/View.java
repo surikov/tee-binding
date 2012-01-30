@@ -51,6 +51,7 @@ public class View {
     }
 
     public void drop(Row row) {
+	//row.clear();
 	this.rows.remove(row);
 	refreshChildren();
     }
