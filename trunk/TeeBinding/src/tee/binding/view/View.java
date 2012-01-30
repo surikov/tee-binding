@@ -60,7 +60,7 @@ public class View {
 	refreshChildren();
     }
 
-    public void move(int nn) {
+    public Row move(int nn) {
 	if (rows.size() > 0) {
 	    int k = nn;
 	    if (k < 0) {
@@ -69,7 +69,11 @@ public class View {
 	    if (k > rows.size() - 1) {
 		k = 0;
 	    }
-	    rows.get(nn).move();
+	    Row r = rows.get(nn);
+	    r.move();
+	    return r;
+	} else {
+	    return null;
 	}
     }
 
