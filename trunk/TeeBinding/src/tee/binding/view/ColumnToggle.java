@@ -23,7 +23,7 @@ public class ColumnToggle extends Column {
 	    current.value(false);
 	}
     }
-
+   
     public ColumnToggle is(boolean it) {
 	Toggle v = new Toggle().value(it);
 	values.add(v);
@@ -38,10 +38,12 @@ public class ColumnToggle extends Column {
 	return this;
     }
 
+    @Override
     public Toggle is() {
 	return current;
     }
 
+    @Override
     public Toggle at(Numeric nn) {
 	final Toggle columnValue = new Toggle();
 	final Numeric index = new Numeric().bind(nn);

@@ -21,6 +21,7 @@ public class ColumnNote extends Column {
 	    current.value("");
 	}
     }
+
     public ColumnNote is(String it) {
 	Note v = new Note().value(it);
 	values.add(v);
@@ -47,6 +48,7 @@ public class ColumnNote extends Column {
 	    return null;
 	}
     }
+    @Override
      public Note at(double nn) {
 	move((int)nn);
 	if (nn >= 0 && nn < values.size()) {
@@ -56,6 +58,7 @@ public class ColumnNote extends Column {
 	    return null;
 	}
     }
+    @Override
     public Note at(Numeric nn) {
 	final Note columnValue = new Note();
 	final Numeric index = new Numeric().bind(nn);

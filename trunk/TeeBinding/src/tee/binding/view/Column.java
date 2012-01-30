@@ -27,6 +27,9 @@ public class Column<Kind> {
 	current.value(it.value());
 	return this;
     }
+    /*public void remove(int nn){
+	values.remove(nn);
+    }*/
     public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
