@@ -1,6 +1,5 @@
 package tee.these;
 
-import tee.binding.it.*;
 import java.util.*;
 import tee.binding.it.*;
 import tee.binding.*;
@@ -10,16 +9,24 @@ public class These<Kind> {
     protected It<Kind> current;
     protected Vector<It<Kind>> values;
     protected Numeric select;
-    protected int oldSel = 0;
+    protected int oldSel = -1;
+    These<Kind> me;
     public These() {
+	me = this;
 	current = new It<Kind>();
 	values = new Vector<It<Kind>>();
-	select = new Numeric().value(0).afterChange(new Task() {
+	select = new Numeric().value(-1).afterChange(new Task() {
 	    @Override public void doTask() {
-		if (select != null) {
+		if (oldSel >= 0 && oldSel < values.size()) {
 		    current.unbind(values.get(oldSel));
-		    current.bind(values.get(select.value().intValue()));
-		    oldSel = select.value().intValue();
+		}
+		if (select != null) {
+		    if (select.value() != null) {
+			if (select.value() >= 0 && select.value() < values.size()) {
+			    current.bind(values.get(select.value().intValue()));
+			    oldSel = select.value().intValue();
+			}
+		    }
 		}
 	    }
 	});
@@ -40,15 +47,14 @@ public class These<Kind> {
     public Numeric select() {
 	return select;
     }
-    /*public It<Kind> select(int num) {
-    current.unbind(this.values.get(select.value().intValue()));
-    current.bind(this.values.get(num));
-    select.value(num);
-    return current;
-    }*/
+    public These<Kind> select(int nn) {
+	select.value(nn);
+	return this;
+    }
     public static void main(String[] a) {
+
+	These<String> s = new These<String>().is("1").is("2").is("3").select(0);
 	System.out.println("test");
-	These<String>s=new These<String>().is("1").is("2").is("3");
 	System.out.println(s.is().value());
     }
 }
