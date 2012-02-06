@@ -8,8 +8,7 @@ public class Bag {
 
     private Vector<Series> rows;
     private Numeric select;
-    private Task afterInsert;
-    private Task afterDrop;
+    private Task afterChange;
     private Vector<Bag> _binded;
 
     public Bag() {
@@ -54,32 +53,33 @@ public class Bag {
 	return this;
     }
 
-    private void dropForEachBindedItem(int nn, Vector<Bag> cashe) {
+    private void fireForEachBindedItem( Vector<Bag> cashe) {
 
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
 	    if (!cashe.contains(_binded.get(i))) {
-		_binded.get(i).dropForEachBindedItem(nn, cashe);
+		_binded.get(i).fireForEachBindedItem( cashe);
 	    }
 	}
 	cashe.remove(this);
-	if (this.afterDrop != null) {
-	    afterDrop.start();
+	if (this.afterChange != null) {
+	    afterChange.start();
 	}
     }
 
     public void drop(int nn) {
 	rows.get(nn).drop(nn);
 	rows.remove(nn);
-	dropForEachBindedItem(nn, new Vector<Bag>());
+	fireForEachBindedItem( new Vector<Bag>());
 
     }
 
     public Bag series(Series row) {
 	rows.add(row);
-	if (this.afterInsert != null) {
-	    afterInsert.start();
-	}
+	/*if (this.afterChange != null) {
+	    afterChange.start();
+	}*/
+	fireForEachBindedItem( new Vector<Bag>());
 	return this;
     }
 
@@ -119,7 +119,7 @@ public class Bag {
     }
 
     public Bag afterDrop(Task it) {
-	this.afterDrop = it;
+	this.afterChange = it;
 	return this;
     }
 
