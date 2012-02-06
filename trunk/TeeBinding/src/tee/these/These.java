@@ -5,17 +5,30 @@ import tee.binding.it.*;
 import tee.binding.*;
 import tee.binding.task.*;
 
+/**
+
+ @author User
+ @param <Kind>
+ */
 public class These<Kind> {
-    protected It<Kind> current;
-    protected Vector<It<Kind>> values;
-    protected Numeric select;
-    protected int oldSel = -1;
-    These<Kind> me;
+
+    private It<Kind> current;
+    private Vector<It<Kind>> values;
+    private Numeric select;
+    private int oldSel = -1;
+    private Task afterInsert;
+    private Task afterDrop;
+    //private These<Kind> me;
+
+    /**
+
+    */
     public These() {
-	me = this;
+	//me = this;
 	current = new It<Kind>();
 	values = new Vector<It<Kind>>();
 	select = new Numeric().value(-1).afterChange(new Task() {
+
 	    @Override public void doTask() {
 		if (oldSel >= 0 && oldSel < values.size()) {
 		    current.unbind(values.get(oldSel));
@@ -31,30 +44,110 @@ public class These<Kind> {
 	    }
 	});
     }
+
+    /**
+
+    @return
+    */
     public It<Kind> is() {
 	return current;
     }
+
+    /**
+
+    @param it
+    @return
+    */
     public These<Kind> is(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it);
 	values.add(v);
+	doAfterInsert();
 	return this;
     }
+
+    /**
+
+    @param it
+    @return
+    */
     public These<Kind> is(Kind it) {
 	It<Kind> v = new It<Kind>().value(it);
 	values.add(v);
+	doAfterInsert();
 	return this;
     }
+
+    /**
+
+    @return
+    */
     public Numeric select() {
 	return select;
     }
+
+    /**
+
+    @param nn
+    @return
+    */
     public These<Kind> select(int nn) {
 	select.value(nn);
 	return this;
     }
-    public static void main(String[] a) {
 
-	These<String> s = new These<String>().is("1").is("2").is("3").select(0);
-	System.out.println("test");
+    /**
+
+    @param nn
+    @return
+    */
+    public These<Kind> select(Numeric nn) {
+	select.bind(nn);
+	return this;
+    }
+
+    /**
+
+    */
+    public void drop() {
+	int nn = select.value().intValue();
+	if (nn >= 0 && nn < values.size()) {
+	    It<Kind> it = values.remove(nn);
+	    current.unbind(it);
+	    if (nn < values.size()) {
+		current.bind(values.get(nn));
+	    }
+	    doAfterDrop();
+	}
+    }
+
+    protected void doAfterInsert() {
+	if (this.afterInsert != null) {
+	    afterInsert.start();
+	}
+    }
+
+    private void doAfterDrop() {
+	if (this.afterDrop != null) {
+	    afterDrop.start();
+	}
+    }
+
+    /**
+
+    @param a
+    */
+    public static void main(String[] a) {
+	Note a1 = new Note().value("first");
+	Note a2 = new Note().value("second");
+	Note a3 = new Note().value("third");
+	These<String> s = new These<String>().is(a1).is(a2).is(a3).select(0);
+	System.out.println("--");
+	System.out.println(s.is().value());
+	s.drop();
+	System.out.println(s.is().value());
+	s.drop();
+	System.out.println(s.is().value());
+	s.drop();
 	System.out.println(s.is().value());
     }
 }

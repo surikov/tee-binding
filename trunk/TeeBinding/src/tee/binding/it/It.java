@@ -7,10 +7,19 @@ import tee.binding.task.Task;
  */
 public class It<Kind> {
     private Vector<It<Kind>> _binded = new Vector<It<Kind>>();
+    /**
+    
+    */
     protected Kind _value = null;
     private Task afterChange = null;
+    /**
+
+    */
     public It() {
     }
+    /**
+
+    */
     protected void adjust() {
     }
     /**
