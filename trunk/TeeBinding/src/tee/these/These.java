@@ -35,9 +35,11 @@ public class These<Kind> {
 		}
 		if (select != null) {
 		    if (select.value() != null) {
-			if (select.value() >= 0 && select.value() < values.size()) {
-			    current.bind(values.get(select.value().intValue()));
-			    oldSel = select.value().intValue();
+			int nn = select.value().intValue();
+			if (nn >= 0 && nn < values.size()) {
+			    current.bind(values.get(nn));
+			    oldSel = nn;
+			    //System.out.println(nn+" / "+current.value());
 			}
 		    }
 		}
@@ -61,7 +63,10 @@ public class These<Kind> {
     public These<Kind> is(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it);
 	values.add(v);
-	doAfterInsert();
+	//doAfterInsert();
+	if (this.afterInsert != null) {
+	    afterInsert.start();
+	}
 	return this;
     }
 
@@ -73,7 +78,10 @@ public class These<Kind> {
     public These<Kind> is(Kind it) {
 	It<Kind> v = new It<Kind>().value(it);
 	values.add(v);
-	doAfterInsert();
+	//doAfterInsert();
+	if (this.afterInsert != null) {
+	    afterInsert.start();
+	}
 	return this;
     }
 
@@ -108,19 +116,24 @@ public class These<Kind> {
     /**
 
     */
-    public void drop() {
-	int nn = select.value().intValue();
+    public void drop(int nn) {
+	//int nn = select.value().intValue();
 	if (nn >= 0 && nn < values.size()) {
 	    It<Kind> it = values.remove(nn);
-	    current.unbind(it);
-	    if (nn < values.size()) {
-		current.bind(values.get(nn));
+	    if (nn == select.value().intValue()) {
+		current.unbind(it);
+		if (nn < values.size()) {
+		    current.bind(values.get(nn));
+		}
 	    }
-	    doAfterDrop();
+	    //doAfterDrop();
+	    if (this.afterDrop != null) {
+		afterDrop.start();
+	    }
 	}
     }
-
-    protected void doAfterInsert() {
+    /*
+    private void doAfterInsert() {
 	if (this.afterInsert != null) {
 	    afterInsert.start();
 	}
@@ -130,6 +143,11 @@ public class These<Kind> {
 	if (this.afterDrop != null) {
 	    afterDrop.start();
 	}
+    }
+*/
+
+    public int count() {
+	return this.values.size();
     }
 
     /**
@@ -143,11 +161,11 @@ public class These<Kind> {
 	These<String> s = new These<String>().is(a1).is(a2).is(a3).select(0);
 	System.out.println("--");
 	System.out.println(s.is().value());
-	s.drop();
+	s.drop(0);
 	System.out.println(s.is().value());
-	s.drop();
+	s.drop(0);
 	System.out.println(s.is().value());
-	s.drop();
+	s.drop(0);
 	System.out.println(s.is().value());
     }
 }

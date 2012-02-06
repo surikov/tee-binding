@@ -28,18 +28,5 @@ public class Toggles extends These<Boolean> {
 	return this;
     }
 
-    public static void main(String[] a) {
-	Toggle a1 = new Toggle().value(true);
-	Toggle a2 = new Toggle().value(false);
-	Toggle a3 = new Toggle().value(true);
-	Toggles s = new Toggles().is(a1).is(a2).is(a3).select(0);
-	System.out.println("--");
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-    }
+   
 }
