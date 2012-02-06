@@ -10,9 +10,11 @@ public class Bag {
     private Numeric select;
     private Task afterInsert;
     private Task afterDrop;
+    private Vector<Bag> _binded;
 
     public Bag() {
 	rows = new Vector<Series>();
+	_binded = new Vector< Bag>();
 	select = new Numeric().value(-1).afterChange(new Task() {
 
 	    @Override public void doTask() {
@@ -52,12 +54,25 @@ public class Bag {
 	return this;
     }
 
-    public void drop(int nn) {
-	rows.get(nn).drop(nn);
-	rows.remove(nn);
+    private void dropForEachBindedItem(int nn, Vector<Bag> cashe) {
+
+	cashe.add(this);
+	for (int i = 0; i < _binded.size(); i++) {
+	    if (!cashe.contains(_binded.get(i))) {
+		_binded.get(i).dropForEachBindedItem(nn, cashe);
+	    }
+	}
+	cashe.remove(this);
 	if (this.afterDrop != null) {
 	    afterDrop.start();
 	}
+    }
+
+    public void drop(int nn) {
+	rows.get(nn).drop(nn);
+	rows.remove(nn);
+	dropForEachBindedItem(nn, new Vector<Bag>());
+
     }
 
     public Bag series(Series row) {
@@ -70,6 +85,42 @@ public class Bag {
 
     public int count() {
 	return rows.size();
+    }
+
+    public Bag bind(Bag to) {
+	if (to == null) {
+	    return this;
+	}
+	if (!this._binded.contains(to)) {
+	    this._binded.add(to);
+	}
+	if (!to._binded.contains(this)) {
+	    to._binded.add(this);
+	}
+	requery();
+	return this;
+    }
+
+    private void requery() {
+    }
+
+    public void unbind(Bag to) {
+	if (to == null) {
+	    return;
+	}
+	this._binded.remove(to);
+	to._binded.remove(this);
+    }
+
+    public void unbind() {
+	for (int i = 0; i < _binded.size(); i++) {
+	    _binded.get(i).unbind(this);
+	}
+    }
+
+    public Bag afterDrop(Task it) {
+	this.afterDrop = it;
+	return this;
     }
 
     public static void main(String[] a) {
@@ -89,17 +140,27 @@ public class Bag {
 		.series(new Series().field(fio.is("Misha")).field(man.is(true)).field(age.is(21)).field(mail.is("mike@mail.ru")))//
 		.series(new Series().field(fio.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
+	Bag scnd = new Bag().bind(sh).afterDrop(new Task() {
+
+	    @Override public void doTask() {
+		System.out.println("----------drop");
+	    }
+	});
 	for (int i = 0; i < sh.count(); i++) {
 	    sh.select(i);
 	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
-	    //System.out.println(name.select(i).is().value());
 	}
 	System.out.println("--");
 	sh.drop(6);
 	for (int i = 0; i < sh.count(); i++) {
 	    sh.select(i);
 	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
-	    //System.out.println(name.select(i).is().value());
+	}
+	System.out.println("--");
+	sh.series(new Series().field(fio.is("Glasha2")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com2")));
+	for (int i = 0; i < sh.count(); i++) {
+	    sh.select(i);
+	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
 	}
     }
 }
