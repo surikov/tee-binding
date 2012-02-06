@@ -28,18 +28,4 @@ public class Notes extends These<String> {
 	return this;
     }
 
-    public static void main(String[] a) {
-	Note a1 = new Note().value("first");
-	Note a2 = new Note().value("second");
-	Note a3 = new Note().value("third");
-	Notes s = new Notes().is(a1).is(a2).is(a3).select(0);
-	System.out.println("--");
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-	s.drop();
-	System.out.println(s.is().value());
-    }
 }
