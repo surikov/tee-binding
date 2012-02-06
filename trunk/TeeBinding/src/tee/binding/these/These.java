@@ -1,4 +1,4 @@
-package tee.these;
+package tee.binding.these;
 
 import java.util.*;
 import tee.binding.it.*;
