@@ -56,7 +56,11 @@ public class These<Kind> {
     }
 
     public Kind at(int nn) {
-	return values.get(nn).value();
+	if (nn < 0 || nn >= values.size()) {
+	    return null;
+	} else {
+	    return values.get(nn).value();
+	}
     }
 
     /**
