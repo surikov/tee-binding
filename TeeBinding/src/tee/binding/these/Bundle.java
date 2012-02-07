@@ -4,16 +4,16 @@ import java.util.*;
 import tee.binding.it.*;
 import tee.binding.task.*;
 
-public class Bag {
+public class Bundle {
 
     private Vector<Series> rows;
     private Numeric select;
     private Task afterChange;
-    private Vector<Bag> _binded;
+    private Vector<Bundle> _binded;
 
-    public Bag() {
+    public Bundle() {
 	//rows = new Vector<Series>();
-	_binded = new Vector< Bag>();
+	_binded = new Vector< Bundle>();
 	select = new Numeric().value(-1).afterChange(new Task() {
 
 	    @Override public void doTask() {
@@ -40,7 +40,7 @@ public class Bag {
     @param nn
     @return
     */
-    public Bag select(int nn) {
+    public Bundle select(int nn) {
 	select.value(nn);
 	return this;
     }
@@ -50,12 +50,12 @@ public class Bag {
     @param nn
     @return
     */
-    public Bag select(Numeric nn) {
+    public Bundle select(Numeric nn) {
 	select.bind(nn);
 	return this;
     }
 
-    private void fireForEachBindedItem(Vector<Bag> cashe) {
+    private void fireForEachBindedItem(Vector<Bundle> cashe) {
 
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
@@ -74,11 +74,11 @@ public class Bag {
 	    rows.get(nn).drop(nn);
 	    rows.remove(nn);
 	}
-	fireForEachBindedItem(new Vector<Bag>());
+	fireForEachBindedItem(new Vector<Bundle>());
 
     }
 
-    public Bag series(Series row) {
+    public Bundle series(Series row) {
 	if (rows == null) {
 	    rows = new Vector<Series>();
 	}
@@ -87,7 +87,7 @@ public class Bag {
 	/* if (this.afterChange != null) {
 	 afterChange.start();
 	 } */
-	fireForEachBindedItem(new Vector<Bag>());
+	fireForEachBindedItem(new Vector<Bundle>());
 	return this;
     }
 
@@ -99,7 +99,7 @@ public class Bag {
 	}
     }
 
-    public Bag bind(Bag to) {
+    public Bundle bind(Bundle to) {
 	if (to == null) {
 	    return this;
 	}
@@ -117,7 +117,7 @@ public class Bag {
 
     //private void requery() {
     //}
-    public void unbind(Bag to) {
+    public void unbind(Bundle to) {
 	if (to == null) {
 	    return;
 	}
@@ -135,7 +135,7 @@ public class Bag {
 	}
     }
 
-    public Bag afterChange(Task it) {
+    public Bundle afterChange(Task it) {
 	this.afterChange = it;
 	return this;
     }
@@ -145,7 +145,7 @@ public class Bag {
 	Numerics age = new Numerics();
 	Notes mail = new Notes();
 	Toggles man = new Toggles();
-	Bag sh = new Bag()//
+	Bundle sh = new Bundle()//
 		.series(new Series().field(fio.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
 		.series(new Series().field(fio.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
 		.series(new Series().field(fio.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
@@ -157,7 +157,7 @@ public class Bag {
 		.series(new Series().field(fio.is("Misha")).field(man.is(true)).field(age.is(21)).field(mail.is("mike@mail.ru")))//
 		.series(new Series().field(fio.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
-	Bag scnd = new Bag().bind(sh).afterChange(new Task() {
+	Bundle scnd = new Bundle().bind(sh).afterChange(new Task() {
 
 	    @Override public void doTask() {
 		System.out.println("----------drop");
