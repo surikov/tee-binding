@@ -12,16 +12,18 @@ public class Bag {
     private Vector<Bag> _binded;
 
     public Bag() {
-	rows = new Vector<Series>();
+	//rows = new Vector<Series>();
 	_binded = new Vector< Bag>();
 	select = new Numeric().value(-1).afterChange(new Task() {
 
 	    @Override public void doTask() {
-		if (select != null) {
-		    if (select.value() != null) {
-			int nn = select.value().intValue();
-			if (nn >= 0 && nn < rows.size()) {
-			    rows.get(nn).select(nn);
+		if (rows != null) {
+		    if (select != null) {
+			if (select.value() != null) {
+			    int nn = select.value().intValue();
+			    if (nn >= 0 && nn < rows.size()) {
+				rows.get(nn).select(nn);
+			    }
 			}
 		    }
 		}
@@ -53,12 +55,12 @@ public class Bag {
 	return this;
     }
 
-    private void fireForEachBindedItem( Vector<Bag> cashe) {
+    private void fireForEachBindedItem(Vector<Bag> cashe) {
 
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
 	    if (!cashe.contains(_binded.get(i))) {
-		_binded.get(i).fireForEachBindedItem( cashe);
+		_binded.get(i).fireForEachBindedItem(cashe);
 	    }
 	}
 	cashe.remove(this);
@@ -68,23 +70,33 @@ public class Bag {
     }
 
     public void drop(int nn) {
-	rows.get(nn).drop(nn);
-	rows.remove(nn);
-	fireForEachBindedItem( new Vector<Bag>());
+	if (rows != null) {
+	    rows.get(nn).drop(nn);
+	    rows.remove(nn);
+	}
+	fireForEachBindedItem(new Vector<Bag>());
 
     }
 
     public Bag series(Series row) {
+	if (rows == null) {
+	    rows = new Vector<Series>();
+	}
 	rows.add(row);
-	/*if (this.afterChange != null) {
-	    afterChange.start();
-	}*/
-	fireForEachBindedItem( new Vector<Bag>());
+
+	/* if (this.afterChange != null) {
+	 afterChange.start();
+	 } */
+	fireForEachBindedItem(new Vector<Bag>());
 	return this;
     }
 
-    public int count() {
-	return rows.size();
+    public int size() {
+	if (rows == null) {
+	    return 0;
+	} else {
+	    return rows.size();
+	}
     }
 
     public Bag bind(Bag to) {
@@ -97,19 +109,24 @@ public class Bag {
 	if (!to._binded.contains(this)) {
 	    to._binded.add(this);
 	}
-	requery();
+	//requery();
+	this.rows = to.rows;
+	this.select().bind(to.select());
 	return this;
     }
 
-    private void requery() {
-    }
-
+    //private void requery() {
+    //}
     public void unbind(Bag to) {
 	if (to == null) {
 	    return;
 	}
-	this._binded.remove(to);
+	if (!this._binded.contains(to)) {
+	    this._binded.remove(to);
+	    this.rows = null;
+	}
 	to._binded.remove(this);
+	this.select().unbind(to.select());
     }
 
     public void unbind() {
@@ -118,7 +135,7 @@ public class Bag {
 	}
     }
 
-    public Bag afterDrop(Task it) {
+    public Bag afterChange(Task it) {
 	this.afterChange = it;
 	return this;
     }
@@ -140,25 +157,25 @@ public class Bag {
 		.series(new Series().field(fio.is("Misha")).field(man.is(true)).field(age.is(21)).field(mail.is("mike@mail.ru")))//
 		.series(new Series().field(fio.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
-	Bag scnd = new Bag().bind(sh).afterDrop(new Task() {
+	Bag scnd = new Bag().bind(sh).afterChange(new Task() {
 
 	    @Override public void doTask() {
 		System.out.println("----------drop");
 	    }
 	});
-	for (int i = 0; i < sh.count(); i++) {
+	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
 	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
 	}
 	System.out.println("--");
 	sh.drop(6);
-	for (int i = 0; i < sh.count(); i++) {
+	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
 	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
 	}
 	System.out.println("--");
 	sh.series(new Series().field(fio.is("Glasha2")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com2")));
-	for (int i = 0; i < sh.count(); i++) {
+	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
 	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
 	}

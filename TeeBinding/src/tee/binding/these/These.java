@@ -55,6 +55,10 @@ public class These<Kind> {
 	return current;
     }
 
+    public Kind at(int nn) {
+	return values.get(nn).value();
+    }
+
     /**
 
     @param it
@@ -146,7 +150,7 @@ public class These<Kind> {
     }
 */
 
-    public int count() {
+    public int size() {
 	return this.values.size();
     }
 
