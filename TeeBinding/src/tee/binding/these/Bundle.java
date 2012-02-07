@@ -12,7 +12,7 @@ public class Bundle {
     private Vector<Bundle> _binded;
 
     public Bundle() {
-	//rows = new Vector<Series>();
+	rows = new Vector<Series>();
 	_binded = new Vector< Bundle>();
 	select = new Numeric().value(-1).afterChange(new Task() {
 
@@ -55,12 +55,13 @@ public class Bundle {
 	return this;
     }
 
-    private void fireForEachBindedItem(Vector<Bundle> cashe) {
+    private void dropForEachBindedItem(int nn, Vector<Bundle> cashe) {
 
+	rows.remove(nn);
 	cashe.add(this);
 	for (int i = 0; i < _binded.size(); i++) {
 	    if (!cashe.contains(_binded.get(i))) {
-		_binded.get(i).fireForEachBindedItem(cashe);
+		_binded.get(i).dropForEachBindedItem(nn, cashe);
 	    }
 	}
 	cashe.remove(this);
@@ -70,24 +71,37 @@ public class Bundle {
     }
 
     public void drop(int nn) {
-	if (rows != null) {
-	    rows.get(nn).drop(nn);
-	    rows.remove(nn);
-	}
-	fireForEachBindedItem(new Vector<Bundle>());
+	/* if (rows != null) {
+	 rows.get(nn).drop(nn);
+	 rows.remove(nn);
+	 } */
+	rows.get(nn).drop(nn);
+	dropForEachBindedItem(nn, new Vector<Bundle>());
 
     }
-
+private void seriesForEachBindedItem(Series ss, Vector<Bundle> cashe) {
+	rows.add(ss);
+	cashe.add(this);
+	for (int i = 0; i < _binded.size(); i++) {
+	    if (!cashe.contains(_binded.get(i))) {
+		_binded.get(i).seriesForEachBindedItem(ss, cashe);
+	    }
+	}
+	cashe.remove(this);
+	if (this.afterChange != null) {
+	    afterChange.start();
+	}
+    }
     public Bundle series(Series row) {
-	if (rows == null) {
+	/*if (rows == null) {
 	    rows = new Vector<Series>();
 	}
 	rows.add(row);
-
+*/
 	/* if (this.afterChange != null) {
 	 afterChange.start();
 	 } */
-	fireForEachBindedItem(new Vector<Bundle>());
+	seriesForEachBindedItem(row,new Vector<Bundle>());
 	return this;
     }
 
@@ -110,8 +124,13 @@ public class Bundle {
 	    to._binded.add(this);
 	}
 	//requery();
-	this.rows = to.rows;
+	//this.rows = to.rows;
+	this.rows = new Vector<Series>();
+	this.rows.addAll(to.rows);
 	this.select().bind(to.select());
+	if (this.afterChange != null) {
+	    afterChange.start();
+	}
 	return this;
     }
 
@@ -123,7 +142,7 @@ public class Bundle {
 	}
 	if (!this._binded.contains(to)) {
 	    this._binded.remove(to);
-	    this.rows = null;
+	    //this.rows = null;
 	}
 	to._binded.remove(this);
 	this.select().unbind(to.select());
