@@ -68,7 +68,7 @@ public These<Kind> afterChange(Task t) {
 
     @return
     */
-    public It<Kind> is() {
+    public It<Kind> value() {
 	return current;
     }
 
@@ -85,7 +85,7 @@ public These<Kind> afterChange(Task t) {
     @param it
     @return
     */
-    public These<Kind> is(It<Kind> it) {
+    public These<Kind> value(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it).afterChange(afterChange);
 	values.add(v);
 	//doAfterInsert();
@@ -100,7 +100,7 @@ public These<Kind> afterChange(Task t) {
     @param it
     @return
     */
-    public These<Kind> is(Kind it) {
+    public These<Kind> value(Kind it) {
 	It<Kind> v = new It<Kind>().value(it).afterChange(afterChange);
 	values.add(v);
 	//doAfterInsert();
@@ -185,7 +185,7 @@ public These<Kind> afterChange(Task t) {
 	Note a1 = new Note().value("first");
 	Note a2 = new Note().value("second");
 	Note a3 = new Note().value("third");
-	These<String> s = new These<String>().is(a1).is(a2).is(a3).select(0).afterChange(new Task(){
+	These<String> s = new These<String>().value(a1).value(a2).value(a3).select(0).afterChange(new Task(){
 
 	    @Override
 	    public void doTask() {
@@ -193,16 +193,16 @@ public These<Kind> afterChange(Task t) {
 	    }
 	});
 	System.out.println("--");
-	System.out.println(s.is().value());
+	System.out.println(s.value().value());
 	//s.drop(0);
 	//System.out.println(s.is().value());
 	//s.drop(0);
 	//System.out.println(s.is().value());
 	//s.drop(0);
 	//System.out.println(s.is().value());
-	s.is().value("111");
-	System.out.println(s.is().value());
+	s.value().value("111");
+	System.out.println(s.value().value());
 	a1.value("222");
-	System.out.println(s.is().value());
+	System.out.println(s.value().value());
     }
 }
