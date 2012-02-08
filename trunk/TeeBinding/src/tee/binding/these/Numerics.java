@@ -10,21 +10,21 @@ public class Numerics extends These<Double> {
 
     public Numerics() {
 	super();
-	currentNum = new Numeric().bind(super.is());
+	currentNum = new Numeric().bind(super.value());
     }
 
     @Override
-    public Numeric is() {
+    public Numeric value() {
 	return currentNum;
     }
 
-    public Numerics is(Numeric it) {
-	super.is(it);
+    public Numerics value(Numeric it) {
+	super.value(it);
 	return this;
     }
 
-    public Numerics is(int it) {
-	super.is((double) it);
+    public Numerics value(int it) {
+	super.value((double) it);
 	return this;
     }
 

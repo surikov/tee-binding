@@ -10,16 +10,16 @@ public class Toggles extends These<Boolean> {
 
     public Toggles() {
 	super();
-	currentToggle = new Toggle().bind(super.is());
+	currentToggle = new Toggle().bind(super.value());
     }
 
     @Override
-    public Toggle is() {
+    public Toggle value() {
 	return currentToggle;
     }
 
-    public Toggles is(Toggle it) {
-	super.is(it);
+    public Toggles value(Toggle it) {
+	super.value(it);
 	return this;
     }
 
@@ -28,5 +28,5 @@ public class Toggles extends These<Boolean> {
 	return this;
     }
 
-   
+
 }

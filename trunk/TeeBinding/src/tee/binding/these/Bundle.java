@@ -165,16 +165,16 @@ private void seriesForEachBindedItem(Series ss, Vector<Bundle> cashe) {
 	Notes mail = new Notes();
 	Toggles man = new Toggles();
 	Bundle sh = new Bundle()//
-		.series(new Series().field(fio.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
-		.series(new Series().field(fio.is("Petya")).field(man.is(true)).field(age.is(22)).field(mail.is("petrpetrov@gmail.com")))//
-		.series(new Series().field(fio.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
-		.series(new Series().field(fio.is("Masha")).field(man.is(false)).field(age.is(21)).field(mail.is("masha@mail.ru")))//
-		.series(new Series().field(fio.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")))//
-		.series(new Series().field(fio.is("Vanya")).field(man.is(true)).field(age.is(22)).field(mail.is("ivan@mail.ru")))//
-		.series(new Series().field(fio.is("Olya")).field(man.is(false)).field(age.is(19)).field(mail.is("olga@aol.com")))//
-		.series(new Series().field(fio.is("Vika")).field(man.is(false)).field(age.is(21)).field(mail.is("avictorya@gmail.com")))//
-		.series(new Series().field(fio.is("Misha")).field(man.is(true)).field(age.is(21)).field(mail.is("mike@mail.ru")))//
-		.series(new Series().field(fio.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
+		.series(new Series().field(fio.value("Vasya")).field(man.value(true)).field(age.value(19)).field(mail.value("vpupkin@mail.ru")))//
+		.series(new Series().field(fio.value("Petya")).field(man.value(true)).field(age.value(22)).field(mail.value("petrpetrov@gmail.com")))//
+		.series(new Series().field(fio.value("Sasha")).field(man.value(true)).field(age.value(20)).field(mail.value("alxndr@aol.com")))//
+		.series(new Series().field(fio.value("Masha")).field(man.value(false)).field(age.value(21)).field(mail.value("masha@mail.ru")))//
+		.series(new Series().field(fio.value("Kolya")).field(man.value(true)).field(age.value(21)).field(mail.value("nikolay@gmail.com")))//
+		.series(new Series().field(fio.value("Vanya")).field(man.value(true)).field(age.value(22)).field(mail.value("ivan@mail.ru")))//
+		.series(new Series().field(fio.value("Olya")).field(man.value(false)).field(age.value(19)).field(mail.value("olga@aol.com")))//
+		.series(new Series().field(fio.value("Vika")).field(man.value(false)).field(age.value(21)).field(mail.value("avictorya@gmail.com")))//
+		.series(new Series().field(fio.value("Misha")).field(man.value(true)).field(age.value(21)).field(mail.value("mike@mail.ru")))//
+		.series(new Series().field(fio.value("Glasha")).field(man.value(false)).field(age.value(20)).field(mail.value("glasha@gmail.com")))//
 		;
 	Bundle scnd = new Bundle().bind(sh).afterChange(new Task() {
 
@@ -184,19 +184,19 @@ private void seriesForEachBindedItem(Series ss, Vector<Bundle> cashe) {
 	});
 	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
-	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
+	    System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
 	}
 	System.out.println("--");
 	sh.drop(6);
 	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
-	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
+	    System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
 	}
 	System.out.println("--");
-	sh.series(new Series().field(fio.is("Glasha2")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com2")));
+	sh.series(new Series().field(fio.value("Glasha2")).field(man.value(false)).field(age.value(20)).field(mail.value("glasha@gmail.com2")));
 	for (int i = 0; i < sh.size(); i++) {
 	    sh.select(i);
-	    System.out.println(i + ": " + fio.is().value() + ": " + age.is().value() + ": " + mail.is().value() + ": " + man.is().value());
+	    System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
 	}
     }
 }

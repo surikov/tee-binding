@@ -10,16 +10,16 @@ public class Notes extends These<String> {
 
     public Notes() {
 	super();
-	currentNote = new Note().bind(super.is());
+	currentNote = new Note().bind(super.value());
     }
 
     @Override
-    public Note is() {
+    public Note value() {
 	return currentNote;
     }
 
-    public Notes is(Note it) {
-	super.is(it);
+    public Notes value(Note it) {
+	super.value(it);
 	return this;
     }
 
