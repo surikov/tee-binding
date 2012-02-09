@@ -6,203 +6,169 @@ import tee.binding.*;
 import tee.binding.task.*;
 
 /**
-
- @author User
- @param <Kind>
+ *
+ * @author User
+ * @param <Kind>
  */
 public class These<Kind> {
 
     private It<Kind> current;
     private Vector<It<Kind>> values;
-    //private Vector<It<Kind>> watchers;
+    private Vector<Task> watchers;
     private Numeric select;
     private int oldSel = -1;
-    private Task afterInsert;
-    private Task afterDrop;
-    private Task afterChange;
-    //private These<Kind> me;
+    private Task startWatchers;
 
-    public These<Kind> afterInsert(Task t) {
-	afterInsert = t;
-	return this;
-    }
-
-    public These<Kind> afterDrop(Task t) {
-	afterDrop = t;
-	return this;
-    }
-public These<Kind> afterChange(Task t) {
-	afterChange = t;
-	for(int i=0;i<values.size();i++)values.get(i).afterChange(t);
-	return this;
-    }
     /**
-
-    */
+     * 
+     */
     public These() {
-	//me = this;
-	current = new It<Kind>();
-	values = new Vector<It<Kind>>();
-	//watchers = new Vector<It<Kind>>();
-	select = new Numeric().value(-1).afterChange(new Task() {
+        current = new It<Kind>();
+        values = new Vector<It<Kind>>();
+        watchers = new Vector<Task>();
+        startWatchers = new Task() {
 
-	    @Override public void doTask() {
-		if (oldSel >= 0 && oldSel < values.size()) {
-		    current.unbind(values.get(oldSel));
-		}
-		if (select != null) {
-		    if (select.value() != null) {
-			int nn = select.value().intValue();
-			if (nn >= 0 && nn < values.size()) {
-			    current.bind(values.get(nn));
-			    oldSel = nn;
-			    //System.out.println(nn+" / "+current.value());
-			}
-		    }
-		}
-	    }
-	});
+            @Override
+            public void doTask() {
+                for (int i = 0; i < watchers.size(); i++) {
+                    watchers.get(i).start();
+                }
+            }
+        };
+        select = new Numeric().value(-1).afterChange(new Task() {
+
+            @Override
+            public void doTask() {
+                if (oldSel >= 0 && oldSel < values.size()) {
+                    current.unbind(values.get(oldSel));
+                }
+                if (select != null) {
+                    if (select.value() != null) {
+                        int nn = select.value().intValue();
+                        if (nn >= 0 && nn < values.size()) {
+                            current.bind(values.get(nn));
+                            oldSel = nn;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**
+     * 
+     * @param task
+     * @return
+     */
+    public These<Kind> watch(Task task) {
+        this.watchers.add(task);
+        return this;
+    }
 
-    @return
-    */
+    /**
+     * 
+     * @param task
+     * @return
+     */
+    public These<Kind> unwatch(Task task) {
+        this.watchers.remove(task);
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     */
     public It<Kind> value() {
-	return current;
+        return current;
     }
 
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     public Kind at(int nn) {
-	if (nn < 0 || nn >= values.size()) {
-	    return null;
-	} else {
-	    return values.get(nn).value();
-	}
+        if (nn < 0 || nn >= values.size()) {
+            return null;
+        } else {
+            return values.get(nn).value();
+        }
     }
 
     /**
-
-    @param it
-    @return
-    */
+     *
+     * @param it
+     * @return
+     */
     public These<Kind> value(It<Kind> it) {
-	It<Kind> v = new It<Kind>().bind(it).afterChange(afterChange);
-	values.add(v);
-	//doAfterInsert();
-	if (this.afterInsert != null) {
-	    afterInsert.start();
-	}
-	return this;
+        It<Kind> v = new It<Kind>().bind(it).afterChange(startWatchers);
+        values.add(v);
+        return this;
     }
 
     /**
-
-    @param it
-    @return
-    */
+     *
+     * @param it
+     * @return
+     */
     public These<Kind> value(Kind it) {
-	It<Kind> v = new It<Kind>().value(it).afterChange(afterChange);
-	values.add(v);
-	//doAfterInsert();
-	if (this.afterInsert != null) {
-	    afterInsert.start();
-	}
-	return this;
+        It<Kind> v = new It<Kind>().value(it).afterChange(startWatchers);
+        values.add(v);
+        return this;
     }
 
     /**
-
-    @return
-    */
+     *
+     * @return
+     */
     public Numeric select() {
-	return select;
+        return select;
     }
 
     /**
-
-    @param nn
-    @return
-    */
+     *
+     * @param nn
+     * @return
+     */
     public These<Kind> select(int nn) {
-	select.value(nn);
-	return this;
+        select.value(nn);
+        return this;
     }
 
     /**
-
-    @param nn
-    @return
-    */
+     *
+     * @param nn
+     * @return
+     */
     public These<Kind> select(Numeric nn) {
-	select.bind(nn);
-	return this;
+        select.bind(nn);
+        return this;
     }
 
     /**
-
-    */
+     *
+     * @param nn 
+     */
     public void drop(int nn) {
-	//int nn = select.value().intValue();
-	if (nn >= 0 && nn < values.size()) {
-	    It<Kind> it = values.remove(nn);
-	    it.unbind();
-	    it.afterChange(null);
-	    if (nn == select.value().intValue()) {
-		//current.unbind(it);
-		if (nn < values.size()) {
-		    current.bind(values.get(nn));
-		}
-	    }
-	    //doAfterDrop();
-	    if (this.afterDrop != null) {
-		afterDrop.start();
-	    }
-	}
-    }
-    /*
-    private void doAfterInsert() {
-	if (this.afterInsert != null) {
-	    afterInsert.start();
-	}
-    }
-
-    private void doAfterDrop() {
-	if (this.afterDrop != null) {
-	    afterDrop.start();
-	}
-    }
-*/
-
-    public int size() {
-	return this.values.size();
+        if (nn >= 0 && nn < values.size()) {
+            It<Kind> it = values.remove(nn);
+            it.unbind();
+            it.afterChange(null);
+            if (nn == select.value().intValue()) {
+                if (nn < values.size()) {
+                    current.bind(values.get(nn));
+                }
+            }
+            startWatchers.start();
+        }
     }
 
     /**
-
-    @param a
-    */
-    public static void main(String[] a) {
-	Note a1 = new Note().value("first");
-	Note a2 = new Note().value("second");
-	Note a3 = new Note().value("third");
-	These<String> s = new These<String>().value(a1).value(a2).value(a3).select(0).afterChange(new Task(){
-
-	    @Override
-	    public void doTask() {
-		System.out.println("!!!");
-	    }
-	});
-	System.out.println("--");
-	System.out.println(s.value().value());
-	//s.drop(0);
-	//System.out.println(s.is().value());
-	//s.drop(0);
-	//System.out.println(s.is().value());
-	//s.drop(0);
-	//System.out.println(s.is().value());
-	s.value().value("111");
-	System.out.println(s.value().value());
-	a1.value("222");
-	System.out.println(s.value().value());
+     * 
+     * @return
+     */
+    public int size() {
+        return this.values.size();
     }
 }
