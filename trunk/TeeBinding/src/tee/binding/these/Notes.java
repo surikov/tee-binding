@@ -5,28 +5,35 @@ import tee.binding.it.*;
 import tee.binding.task.*;
 
 /**
- * 
+ *
  * @author User
  */
 public class Notes extends These<String> {
 
-    private Note currentNote;
+    private Note valueNote;
+    private Note isNote;
 
     /**
-     * 
+     *
      */
     public Notes() {
         super();
-        currentNote = new Note().bind(super.value());
+        valueNote = new Note().bind(super.value());
+        isNote = new Note().bind(super.is());
+    }
+
+    @Override
+    public Note is() {
+        return isNote;
     }
 
     @Override
     public Note value() {
-        return currentNote;
+        return valueNote;
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -35,6 +42,7 @@ public class Notes extends These<String> {
         return this;
     }
 
+    @Override
     public Notes select(int nn) {
         super.select(nn);
         return this;

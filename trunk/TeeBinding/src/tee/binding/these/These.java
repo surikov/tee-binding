@@ -12,10 +12,11 @@ import tee.binding.task.*;
  */
 public class These<Kind> {
 
-    private It<Kind> current;
+    private It<Kind> _value;
     private Vector<It<Kind>> values;
     private Vector<Task> watchers;
     private Numeric select;
+    private It<Kind> _is;
     private int oldSel = -1;
     private Task startWatchers;
 
@@ -23,7 +24,8 @@ public class These<Kind> {
      *
      */
     public These() {
-        current = new It<Kind>();
+        _value = new It<Kind>();
+        _is = new It<Kind>();
         values = new Vector<It<Kind>>();
         watchers = new Vector<Task>();
         startWatchers = new Task() {
@@ -40,13 +42,13 @@ public class These<Kind> {
             @Override
             public void doTask() {
                 if (oldSel >= 0 && oldSel < values.size()) {
-                    current.unbind(values.get(oldSel));
+                    _value.unbind(values.get(oldSel));
                 }
                 if (select != null) {
                     if (select.value() != null) {
                         int nn = select.value().intValue();
                         if (nn >= 0 && nn < values.size()) {
-                            current.bind(values.get(nn));
+                            _value.bind(values.get(nn));
                             oldSel = nn;
                         }
                     }
@@ -80,7 +82,11 @@ public class These<Kind> {
      * @return
      */
     public It<Kind> value() {
-        return current;
+        return _value;
+    }
+
+    public It<Kind> is() {
+        return _is;
     }
 
     /**
@@ -97,7 +103,7 @@ public class These<Kind> {
     }
 
     /**
-     * 
+     *
      * @param nn
      * @param val
      * @return
@@ -149,6 +155,12 @@ public class These<Kind> {
         return this;
     }
 
+    public void probe(int nn) {
+        if (nn >= 0 && nn < values.size()) {
+            _is.value(at(nn));
+        }
+    }
+
     /**
      *
      * @param nn
@@ -170,7 +182,7 @@ public class These<Kind> {
             it.afterChange(null);
             if (nn == select.value().intValue()) {
                 if (nn < values.size()) {
-                    current.bind(values.get(nn));
+                    _value.bind(values.get(nn));
                 }
             }
             startWatchers.start();

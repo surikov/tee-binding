@@ -5,7 +5,7 @@ import tee.binding.it.*;
 import tee.binding.task.*;
 
 /**
- * 
+ *
  * @author User
  */
 public class Bundle {
@@ -16,7 +16,7 @@ public class Bundle {
     private Vector<Bundle> _binded;
 
     /**
-     * 
+     *
      */
     public Bundle() {
         rows = new Vector<Series>();
@@ -40,7 +40,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public Numeric select() {
@@ -83,7 +83,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param nn
      */
     public void drop(int nn) {
@@ -110,7 +110,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param row
      * @return
      */
@@ -120,7 +120,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int size() {
@@ -132,7 +132,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param to
      * @return
      */
@@ -156,7 +156,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param to
      */
     public void unbind(Bundle to) {
@@ -171,7 +171,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      */
     public void unbind() {
         for (int i = 0; i < _binded.size(); i++) {
@@ -180,7 +180,7 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -190,15 +190,15 @@ public class Bundle {
     }
 
     /**
-     * 
+     *
      * @param a
      */
     public static void main(String[] a) {
-        These<String> fio = new These<String>();
+        Notes fio = new Notes();
         Numerics age = new Numerics();
         Notes mail = new Notes();
         Toggles man = new Toggles();
-        Bundle sh = new Bundle()//
+        Bundle addressBook = new Bundle()//
                 .series(new Series().field(fio.value("Vasya")).field(man.value(true)).field(age.value(19)).field(mail.value("vpupkin@mail.ru")))//
                 .series(new Series().field(fio.value("Petya")).field(man.value(true)).field(age.value(22)).field(mail.value("petrpetrov@gmail.com")))//
                 .series(new Series().field(fio.value("Sasha")).field(man.value(true)).field(age.value(20)).field(mail.value("alxndr@aol.com")))//
@@ -210,28 +210,11 @@ public class Bundle {
                 .series(new Series().field(fio.value("Misha")).field(man.value(true)).field(age.value(21)).field(mail.value("mike@mail.ru")))//
                 .series(new Series().field(fio.value("Glasha")).field(man.value(false)).field(age.value(20)).field(mail.value("glasha@gmail.com")))//
                 ;
-        Bundle scnd = new Bundle().bind(sh).afterChange(new Task() {
-
-            @Override
-            public void doTask() {
-                System.out.println("----------drop");
-            }
-        });
-        for (int i = 0; i < sh.size(); i++) {
-            sh.select(i);
-            System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
-        }
-        System.out.println("--");
-        sh.drop(6);
-        for (int i = 0; i < sh.size(); i++) {
-            sh.select(i);
-            System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
-        }
-        System.out.println("--");
-        sh.series(new Series().field(fio.value("Glasha2")).field(man.value(false)).field(age.value(20)).field(mail.value("glasha@gmail.com2")));
-        for (int i = 0; i < sh.size(); i++) {
-            sh.select(i);
-            System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
+        for (int i = 0; i < addressBook.size(); i++) {
+            addressBook.select(i);
+            //System.out.println(i + ": " + fio.value().value() + ": " + age.value().value() + ": " + mail.value().value() + ": " + man.value().value());
+            fio.probe(i);
+            System.out.println(fio.at(i) + " - " + fio.is().like("ash").value());
         }
     }
 }
