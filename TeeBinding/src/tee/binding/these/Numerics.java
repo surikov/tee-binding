@@ -4,10 +4,17 @@ import java.util.*;
 import tee.binding.it.*;
 import tee.binding.task.*;
 
+/**
+ * 
+ * @author User
+ */
 public class Numerics extends These<Double> {
 
     private Numeric currentNum;
 
+    /**
+     * 
+     */
     public Numerics() {
 	super();
 	currentNum = new Numeric().bind(super.value());
@@ -18,11 +25,21 @@ public class Numerics extends These<Double> {
 	return currentNum;
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numerics value(Numeric it) {
 	super.value(it);
 	return this;
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numerics value(int it) {
 	super.value((double) it);
 	return this;

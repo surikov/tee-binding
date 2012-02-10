@@ -4,6 +4,10 @@ import java.util.*;
 import tee.binding.it.*;
 import tee.binding.task.*;
 
+/**
+ * 
+ * @author User
+ */
 public class Bundle {
 
     private Vector<Series> rows;
@@ -11,6 +15,9 @@ public class Bundle {
     private Task afterChange;
     private Vector<Bundle> _binded;
 
+    /**
+     * 
+     */
     public Bundle() {
         rows = new Vector<Series>();
         _binded = new Vector< Bundle>();
@@ -32,6 +39,10 @@ public class Bundle {
         });
     }
 
+    /**
+     * 
+     * @return
+     */
     public Numeric select() {
         return select;
     }
@@ -71,6 +82,10 @@ public class Bundle {
         }
     }
 
+    /**
+     * 
+     * @param nn
+     */
     public void drop(int nn) {
         /*
          * if (rows != null) { rows.get(nn).drop(nn); rows.remove(nn); }
@@ -94,11 +109,20 @@ public class Bundle {
         }
     }
 
+    /**
+     * 
+     * @param row
+     * @return
+     */
     public Bundle series(Series row) {
         seriesForEachBindedItem(row, new Vector<Bundle>());
         return this;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int size() {
         if (rows == null) {
             return 0;
@@ -107,6 +131,11 @@ public class Bundle {
         }
     }
 
+    /**
+     * 
+     * @param to
+     * @return
+     */
     public Bundle bind(Bundle to) {
         if (to == null) {
             return this;
@@ -126,6 +155,10 @@ public class Bundle {
         return this;
     }
 
+    /**
+     * 
+     * @param to
+     */
     public void unbind(Bundle to) {
         if (to == null) {
             return;
@@ -137,17 +170,29 @@ public class Bundle {
         this.select().unbind(to.select());
     }
 
+    /**
+     * 
+     */
     public void unbind() {
         for (int i = 0; i < _binded.size(); i++) {
             _binded.get(i).unbind(this);
         }
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Bundle afterChange(Task it) {
         this.afterChange = it;
         return this;
     }
 
+    /**
+     * 
+     * @param a
+     */
     public static void main(String[] a) {
         These<String> fio = new These<String>();
         Numerics age = new Numerics();

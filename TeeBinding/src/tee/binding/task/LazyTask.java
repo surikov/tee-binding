@@ -1,16 +1,32 @@
 package tee.binding.task;
 import tee.binding.it.It;
 import java.util.*;
+/**
+ * 
+ * @author User
+ */
 public abstract class LazyTask extends Task {
     private Timer timer = null;
     private int laziness = 50;
     private boolean lock = false;
+    /**
+     * 
+     */
     public LazyTask() {
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public LazyTask laziness(int it) {
 	laziness = it;
 	return this;
     }
+    /**
+     * 
+     * @return
+     */
     public int laziness() {
 	return laziness;
     }
@@ -19,6 +35,9 @@ public abstract class LazyTask extends Task {
 	timer.purge();
 	timer = null;
     }
+    /**
+     * 
+     */
     @Override public void start() {
 	if (timer != null) {
 	    clear();
@@ -37,6 +56,10 @@ public abstract class LazyTask extends Task {
 	    }
 	}, laziness);
     }
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
 
 	System.out.println("\nLazyTask\n");

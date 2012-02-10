@@ -5,6 +5,10 @@ import tee.binding.Calculation;
 import tee.binding.task.Task;
 import tee.binding.it.It;
 
+/**
+ * 
+ * @author User
+ */
 public class Note extends It<String> {
     private Note _otherwise = null;
     @Override
@@ -17,6 +21,11 @@ public class Note extends It<String> {
 	super.value(newValue);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Note bind(Note it) {
 	super.bind(it);
 	return this;
@@ -26,6 +35,11 @@ public class Note extends It<String> {
 	super.bind(it);
 	return this;
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle same(final Note bb) {
 	//return new Toggle().same(this, it);
 	final Note aa = this;
@@ -43,10 +57,20 @@ public class Note extends It<String> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle same(String it) {
 	//return new Toggle().same(this, it);
 	return same(new Note().value(it));
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle like(final Note bb) {
 	//return new Toggle().like(this, it);
 	final Note aa = this;
@@ -64,9 +88,19 @@ public class Note extends It<String> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle like(String it) {
 	return like(new Note().value(it));
     }
+    /**
+     * 
+     * @param appendString
+     * @return
+     */
     public Note append(final String appendString) {
 	//final String fvalue = value;
 	Note s = new Note().bind(
@@ -92,10 +126,20 @@ public class Note extends It<String> {
 		}.second());
 	return s;
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Note append(It<String> value) {
 	Note n = new Note().bind(value);
 	return append(n);
     }
+    /**
+     * 
+     * @param appendNote
+     * @return
+     */
     public Note append(final Note appendNote) {
 	//final Note fvalue = value;
 	final Note me = this;
@@ -112,6 +156,11 @@ public class Note extends It<String> {
     public static Fork<String> iF(Toggle it) {
     return new Fork<String>().condition(it);
     }*/
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Note otherwise(Note it) {
 	if (_otherwise == null) {
 	    _otherwise = new Note();
@@ -119,6 +168,11 @@ public class Note extends It<String> {
 	_otherwise.bind(it);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Note otherwise(String it) {
 	if (_otherwise == null) {
 	    _otherwise = new Note();
@@ -126,6 +180,11 @@ public class Note extends It<String> {
 	_otherwise.value(it);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Note when(final Toggle it) {
 	final Note me = this;
 	final Note when = new Note();
@@ -148,6 +207,10 @@ public class Note extends It<String> {
 	});
 	return when;
     }
+    /**
+     * 
+     * @param a
+     */
     public static void main(String a[]) {
 	System.out.println("\nCharacters\n");
 	Note item = new Note();

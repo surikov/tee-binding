@@ -6,16 +6,27 @@ import java.util.*;
 import tee.binding.it.*;
 import tee.binding.task.Task;
 
+/**
+ * 
+ * @author User
+ */
 public class ColumnNumeric extends Column {
 
     private Numeric current;
     private Vector<Numeric> values;
 
+    /**
+     * 
+     */
     public ColumnNumeric() {
 	current = new Numeric();
 	values = new Vector<Numeric>();
     }
 
+    /**
+     * 
+     * @param nn
+     */
     @Override public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
@@ -24,6 +35,11 @@ public class ColumnNumeric extends Column {
 	}
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnNumeric is(double it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
@@ -31,6 +47,11 @@ public class ColumnNumeric extends Column {
 	return this;
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnNumeric is(int it) {
 	Numeric v = new Numeric().value(it);
 	values.add(v);
@@ -38,6 +59,11 @@ public class ColumnNumeric extends Column {
 	return this;
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnNumeric is(Numeric it) {
 	Numeric v = new Numeric().bind(it);
 	values.add(v);
@@ -45,10 +71,19 @@ public class ColumnNumeric extends Column {
 	return this;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Numeric is() {
 	return current;
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
  public Numeric at(int nn) {
 	move(nn);
@@ -59,6 +94,11 @@ public class ColumnNumeric extends Column {
 	    return null;
 	}
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
   public Numeric at(double nn) {
 	move((int)nn);
@@ -69,6 +109,11 @@ public class ColumnNumeric extends Column {
 	    return null;
 	}
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
     public Numeric at(Numeric nn) {
 	final Numeric columnValue = new Numeric();
@@ -87,6 +132,10 @@ public class ColumnNumeric extends Column {
 	return columnValue;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> ascending() {
 	return new Comparator<Row>() {
 
@@ -97,6 +146,10 @@ public class ColumnNumeric extends Column {
 	};
     }
 
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> descending() {
 	return new Comparator<Row>() {
 

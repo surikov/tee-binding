@@ -6,13 +6,27 @@ import tee.binding.it.Note;
 import java.util.*;
 import tee.binding.task.Task;
 
+/**
+ * 
+ * @author User
+ */
 public class ColumnNote extends Column {
+    /**
+     * 
+     */
     protected Note current;
     private Vector<Note> values;
+    /**
+     * 
+     */
     public ColumnNote() {
 	current = new Note();
 	values = new Vector<Note>();
     }
+    /**
+     * 
+     * @param nn
+     */
     @Override public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
@@ -22,22 +36,41 @@ public class ColumnNote extends Column {
 	}
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnNote is(String it) {
 	Note v = new Note().value(it);
 	values.add(v);
 	current.value(it);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnNote is(Note it) {
 	Note v = new Note().bind(it);
 	values.add(v);
 	current.value(it.value());
 	return this;
     }
+    /**
+     * 
+     * @return
+     */
     @Override
     public Note is() {
 	return current;
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
     public Note at(int nn) {
 	move(nn);
@@ -48,6 +81,11 @@ public class ColumnNote extends Column {
 	    return null;
 	}
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
      public Note at(double nn) {
 	move((int)nn);
@@ -58,6 +96,11 @@ public class ColumnNote extends Column {
 	    return null;
 	}
     }
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
     public Note at(Numeric nn) {
 	final Note columnValue = new Note();
@@ -79,6 +122,10 @@ public class ColumnNote extends Column {
 	});
 	return columnValue;
     }
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> ascending() {
 	return new Comparator<Row>() {
 	    @Override public int compare(Row o1, Row o2) {
@@ -89,6 +136,10 @@ public class ColumnNote extends Column {
 	    }
 	};
     }
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> descending() {
 	return new Comparator<Row>() {
 	    @Override public int compare(Row o1, Row o2) {
