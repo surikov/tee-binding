@@ -3,6 +3,11 @@ package tee.binding;
 import tee.binding.task.Task;
 import tee.binding.it.It;
 
+/**
+ * 
+ * @author User
+ * @param <Kind>
+ */
 public class Calculation<Kind> {
     private boolean lockFirst = false;
     private boolean lockSecond = false;
@@ -34,22 +39,47 @@ public class Calculation<Kind> {
 	    lockSecond = false;
 	}
     });
+    /**
+     * 
+     * @param f
+     * @param s
+     */
     public Calculation(It<Kind> f, It<Kind> s) {
 	first().bind(f);
 	second().bind(s);
     }
+    /**
+     * 
+     * @return
+     */
     public Kind calculateFirst() {
 	return second().value();
     }
+    /**
+     * 
+     * @return
+     */
     public Kind calculateSecond() {
 	return first().value();
     }
+    /**
+     * 
+     * @return
+     */
     public It<Kind> first() {
 	return _first;
     }
+    /**
+     * 
+     * @return
+     */
     public It<Kind> second() {
 	return _second;
     }
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
 	System.out.println("\nCalculation\n");
 	final It<Double> tFahrenheit = new It<Double>().value(0.0);

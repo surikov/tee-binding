@@ -9,6 +9,10 @@ import tee.binding.Calculation;
 
 import tee.binding.task.Task;
 
+/**
+ * 
+ * @author User
+ */
 public class Numeric extends It<Double> {
     private It<String> _string = null;
     //private Numeric me = this;
@@ -25,10 +29,20 @@ public class Numeric extends It<Double> {
 	super.value(newValue);
 	return this;
     }
+    /**
+     * 
+     * @param newValue
+     * @return
+     */
     public Numeric value(Integer newValue) {
 	super.value(newValue.doubleValue());
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numeric bind(Numeric it) {
 	super.bind(it);
 	return this;
@@ -38,10 +52,20 @@ public class Numeric extends It<Double> {
 	super.bind(it);
 	return this;
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric plus(int value) {
 	Numeric n = new Numeric().value(value);
 	return plus(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric plus(double value) {
 	Numeric n = new Numeric().value(value);
 	return plus(n);
@@ -51,10 +75,20 @@ public class Numeric extends It<Double> {
 	super.afterChange(newValue);
 	return this;
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric plus(It<Double> value) {
 	Numeric n = new Numeric().bind(value);
 	return plus(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric plus(Numeric value) {
 	final It<Double> fvalue = value;
 	final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() + fvalue.value())) {
@@ -87,18 +121,38 @@ public class Numeric extends It<Double> {
 	});
 	return new Numeric().bind(clc.second());
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric multiply(double value) {
 	Numeric n = new Numeric().value(value);
 	return multiply(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric multiply(int value) {
 	Numeric n = new Numeric().value(value);
 	return multiply(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric multiply(It<Double> value) {
 	Numeric n = new Numeric().bind(value);
 	return multiply(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric multiply(Numeric value) {
 	final It<Double> fvalue = value;
 	final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() * fvalue.value())) {
@@ -134,18 +188,38 @@ public class Numeric extends It<Double> {
 	});
 	return new Numeric().bind(clc.second());
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric divide(double value) {
 	Numeric n = new Numeric().value(value);
 	return divide(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric divide(int value) {
 	Numeric n = new Numeric().value(value);
 	return divide(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric divide(It<Double> value) {
 	Numeric n = new Numeric().bind(value);
 	return divide(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric divide(Numeric value) {
 	final Numeric fvalue = value;
 	final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() / fvalue.value())) {
@@ -181,18 +255,38 @@ public class Numeric extends It<Double> {
 	}).bind(fvalue);
 	return new Numeric().bind(clc.second());
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric minus(double value) {
 	Numeric n = new Numeric().value(value);
 	return minus(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric minus(int value) {
 	Numeric n = new Numeric().value(value);
 	return minus(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric minus(It<Double> value) {
 	Numeric n = new Numeric().bind(value);
 	return minus(n);
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Numeric minus(Numeric value) {
 	final It<Double> fvalue = value;
 	final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() - fvalue.value())) {
@@ -225,6 +319,11 @@ public class Numeric extends It<Double> {
 	});
 	return new Numeric().bind(clc.second());
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle same(final Numeric bb) {
 	final Numeric me = this;
 	final Toggle retvalue = new Toggle().value(me.value().equals(bb.value()));
@@ -240,6 +339,11 @@ public class Numeric extends It<Double> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle less(final Numeric bb) {
 	//return new Toggle().less(this, it);
 	final Numeric aa = this;
@@ -257,6 +361,11 @@ public class Numeric extends It<Double> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle more(final Numeric bb) {
 	//return new Toggle().more(this, it);
 	final Numeric aa = this;
@@ -274,6 +383,11 @@ public class Numeric extends It<Double> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle moreOrEquals(final Numeric bb) {
 	//return new Toggle().moreOrEquals(this, it);
 	final Numeric aa = this;
@@ -291,6 +405,11 @@ public class Numeric extends It<Double> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param bb
+     * @return
+     */
     public Toggle lessOrEquals(final Numeric bb) {
 	//return new Toggle().lessOrEquals(this, it);
 	final Numeric aa = this;
@@ -308,42 +427,97 @@ public class Numeric extends It<Double> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle equals(double it) {
 	return same(new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle less(double it) {
 	//return new Toggle().less(this, it);
 	return less(new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle more(double it) {
 	return more( new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle moreOrEquals(double it) {
 	return moreOrEquals(new Numeric().value( it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle lessOrEquals(double it) {
 	return lessOrEquals(new Numeric().value( it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle same(int it) {
 	//return new Toggle().equals(this, it);
 	return same(new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle less(int it) {
 	//return new Toggle().less(this, it);
 	return less(new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle more(int it) {
 	//return new Toggle().more(this, it);
 	return more( new Numeric().value(it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle moreOrEquals(int it) {
 	//return new Toggle().moreOrEquals(this, it);
 	return moreOrEquals(new Numeric().value( it));
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle lessOrEquals(int it) {
 	//return new Toggle().lessOrEquals(this, it);
 	return lessOrEquals(new Numeric().value( it));
     }
+    /**
+     * 
+     * @param s
+     * @return
+     */
     public static double string2double(String s) {
 	double dd = 0;
 	NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
@@ -355,9 +529,17 @@ public class Numeric extends It<Double> {
 	}
 	return dd;
     }
+    /**
+     * 
+     * @return
+     */
     public Note asNote() {
 	return new Note().bind(asString());
     }
+    /**
+     * 
+     * @return
+     */
     public It<String> asString() {
 	if (_string == null) {
 	    final Numeric me = this;
@@ -393,6 +575,11 @@ public class Numeric extends It<Double> {
     public static Fork<Double> iF(Toggle it) {
     return new Fork<Double>().condition(it);
     }*/
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numeric when(final Toggle it) {
 	final Numeric me = this;
 	final Numeric when = new Numeric();
@@ -415,6 +602,11 @@ public class Numeric extends It<Double> {
 	});
 	return when;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numeric otherwise(Numeric it) {
 	if (_otherwise == null) {
 	    _otherwise = new Numeric();
@@ -422,6 +614,11 @@ public class Numeric extends It<Double> {
 	_otherwise.bind(it);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numeric otherwise(double it) {
 	if (_otherwise == null) {
 	    _otherwise = new Numeric();
@@ -429,6 +626,11 @@ public class Numeric extends It<Double> {
 	_otherwise.value(it);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Numeric otherwise(int it) {
 	if (_otherwise == null) {
 	    _otherwise = new Numeric();
@@ -436,6 +638,10 @@ public class Numeric extends It<Double> {
 	_otherwise.value(it);
 	return this;
     }
+    /**
+     * 
+     * @param a
+     */
     public static void main(String a[]) {
 
 	System.out.println("\nNumeric\n");

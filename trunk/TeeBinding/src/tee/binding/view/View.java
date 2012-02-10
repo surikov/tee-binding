@@ -9,6 +9,10 @@ import tee.binding.it.Note;
 import java.util.*;
 import tee.binding.task.Task;
 
+/**
+ * 
+ * @author User
+ */
 public class View {
 
     private Vector<Row> rows;
@@ -17,6 +21,9 @@ public class View {
     private Task afterChange;
     final View me;
 
+    /**
+     * 
+     */
     public View() {
 	me = this;
 	rows = new Vector<Row>();
@@ -24,6 +31,11 @@ public class View {
 	children = new Vector<View>();
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public View afterChange(Task it) {
 	afterChange = it;
 	return this;
@@ -42,6 +54,11 @@ public class View {
 	}
     }
 
+    /**
+     * 
+     * @param row
+     * @return
+     */
     public View row(Row row) {
 	int nn = rows.size();
 	row.nn = nn;
@@ -50,17 +67,29 @@ public class View {
 	return this;
     }
 
+    /**
+     * 
+     * @param row
+     */
     public void drop(Row row) {
 	//row.clear();
 	this.rows.remove(row);
 	refreshChildren();
     }
 
+    /**
+     * 
+     */
     public void cleanUp() {
 	this.rows.removeAllElements();
 	refreshChildren();
     }
 
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     public Row move(int nn) {
 	if (rows.size() > 0) {
 	    int k = nn;
@@ -78,6 +107,11 @@ public class View {
 	}
     }
 
+    /**
+     * 
+     * @param comparator
+     * @return
+     */
     public View sort(Comparator comparator) {
 	final View sorted = new View();
 	final Comparator c = comparator;
@@ -97,6 +131,11 @@ public class View {
 	return sorted;
     }
 
+    /**
+     * 
+     * @param toggle
+     * @return
+     */
     public View select(Toggle toggle) {
 	final View filtered = new View();
 	final Toggle condition = toggle;
@@ -136,6 +175,11 @@ public class View {
 	this.rows.removeAllElements();
     }
 
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     public Numeric row(Numeric nn) {
 	final Numeric rowNumber = new Numeric();
 	final Numeric index = new Numeric().bind(nn);
@@ -158,10 +202,18 @@ public class View {
 	return rowNumber;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int size() {
 	return rows.size();
     }
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
 	System.out.println("\nView\n");
 	ColumnNote name = new ColumnNote();

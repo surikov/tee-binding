@@ -3,26 +3,51 @@ package tee.binding;
 import tee.binding.it.Numeric;
 import tee.binding.it.Note;
 
+/**
+ * 
+ * @author User
+ */
 public class Bough {
     private String _name;
     private Note _note;
     private Numeric _numeric;
     private String _raw;
     //private Attribute<Bough> _children = new Attribute<Bough>();
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Bough name(String it) {
 	_name = it;
 	return this;
     }
+    /**
+     * 
+     * @return
+     */
     public String name() {
 	return _name;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Bough raw(String it) {
 	_raw = it;
 	return this;
     }
+    /**
+     * 
+     * @return
+     */
     public String raw() {
 	return _raw;
     }
+    /**
+     * 
+     */
     public void gather() {
         if (_note != null) {
             _raw = _note.value();
@@ -43,6 +68,11 @@ public class Bough {
 	_children.item(b);
 	return b;
     }*/
+    /**
+     * 
+     * @param defaultValue
+     * @return
+     */
     public Note item(String defaultValue) {
 	if (_note == null) {
 	    _note = new Note().value(defaultValue);
@@ -52,6 +82,11 @@ public class Bough {
 	}
 	return _note;
     }
+    /**
+     * 
+     * @param defaultValue
+     * @return
+     */
     public Numeric item(double defaultValue) {
 	if (_numeric == null) {
 	    _numeric = new Numeric().value(defaultValue);

@@ -20,7 +20,7 @@ public class These<Kind> {
     private Task startWatchers;
 
     /**
-     * 
+     *
      */
     public These() {
         current = new It<Kind>();
@@ -56,7 +56,7 @@ public class These<Kind> {
     }
 
     /**
-     * 
+     *
      * @param task
      * @return
      */
@@ -66,7 +66,7 @@ public class These<Kind> {
     }
 
     /**
-     * 
+     *
      * @param task
      * @return
      */
@@ -84,7 +84,7 @@ public class These<Kind> {
     }
 
     /**
-     * 
+     *
      * @param nn
      * @return
      */
@@ -94,6 +94,19 @@ public class These<Kind> {
         } else {
             return values.get(nn).value();
         }
+    }
+
+    /**
+     * 
+     * @param nn
+     * @param val
+     * @return
+     */
+    public These<Kind> at(int nn, Kind val) {
+        if (nn >= 0 && nn < values.size()) {
+            values.get(nn).value(val);
+        }
+        return this;
     }
 
     /**
@@ -148,7 +161,7 @@ public class These<Kind> {
 
     /**
      *
-     * @param nn 
+     * @param nn
      */
     public void drop(int nn) {
         if (nn >= 0 && nn < values.size()) {
@@ -165,7 +178,7 @@ public class These<Kind> {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int size() {

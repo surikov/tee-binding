@@ -4,11 +4,20 @@ import tee.binding.task.Task;
 import tee.binding.it.Note;
 import tee.binding.it.It;
 
+/**
+ * 
+ * @author User
+ */
 public class Toggle extends It<Boolean> {
     @Override public Toggle afterChange(Task newValue) {
 	super.afterChange(newValue);
 	return this;
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Toggle and(Toggle value) {
 	final Toggle fvalue = value;
 	final Toggle me = this;
@@ -20,6 +29,11 @@ public class Toggle extends It<Boolean> {
 	});
 	return retvalue;
     }
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public Toggle or(Toggle value) {
 	final Toggle fvalue = value;
 	final Toggle me = this;
@@ -216,6 +230,10 @@ public class Toggle extends It<Boolean> {
 	});
 	return retvalue;
     }*/
+    /**
+     * 
+     * @return
+     */
     public Toggle not() {
 	final Toggle me = this;
 	final Toggle retvalue = new Toggle().value(!me.value());
@@ -230,6 +248,11 @@ public class Toggle extends It<Boolean> {
 	super.value(newValue);
 	return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Toggle bind(Toggle it) {
 	super.bind(it);
 	return this;
@@ -238,6 +261,10 @@ public class Toggle extends It<Boolean> {
 	super.bind(it);
 	return this;
     }
+    /**
+     * 
+     * @param args
+     */
     public static void main(String args[]) {
 	System.out.println("\nToggle\n");
 	System.out.println("/c = true and b or c");

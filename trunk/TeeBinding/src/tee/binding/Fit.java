@@ -5,6 +5,11 @@ import tee.binding.it.Note;
 import tee.binding.it.It;
 import java.util.*;
 
+/**
+ * 
+ * @author User
+ * @param <Kind>
+ */
 public class Fit<Kind> {
 
     Hashtable<String, It<Kind>> currentSet = new Hashtable<String, It<Kind>>();
@@ -17,6 +22,10 @@ public class Fit<Kind> {
 	}
     }).value("");
 
+    /**
+     * 
+     * @return
+     */
     public Note selector() {
 	return _selector;
     }
@@ -58,6 +67,11 @@ public class Fit<Kind> {
 	}
     }
 
+    /**
+     * 
+     * @param to
+     * @return
+     */
     public Fit<Kind> bind(Fit<Kind> to) {
 	if (to == null) {
 	    return this;
@@ -74,6 +88,11 @@ public class Fit<Kind> {
 	return this;
     }
 
+    /**
+     * 
+     * @param key
+     * @return
+     */
     public It<Kind> find(String key) {
 	It<Kind> r;
 	It<Kind> v = currentSet.get(key);
@@ -125,6 +144,13 @@ public class Fit<Kind> {
 	cashe.remove(this);
     }
 
+    /**
+     * 
+     * @param group
+     * @param key
+     * @param value
+     * @return
+     */
     public Fit<Kind> item(String group, String key, Kind value) {
 	Hashtable<String, It<Kind>> s = findSet(group);
 	It<Kind> v = s.get(key);
@@ -138,6 +164,10 @@ public class Fit<Kind> {
 	return this;
     }
 
+    /**
+     * 
+     * @param a
+     */
     public static void main(String[] a) {
 	System.out.println("\nFit\n");
 	Fit<String> g = new Fit<String>();

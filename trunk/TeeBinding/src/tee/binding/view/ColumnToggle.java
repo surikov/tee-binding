@@ -6,16 +6,30 @@ import tee.binding.it.Toggle;
 import java.util.*;
 import tee.binding.task.Task;
 
+/**
+ * 
+ * @author User
+ */
 public class ColumnToggle extends Column {
 
+    /**
+     * 
+     */
     protected Toggle current;
     private Vector<Toggle> values;
 
+    /**
+     * 
+     */
     public ColumnToggle() {
 	current = new Toggle();
 	values = new Vector<Toggle>();
     }
 
+    /**
+     * 
+     * @param nn
+     */
     @Override public void move(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    current.value(values.get(nn).value());
@@ -24,6 +38,11 @@ public class ColumnToggle extends Column {
 	}
     }
    
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnToggle is(boolean it) {
 	Toggle v = new Toggle().value(it);
 	values.add(v);
@@ -31,6 +50,11 @@ public class ColumnToggle extends Column {
 	return this;
     }
 
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public ColumnToggle is(Toggle it) {
 	Toggle v = new Toggle().bind(it);
 	values.add(v);
@@ -38,11 +62,20 @@ public class ColumnToggle extends Column {
 	return this;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Toggle is() {
 	return current;
     }
 
+    /**
+     * 
+     * @param nn
+     * @return
+     */
     @Override
     public Toggle at(Numeric nn) {
 	final Toggle columnValue = new Toggle();
@@ -61,6 +94,10 @@ public class ColumnToggle extends Column {
 	return columnValue;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> ascending() {
 	return new Comparator<Row>() {
 
@@ -79,6 +116,10 @@ public class ColumnToggle extends Column {
 	};
     }
 
+    /**
+     * 
+     * @return
+     */
     public Comparator<Row> descending() {
 	return new Comparator<Row>() {
 

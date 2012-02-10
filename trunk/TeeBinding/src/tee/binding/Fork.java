@@ -6,6 +6,11 @@ import tee.binding.it.Toggle;
 import tee.binding.it.Note;
 import tee.binding.it.It;
 
+/**
+ * 
+ * @author User
+ * @param <Kind>
+ */
 public class Fork<Kind> extends It<Kind> {
     It<Kind> then = new It<Kind>().afterChange(new Task() {
         @Override public void doTask() {
@@ -34,26 +39,55 @@ public class Fork<Kind> extends It<Kind> {
             bind(otherwise);
         }
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Fork when(Toggle it) {
         condition.bind(it);
         return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Fork then(It<Kind> it) {
         then.bind(it);
         return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Fork then(Kind it) {
         then.value(it);
         return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Fork otherwise(It<Kind> it) {
         otherwise.bind(it);
         return this;
     }
+    /**
+     * 
+     * @param it
+     * @return
+     */
     public Fork otherwise(Kind it) {
         otherwise.value(it);
         return this;
     }
+    /**
+     * 
+     * @param a
+     */
     public static void main(String a[]) {
         System.out.println("\nFork\n");
         System.out.println("/n = -10");
