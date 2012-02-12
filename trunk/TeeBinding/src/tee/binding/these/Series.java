@@ -28,6 +28,12 @@ public class Series {
 	    columns.get(i).select(nn);
 	}
     }
+    public void probe(int nn) {
+
+	for (int i = 0; i < columns.size(); i++) {
+	    columns.get(i).probe(nn);
+	}
+    }
 
     /**
      * 
