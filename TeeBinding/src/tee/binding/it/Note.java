@@ -72,9 +72,13 @@ public class Note extends It<String> {
      * @return
      */
     public Toggle like(final Note bb) {
+	//if(this.value()==null)this.value("");
 	//return new Toggle().like(this, it);
 	final Note aa = this;
 	//final Note bb = b;
+	//System.out.println(aa);
+	//System.out.println(bb);
+	//System.out.println(aa.value());
 	final Toggle retvalue = new Toggle().value(aa.value().indexOf(bb.value()) > -1);
 	new Note().bind(aa).afterChange(new Task() {
 	    @Override public void doTask() {
