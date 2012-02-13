@@ -113,6 +113,7 @@ public class These<Kind> {
     public These<Kind> value(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it).afterChange(startWatchers);
 	values.add(v);
+        probe(0);
 	return this;
     }
     /**
@@ -123,6 +124,7 @@ public class These<Kind> {
     public These<Kind> value(Kind it) {
 	It<Kind> v = new It<Kind>().value(it).afterChange(startWatchers);
 	values.add(v);
+        probe(0);
 	return this;
     }
     /**
@@ -140,6 +142,10 @@ public class These<Kind> {
     public These<Kind> select(int nn) {
 	select.value(nn);
 	return this;
+    }
+    public void clear(){
+        this.values.removeAllElements();
+        startWatchers.start();
     }
     public void probe(int nn) {
 	
