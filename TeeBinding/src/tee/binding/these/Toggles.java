@@ -18,7 +18,7 @@ public class Toggles extends These<Boolean> {
      */
     public Toggles() {
         super();
-        valueToggle = new Toggle().bind(super.value());
+        valueToggle = new Toggle().bind(super.current());
         isToggle = new Toggle().bind(super.is());
     }
 
@@ -28,7 +28,7 @@ public class Toggles extends These<Boolean> {
     }
 
     @Override
-    public Toggle value() {
+    public Toggle current() {
         return valueToggle;
     }
 
@@ -37,8 +37,8 @@ public class Toggles extends These<Boolean> {
      * @param it
      * @return
      */
-    public Toggles value(Toggle it) {
-        super.value(it);
+    public Toggles current(Toggle it) {
+        super.current(it);
         return this;
     }
 

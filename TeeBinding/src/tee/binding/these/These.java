@@ -74,7 +74,7 @@ public class These<Kind> {
      *
      * @return
      */
-    public It<Kind> value() {
+    public It<Kind> current() {
 	return _value;
     }
     public It<Kind> is() {
@@ -110,7 +110,7 @@ public class These<Kind> {
      * @param it
      * @return
      */
-    public These<Kind> value(It<Kind> it) {
+    public These<Kind> current(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it).afterChange(startWatchers);
 	values.add(v);
         probe(0);
@@ -121,7 +121,7 @@ public class These<Kind> {
      * @param it
      * @return
      */
-    public These<Kind> value(Kind it) {
+    public These<Kind> current(Kind it) {
 	It<Kind> v = new It<Kind>().value(it).afterChange(startWatchers);
 	values.add(v);
         probe(0);
@@ -168,7 +168,7 @@ public class These<Kind> {
      *
      * @param nn
      */
-    public void drop(int nn) {
+    /*public void drop(int nn) {
 	if (nn >= 0 && nn < values.size()) {
 	    It<Kind> it = values.remove(nn);
 	    it.unbind();
@@ -180,7 +180,7 @@ public class These<Kind> {
 	    }
 	    startWatchers.start();
 	}
-    }
+    }*/
     /**
      *
      * @return

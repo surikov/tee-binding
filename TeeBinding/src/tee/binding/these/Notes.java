@@ -18,7 +18,7 @@ public class Notes extends These<String> {
      */
     public Notes() {
         super();
-        valueNote = new Note().bind(super.value());
+        valueNote = new Note().bind(super.current());
         isNote = new Note().bind(super.is());
     }
 
@@ -28,7 +28,7 @@ public class Notes extends These<String> {
     }
 
     @Override
-    public Note value() {
+    public Note current() {
         return valueNote;
     }
 
@@ -37,8 +37,8 @@ public class Notes extends These<String> {
      * @param it
      * @return
      */
-    public Notes value(Note it) {
-        super.value(it);
+    public Notes current(Note it) {
+        super.current(it);
         return this;
     }
 
