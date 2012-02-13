@@ -50,11 +50,11 @@ public class Series {
      *
      * @param nn
      */
-    public void drop(int nn) {
+    /*public void drop(int nn) {
         for (int i = 0; i < columns.size(); i++) {
             columns.get(i).drop(nn);
         }
-    }
+    }*/
 
     /**
      *

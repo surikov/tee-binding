@@ -18,7 +18,7 @@ public class Numerics extends These<Double> {
      */
     public Numerics() {
         super();
-        valueNumeric = new Numeric().bind(super.value());
+        valueNumeric = new Numeric().bind(super.current());
         isNumeric = new Numeric().bind(super.is());
     }
 
@@ -28,7 +28,7 @@ public class Numerics extends These<Double> {
     }
 
     @Override
-    public Numeric value() {
+    public Numeric current() {
         return valueNumeric;
     }
 
@@ -37,8 +37,8 @@ public class Numerics extends These<Double> {
      * @param it
      * @return
      */
-    public Numerics value(Numeric it) {
-        super.value(it);
+    public Numerics current(Numeric it) {
+        super.current(it);
         return this;
     }
 
@@ -47,8 +47,8 @@ public class Numerics extends These<Double> {
      * @param it
      * @return
      */
-    public Numerics value(int it) {
-        super.value((double) it);
+    public Numerics current(int it) {
+        super.current((double) it);
         return this;
     }
 
