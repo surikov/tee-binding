@@ -164,7 +164,7 @@ public class Bundle {
 		    if (!t.value()) {
 			wh.rows.remove(i);
 			i--;
-		    }		    
+		    }
 		}
 	    }
 	};
@@ -282,18 +282,18 @@ public class Bundle {
 	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
 	}
 
-	/*addressBook.select(1);
+	addressBook.select(1);
 	System.out.println("drop " + fio.current().value());
 	addressBook.drop();
 	for (int i = 0; i < addressBook.size(); i++) {
-	addressBook.select(i);
-	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	    addressBook.select(i);
+	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
 	}
 	System.out.println("--");
-	for (int i = 0; i < byName.size(); i++) {
-	byName.select(i);
-	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
-	}*/
+	for (int i = 0; i < aux.size(); i++) {
+	    aux.select(i);
+	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	}
 	/*System.out.println("add " );
 	addressBook.series(new Series().field(fio.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")));
 	for (int i = 0; i < addressBook.size(); i++) {
