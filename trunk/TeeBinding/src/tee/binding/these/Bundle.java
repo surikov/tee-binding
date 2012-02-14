@@ -82,6 +82,9 @@ public class Bundle {
 	    }
 	}
 	cashe.remove(this);
+	if (this.adjust != null) {
+	    adjust.start();
+	}
 	if (this.afterChange != null) {
 	    afterChange.start();
 	}
@@ -91,7 +94,7 @@ public class Bundle {
      * @param nn
      */
     public void drop() {
-	int nn = select().value().intValue();	
+	int nn = select().value().intValue();
 	dropForEachBindedItem(rows.get(nn).order(), new Vector<Bundle>());
     }
     private void clearForEachBindedItem(Vector<Bundle> cashe) {
@@ -122,6 +125,9 @@ public class Bundle {
 	    }
 	}
 	cashe.remove(this);
+	if (this.adjust != null) {
+	    adjust.start();
+	}
 	if (this.afterChange != null) {
 	    afterChange.start();
 	}
@@ -147,8 +153,21 @@ public class Bundle {
 	    return rows.size();
 	}
     }
-    public Bundle where(Toggle t) {
-	Bundle wh = new Bundle();
+    public Bundle where(final Toggle t) {
+	final Bundle wh = new Bundle();
+	wh.adjust = new Task() {
+	    @Override
+	    public void doTask() {
+		for (int i = 0; i < wh.size(); i++) {
+		    wh.probe(i);
+		    //System.out.println(i+"/"+(!t.value())+"/"+wh.size());
+		    if (!t.value()) {
+			wh.rows.remove(i);
+			i--;
+		    }		    
+		}
+	    }
+	};
 	wh.bind(this);
 	return wh;
     }
@@ -230,16 +249,16 @@ public class Bundle {
 	Notes mail = new Notes();
 	Toggles man = new Toggles();
 	Bundle addressBook = new Bundle()//
-		.series(new Series().field(fio.current("Vasya")).field(man.current(true)).field(age.current(19)).field(mail.current("vpupkin@mail.ru")))//
+		.series(new Series().field(fio.is("Vasya")).field(man.is(true)).field(age.is(19)).field(mail.is("vpupkin@mail.ru")))//
 		//.series(new Series().field(fio.value("Petya")).field(man.value(true)).field(age.value(22)).field(mail.value("petrpetrov@gmail.com")))//
-		.series(new Series().field(fio.current("Sasha")).field(man.current(true)).field(age.current(20)).field(mail.current("alxndr@aol.com")))//
-		.series(new Series().field(fio.current("Masha")).field(man.current(false)).field(age.current(21)).field(mail.current("masha@mail.ru")))//
+		.series(new Series().field(fio.is("Sasha")).field(man.is(true)).field(age.is(20)).field(mail.is("alxndr@aol.com")))//
+		.series(new Series().field(fio.is("Masha")).field(man.is(false)).field(age.is(21)).field(mail.is("masha@mail.ru")))//
 		//.series(new Series().field(fio.value("Kolya")).field(man.value(true)).field(age.value(21)).field(mail.value("nikolay@gmail.com")))//
 		//.series(new Series().field(fio.value("Vanya")).field(man.value(true)).field(age.value(22)).field(mail.value("ivan@mail.ru")))//
 		//.series(new Series().field(fio.value("Olya")).field(man.value(false)).field(age.value(19)).field(mail.value("olga@aol.com")))//
 		//.series(new Series().field(fio.value("Vika")).field(man.value(false)).field(age.value(21)).field(mail.value("avictorya@gmail.com")))//
 		//.series(new Series().field(fio.value("Misha")).field(man.value(true)).field(age.value(21)).field(mail.value("mike@mail.ru")))//
-		.series(new Series().field(fio.current("Glasha")).field(man.current(false)).field(age.current(20)).field(mail.current("glasha@gmail.com")))//
+		.series(new Series().field(fio.is("Glasha")).field(man.is(false)).field(age.is(20)).field(mail.is("glasha@gmail.com")))//
 		;
 	for (int i = 0; i < addressBook.size(); i++) {
 	    addressBook.select(i);
@@ -251,24 +270,42 @@ public class Bundle {
 	    //System.out.println(mail.is().value() + " - " + mail.is().like("gmail.com").value());
 	}
 	System.out.println("--");
-	Bundle byName = addressBook.sort(fio.ascending());
-	for (int i = 0; i < byName.size(); i++) {
-	    byName.select(i);
+	Bundle aux = addressBook.where(man.is().equal(false))//.sort(age.ascending())
+		.afterChange(new Task() {
+	    @Override
+	    public void doTask() {
+		//System.out.println("change byName");
+	    }
+	});
+	for (int i = 0; i < aux.size(); i++) {
+	    aux.select(i);
 	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
 	}
 
-	addressBook.select(1);
+	/*addressBook.select(1);
 	System.out.println("drop " + fio.current().value());
 	addressBook.drop();
 	for (int i = 0; i < addressBook.size(); i++) {
-	    addressBook.select(i);
-	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	addressBook.select(i);
+	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
 	}
 	System.out.println("--");
 	for (int i = 0; i < byName.size(); i++) {
-	    byName.select(i);
-	    System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	byName.select(i);
+	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	}*/
+	/*System.out.println("add " );
+	addressBook.series(new Series().field(fio.is("Kolya")).field(man.is(true)).field(age.is(21)).field(mail.is("nikolay@gmail.com")));
+	for (int i = 0; i < addressBook.size(); i++) {
+	addressBook.select(i);
+	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
 	}
+	System.out.println("--");
+	for (int i = 0; i < aux.size(); i++) {
+	aux.select(i);
+	System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
+	}*/
+
 	/*
 	 * Bundle gmail=addressBook.where(mail.is().like("gmail.com")); for (int
 	 * i = 0; i < gmail.size(); i++) { //addressBook.select(i);

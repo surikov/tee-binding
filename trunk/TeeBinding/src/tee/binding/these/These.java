@@ -110,7 +110,7 @@ public class These<Kind> {
      * @param it
      * @return
      */
-    public These<Kind> current(It<Kind> it) {
+    public These<Kind> is(It<Kind> it) {
 	It<Kind> v = new It<Kind>().bind(it).afterChange(startWatchers);
 	values.add(v);
         probe(0);
@@ -121,7 +121,7 @@ public class These<Kind> {
      * @param it
      * @return
      */
-    public These<Kind> current(Kind it) {
+    public These<Kind> is(Kind it) {
 	It<Kind> v = new It<Kind>().value(it).afterChange(startWatchers);
 	values.add(v);
         probe(0);

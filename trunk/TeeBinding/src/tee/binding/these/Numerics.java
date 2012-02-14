@@ -37,8 +37,8 @@ public class Numerics extends These<Double> {
      * @param it
      * @return
      */
-    public Numerics current(Numeric it) {
-        super.current(it);
+    public Numerics is(Numeric it) {
+        super.is(it);
         return this;
     }
 
@@ -47,8 +47,8 @@ public class Numerics extends These<Double> {
      * @param it
      * @return
      */
-    public Numerics current(int it) {
-        super.current((double) it);
+    public Numerics is(int it) {
+        super.is((double) it);
         return this;
     }
 
@@ -56,5 +56,36 @@ public class Numerics extends These<Double> {
     public Numerics select(int nn) {
         super.select(nn);
         return this;
+    }
+    public Comparator<Series> ascending() {
+	return new Comparator<Series>() {
+
+	    @Override public int compare(Series o1, Series o2) {
+		o1.probe();
+		double s1 = is().value();
+		o2.probe();
+		double s2 = is().value();
+		double n = s1 - s2;
+		return (int) (+n);
+	    }
+	};
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Comparator<Series> descending() {
+	return new Comparator<Series>() {
+
+	    @Override public int compare(Series o1, Series o2) {
+		o1.probe();
+		double s1 = is().value();
+		o2.probe();
+		double s2 = is().value();
+		double n = s1 - s2;
+		return (int) (-n);
+	    }
+	};
     }
 }

@@ -37,8 +37,8 @@ public class Notes extends These<String> {
      * @param it
      * @return
      */
-    public Notes current(Note it) {
-        super.current(it);
+    public Notes is(Note it) {
+        super.is(it);
         return this;
     }
 
