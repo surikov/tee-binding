@@ -85,7 +85,7 @@ public class These<Kind> {
      * @param nn
      * @return
      */
-    public Kind at(int nn) {
+    private Kind at(int nn) {
 	if (nn < 0 || nn >= values.size()) {
 	    return null;
 	}
@@ -99,12 +99,12 @@ public class These<Kind> {
      * @param val
      * @return
      */
-    public These<Kind> at(int nn, Kind val) {
+    /*public These<Kind> at(int nn, Kind val) {
 	if (nn >= 0 && nn < values.size()) {
 	    values.get(nn).value(val);
 	}
 	return this;
-    }
+    }*/
     /**
      *
      * @param it
