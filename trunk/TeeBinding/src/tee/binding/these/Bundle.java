@@ -78,12 +78,13 @@ public class Bundle {
         for (int i = 0; i < rows.size(); i++) {
             if (rows.get(i).order() == nn) {
                 ord = i;//rows.get(i).order();
-                //System.out.println(i+"/"+ord);
+                //System.out.println("found "+i+"/"+ord);
                 break;
             }
         }
         if (ord > -1) {
             rows.remove(ord);
+            select(-1);
         }
         cashe.add(this);
         for (int i = 0; i < _binded.size(); i++) {
@@ -107,7 +108,9 @@ public class Bundle {
     public void drop() {
         int nn = select().value().intValue();
         //System.out.println(nn);
-        dropForEachBindedItem(rows.get(nn).order(), new Vector<Bundle>());
+        if (nn > -1 && nn < rows.size()) {
+            dropForEachBindedItem(rows.get(nn).order(), new Vector<Bundle>());
+        }
     }
 
     private void clearForEachBindedItem(Vector<Bundle> cashe) {
@@ -208,7 +211,7 @@ public class Bundle {
      * @param to
      * @return
      */
-    public Bundle bind(Bundle to) {
+    public Bundle bind(final Bundle to) {
         if (to == null) {
             return this;
         }
@@ -227,10 +230,40 @@ public class Bundle {
             adjust.start();
         }
         //this.select().bind(to.select());
+        new It<Double>().afterChange(new Task() {
+
+            @Override
+            public void doTask() {
+                int nn = select.value().intValue();
+                if (nn > -1 && nn < rows.size()) {
+                    to.selectByOrder(rows.get(nn).order());
+                }
+            }
+        }).bind(select());
+        new It<Double>().afterChange(new Task() {
+
+            @Override
+            public void doTask() {
+                int nn = to.select.value().intValue();
+                if (nn > -1 && nn < to.rows.size()) {
+                    selectByOrder(to.rows.get(nn).order());
+                }
+            }
+        }).bind(to.select());
         if (this.afterChange != null) {
             afterChange.start();
         }
         return this;
+    }
+
+    private void selectByOrder(int r) {
+        for (int i = 0; i < size(); i++) {
+            if (rows.get(i).order() == r) {
+                select(i);
+                break;
+            }
+
+        }
     }
 
     /**
@@ -299,8 +332,8 @@ public class Bundle {
         }
         System.out.println("--");
         //System.out.println(addressBook.select().value());
-        Bundle aux = addressBook.where(man.is().equal(false))//.sort(age.ascending())
-                .afterChange(new Task() {
+        Bundle aux = addressBook //.where(man.is().equal(false))
+                .sort(age.ascending()).afterChange(new Task() {
 
             @Override
             public void doTask() {
@@ -321,9 +354,12 @@ public class Bundle {
         //System.out.println("sel");
 //addressBook.select(0);
         //System.out.println(addressBook.select().value());
-        aux.select(0);
-        System.out.println("drop " + fio.current().value());
-        aux.drop();
+        //aux.select(2);
+        addressBook.select(3);
+        System.out.println("drop " + fio.current().value() + "/" + aux.select().value() + "/" + addressBook.select().value());
+        addressBook.drop();
+        //aux.select(-1);
+        //addressBook.select(-1);
         for (int i = 0; i < addressBook.size(); i++) {
             addressBook.select(i);
             System.out.println(i + ": " + fio.current().value() + ": " + age.current().value() + ": " + mail.current().value() + ": " + man.current().value());
