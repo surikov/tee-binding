@@ -18,6 +18,14 @@ public class Series {
     public Series() {
         columns = new Vector<These>();
     }
+/*
+    public int size() {
+        return columns.size();
+    }
+
+    public These column(int nn) {
+        return columns.get(nn);
+    }*/
 
     public void order(int n) {
         order = n;
@@ -50,12 +58,10 @@ public class Series {
      *
      * @param nn
      */
-    /*public void drop(int nn) {
-        for (int i = 0; i < columns.size(); i++) {
-            columns.get(i).drop(nn);
-        }
-    }*/
-
+    /*
+     * public void drop(int nn) { for (int i = 0; i < columns.size(); i++) {
+     * columns.get(i).drop(nn); } }
+     */
     /**
      *
      * @param column

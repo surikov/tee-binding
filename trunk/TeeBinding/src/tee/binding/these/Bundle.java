@@ -134,7 +134,12 @@ public class Bundle {
     private void seriesForEachBindedItem(Series row, Vector<Bundle> cashe) {
         Series r = new Series();
         r.columns = row.columns;
-        r.order(rows.size());
+        int ordr = rows.size();
+        if (row.columns.size() > 0) {
+            //System.out.println(ordr+"/"+(row.columns.get(0).size()-1));
+            ordr=row.columns.get(0).size()-1;
+        }
+        r.order(ordr);
         rows.add(r);
         cashe.add(this);
         for (int i = 0; i < _binded.size(); i++) {
