@@ -1,7 +1,7 @@
 package tee.binding.these;
 
 import java.util.*;
-import tee.binding.view.*;
+//import tee.binding.view.*;
 
 /**
  *
