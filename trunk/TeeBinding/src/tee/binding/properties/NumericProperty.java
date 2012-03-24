@@ -3,7 +3,7 @@ package tee.binding.properties;
 import tee.binding.it.*;
 
 public class NumericProperty<Owner> {
-    public Numeric property;
+    final public Numeric property;
     private Owner owner;
     public NumericProperty(Owner owner) {
 	property = new Numeric();

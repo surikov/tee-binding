@@ -3,7 +3,7 @@ package tee.binding.properties;
 import tee.binding.it.*;
 
 public class ToggleProperty<Owner> {
-    public Toggle property;
+    final public Toggle property;
     private Owner owner;
     public ToggleProperty(Owner owner) {
 	property = new Toggle();
