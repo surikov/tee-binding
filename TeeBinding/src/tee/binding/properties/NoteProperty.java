@@ -3,7 +3,7 @@ package tee.binding.properties;
 import tee.binding.it.*;
 
 public class NoteProperty<Owner> {
-    public Note property;
+    final public Note property;
     private Owner owner;
     public NoteProperty(Owner owner) {
 	property = new Note();
