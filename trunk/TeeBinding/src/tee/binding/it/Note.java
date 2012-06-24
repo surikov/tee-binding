@@ -11,6 +11,10 @@ import tee.binding.it.It;
  */
 public class Note extends It<String> {
     private Note _otherwise = null;
+    public Note(){
+	super();
+	this.value("");
+    }
     @Override
     public Note afterChange(Task newValue) {
 	super.afterChange(newValue);

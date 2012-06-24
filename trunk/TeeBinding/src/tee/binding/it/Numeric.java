@@ -17,6 +17,10 @@ public class Numeric extends It<Double> {
     private It<String> _string = null;
     //private Numeric me = this;
     private Numeric _otherwise = null;
+    public Numeric(){
+	super();
+	this.value(0);
+    }
     @Override protected void adjust() {
 	if (Double.isNaN(this._value)) {
 	    this._value = 0.0;
