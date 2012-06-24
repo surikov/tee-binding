@@ -9,6 +9,10 @@ import tee.binding.it.It;
  * @author User
  */
 public class Toggle extends It<Boolean> {
+    public Toggle(){
+	super();
+	this.value(false);
+    }
     @Override public Toggle afterChange(Task newValue) {
 	super.afterChange(newValue);
 	return this;
