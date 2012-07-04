@@ -40,31 +40,37 @@ public class Bough {
         return c;
     }
 
-    public static void dump(Bough b, String pad) {
-        System.out.print(pad);
-        System.out.print(b.name.property.value());
-        System.out.print(": ");
-        if (b.attribute.property.value()) {
-            System.out.print("{");
-        } else {
-            System.out.print("[");
-        }
-        
-        System.out.print(b.value.property.value());
-        if (b.attribute.property.value()) {
-            System.out.println("}");
-        } else {
-            System.out.println("]");
-        }
+    public static void dump(StringBuilder sb, Bough b, String pad) {
+        sb.append("\n" + pad + "<" + b.name.property.value());
         for (int i = 0; i < b.children.size(); i++) {
-            dump(b.children.get(i),"."+pad);
+            if (b.children.get(i).attribute.property.value()) {
+                sb.append(" " + b.children.get(i).name.property.value() //
+                        + "=\"" + b.children.get(i).value.property.value() + "\"");
+            }
+        }
+        sb.append(">" + b.value.property.value());
+        boolean hasChildren = false;
+        for (int i = 0; i < b.children.size(); i++) {
+            if (!b.children.get(i).attribute.property.value()) {
+                hasChildren = true;
+                dump(sb, b.children.get(i), "\t" + pad);
+            }
+        }
+        if (hasChildren) {
+            sb.append("\n"+pad + "</" + b.name.property.value()+">");
+        } else {
+            sb.append( "</" + b.name.property.value()+">");
         }
     }
 
     public static void main(String[] a) {
         Bough b = new Bough().name.is("Test").value.is("Ops");
-        b.child("test").child("test2").child("test3").value.is("Ya!");
-        System.out.println(b.child("test").child("test2").child("test3").value.property.value());
-        dump(b, "");
+        b.child("test").child("test2").child("test3").attribute.is(true).value.is("Ya!");
+        b.child("test").child("test4").value.is("Nope!");
+        b.child("test").child(new Bough().name.is("test5").value.is("Yet!"));
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        dump(sb, b, "");        
+        System.out.println(sb.toString());
     }
 }
