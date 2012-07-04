@@ -565,11 +565,11 @@ public class Numeric extends It<Double> {
 			}
 		    }
 		}
-	    }).value("" + value());
+	    }).value(new java.math.BigDecimal(value()).toString());
 	    new It<Double>().bind(this).afterChange(new Task() {
 		@Override
 		public void doTask() {
-		    _string.value("" + value());
+		    _string.value(new java.math.BigDecimal(value()).toString());
 		}
 	    });
 	}
