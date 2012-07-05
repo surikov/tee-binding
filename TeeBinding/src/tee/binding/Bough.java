@@ -1,7 +1,14 @@
 package tee.binding;
 
 import tee.binding.properties.*;
+import tee.binding.it.*;
 import java.util.*;
+import javax.xml.parsers.*;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
+import java.io.*;
 
 /**
  * 
@@ -9,14 +16,20 @@ import java.util.*;
  */
 public class Bough {
 
+    public Bough parent = null;
     public NoteProperty<Bough> name = new NoteProperty(this);
     public NoteProperty<Bough> value = new NoteProperty(this);
-    public Vector<Bough> children = new Vector<Bough>();
+    private Vector<Bough> children = new Vector<Bough>();
     public ToggleProperty<Bough> attribute = new ToggleProperty<Bough>(this);
 
     public Bough child(Bough b) {
         children.add(b);
+        b.parent = this;
         return this;
+    }
+
+    public Vector<Bough> children() {
+        return children;
     }
 
     public Bough child(String n) {
@@ -26,7 +39,7 @@ public class Bough {
             }
         }
         Bough b = new Bough().name.is(n);
-        children.add(b);
+        child(b);
         return b;
     }
 
@@ -40,7 +53,7 @@ public class Bough {
         return c;
     }
 
-    public static void dump(StringBuilder sb, Bough b, String pad) {
+    public static void dumpXML(StringBuilder sb, Bough b, String pad) {
         sb.append("\n" + pad + "<" + b.name.property.value());
         for (int i = 0; i < b.children.size(); i++) {
             if (b.children.get(i).attribute.property.value()) {
@@ -53,14 +66,56 @@ public class Bough {
         for (int i = 0; i < b.children.size(); i++) {
             if (!b.children.get(i).attribute.property.value()) {
                 hasChildren = true;
-                dump(sb, b.children.get(i), "\t" + pad);
+                dumpXML(sb, b.children.get(i), "\t" + pad);
             }
         }
         if (hasChildren) {
-            sb.append("\n"+pad + "</" + b.name.property.value()+">");
+            sb.append("\n" + pad + "</" + b.name.property.value() + ">");
         } else {
-            sb.append( "</" + b.name.property.value()+">");
+            sb.append("</" + b.name.property.value() + ">");
         }
+    }
+
+    public static Bough parseXML(String data) {
+        final It<Bough> current = new It<Bough>().value(new Bough());
+
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            DefaultHandler handler = new DefaultHandler() {
+
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    Bough b = new Bough().name.is(qName);
+                    if (current.value() != null) {
+                        current.value().child(b);
+                    }
+                    current.value(b);
+                    for (int i = 0; i < attributes.getLength(); i++) {
+                        current.value().child(new Bough()//
+                                .name.is(attributes.getQName(i))//
+                                .value.is(attributes.getValue(i))//
+                                .attribute.is(true)//
+                                );
+                    }
+                }
+
+                public void endElement(String uri, String localName, String qName) throws SAXException {
+                    String c = current.value().value.property.value();
+                    current.value().value.is(c.trim());
+                    current.value(current.value().parent);
+                }
+
+                public void characters(char ch[], int start, int length) throws SAXException {
+                    String c = current.value().value.property.value();
+                    current.value().value.is(c + new String(ch, start, length));
+                }
+            };
+            InputStream is = new ByteArrayInputStream(data.getBytes("UTF-8"));
+            saxParser.parse(is, handler);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return current.value().children().get(0);
     }
 
     public static void main(String[] a) {
@@ -70,7 +125,12 @@ public class Bough {
         b.child("test").child(new Bough().name.is("test5").value.is("Yet!"));
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        dump(sb, b, "");        
+        dumpXML(sb, b, "");
+        String xml = sb.toString();
+        System.out.println(xml);
+        sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        dumpXML(sb, parseXML(xml), "");
         System.out.println(sb.toString());
     }
 }
