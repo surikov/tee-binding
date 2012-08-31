@@ -9,7 +9,11 @@ public class They<Kind> {
     public static void main(String[] s) {
         System.out.println("create");
         They<String> a = new They<String>()//
-                .value("1").value("2").value("3").value("4").afterChange(new Task() {
+                .value("1")//
+                .value("2")//
+                .value("3")//
+                .value("4")//
+                .afterChange(new Task() {
 
             @Override
             public void doTask() {
@@ -57,9 +61,9 @@ public class They<Kind> {
             lockDoAfterChange = true;
             if (this.afterChange != null) {
                 afterChange.start();
-                for (int i = 0; i < binded.size(); i++) {
-                    binded.get(i).doAfterChange();
-                }
+            }
+            for (int i = 0; i < binded.size(); i++) {
+                binded.get(i).doAfterChange();
             }
             lockDoAfterChange = false;
         }
@@ -119,10 +123,10 @@ public class They<Kind> {
         //this.binded.removeAllElements();
         this.doAfterChange();
         /*for (int i = 0; i < binded.size(); i++) {
-                    binded.get(i).doAfterChange();
-                }*/
-        while(binded.size()>0){
-            They<Kind> t=binded.get(0);
+         binded.get(i).doAfterChange();
+         }*/
+        while (binded.size() > 0) {
+            They<Kind> t = binded.get(0);
             binded.remove(t);
             t.doAfterChange();
         }
