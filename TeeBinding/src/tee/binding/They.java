@@ -42,7 +42,7 @@ public class They<Kind> {
     private They<Kind> bindTo = null;
     private Vector<They<Kind>> binded = new Vector<They<Kind>>();
     private Task afterChange = null;
-    private boolean lockDoAfterChange = false;
+    public boolean lockDoAfterChange = false;
     private boolean lockSize = false;
     private boolean lockAt = false;
     private boolean lockDelete = false;
@@ -56,7 +56,7 @@ public class They<Kind> {
         return this;
     }
 
-    private void doAfterChange() {
+    public void doAfterChange() {
         if (!lockDoAfterChange) {
             lockDoAfterChange = true;
             if (this.afterChange != null) {
