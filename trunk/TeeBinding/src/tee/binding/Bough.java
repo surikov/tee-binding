@@ -11,7 +11,7 @@ import org.xml.sax.helpers.*;
 import java.io.*;
 
 /**
- * 
+ *
  * @author User
  */
 public class Bough {
@@ -43,7 +43,7 @@ public class Bough {
         return b;
     }
 
-    public Vector<Bough> children(String n) {
+    public Vector<Bough> select(String n) {
         Vector<Bough> c = new Vector<Bough>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i).name.property.value().equals(n)) {
@@ -53,15 +53,20 @@ public class Bough {
         return c;
     }
 
+    public static String safeEncodedString(String s) {
+        s = s.replaceAll("\"", "&quot;");
+        return s;
+    }
+
     public static void dumpXML(StringBuilder sb, Bough b, String pad) {
         sb.append("\n" + pad + "<" + b.name.property.value());
         for (int i = 0; i < b.children.size(); i++) {
             if (b.children.get(i).attribute.property.value()) {
                 sb.append(" " + b.children.get(i).name.property.value() //
-                        + "=\"" + b.children.get(i).value.property.value() + "\"");
+                        + "=\"" + safeEncodedString(b.children.get(i).value.property.value()) + "\"");
             }
         }
-        sb.append(">" + b.value.property.value());
+        sb.append(">" + safeEncodedString(b.value.property.value()));
         boolean hasChildren = false;
         for (int i = 0; i < b.children.size(); i++) {
             if (!b.children.get(i).attribute.property.value()) {
@@ -83,7 +88,6 @@ public class Bough {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new DefaultHandler() {
-
                 public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
                     Bough b = new Bough().name.is(qName);
                     if (current.value() != null) {
@@ -127,10 +131,38 @@ public class Bough {
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         dumpXML(sb, b, "");
         String xml = sb.toString();
+        System.out.println("created tree");
         System.out.println(xml);
         sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         dumpXML(sb, parseXML(xml), "");
+        System.out.println("parsed tree");
         System.out.println(sb.toString());
+        /*
+        sb = new StringBuilder();
+        String testPath = "D:\\testdata\\AndroidExchange_12-_HRC01_0000000072.xml";
+        java.io.File file = new java.io.File(testPath);
+        try {
+            java.io.InputStream in = new FileInputStream(file);
+            byte[] bytes = new byte[(int) file.length()];
+            int len = bytes.length;
+            int total = 0;
+            while (total < len) {
+                int result = in.read(bytes, total, len - total);
+                if (result == -1) {
+                    break;
+                }
+                total = total + result;
+            }
+            String dat = new String(bytes);
+
+            Bough testXML = Bough.parseXML(dat);
+            dumpXML(sb, testXML, "");
+            System.out.println("big tree");
+            System.out.println(sb.toString());
+        } catch (Throwable tt) {
+            tt.printStackTrace();
+        }
+        */
     }
 }
