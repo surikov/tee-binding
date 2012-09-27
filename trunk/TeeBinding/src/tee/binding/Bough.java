@@ -16,7 +16,8 @@ import java.io.*;
  */
 public class Bough {
 
-    public Bough parent = null;
+    public Bough p = null;
+    public boolean a = false;
     public NoteProperty<Bough> name = new NoteProperty(this);
     public NoteProperty<Bough> value = new NoteProperty(this);
     private Vector<Bough> children = new Vector<Bough>();
@@ -24,7 +25,7 @@ public class Bough {
 
     public Bough child(Bough b) {
         children.add(b);
-        b.parent = this;
+        //b.parent = this;
         return this;
     }
 
@@ -59,6 +60,7 @@ public class Bough {
     }
 
     public static void dumpXML(StringBuilder sb, Bough b, String pad) {
+
         sb.append("\n" + pad + "<" + b.name.property.value());
         for (int i = 0; i < b.children.size(); i++) {
             if (b.children.get(i).attribute.property.value()) {
@@ -81,6 +83,125 @@ public class Bough {
         }
     }
 
+    public static String readTillChar(java.io.StringReader reader, char stop) throws Exception {
+        String s = "";
+        char c = 0;
+        int i = reader.read();
+        while (i != -1) {
+            c = (char) i;
+            if (c == stop) {
+                break;
+            } else {
+                s = s + c;
+                i = reader.read();
+            }
+        }
+        return s;
+    }
+
+    public static String pad(int n) {
+        String s = "";
+        for (int i = 0; i < n; i++) {
+            s = s + ".";
+        }
+        return s;
+    }
+
+    public static Bough parseJSON(String data) {
+        Bough current = null;
+        Vector<String> tokens = new Vector<String>();
+        try {
+            java.io.StringReader reader = new java.io.StringReader(data);
+            char c = 0;
+            String s = "";
+            int i = reader.read();
+            while (i != -1) {
+                c = (char) i;
+                if (c == '"') {
+                    tokens.add(readTillChar(reader, '"'));
+                } else {
+                    if (c == '{' || c == '}' || c == '[' || c == ']' || c == ',' || c == ':') {
+                        if (tokens.size() > 0) {
+                            if (tokens.get(tokens.size() - 1).equals("/delimiter:")) {
+                                tokens.add(s.trim());
+                            }
+                        }
+                        tokens.add("/delimiter" + c);
+                        if (c == ':') {
+                            s = "";
+                        }
+                    } else {
+                        s = s + c;
+                    }
+                }
+                i = reader.read();
+            }
+            for (int n = 0; n < tokens.size(); n++) {
+                if (tokens.get(n).equals("/delimiter{")) {
+                    String name = tokens.get(n + 1);
+                    Bough b = new Bough().name.is(name);
+                    if (current != null) {
+                        b.p = current;
+                        current.child(b);
+                    }
+                    current = b;
+                    String value = tokens.get(n + 3);
+                    if (!(value.equals("/delimiter{") || value.equals("/delimiter["))) {
+                        current.value.is(value);
+                    }
+                } else {
+                    if (tokens.get(n).equals("/delimiter,")) {
+                        if (current.a) {
+                            Bough b = new Bough().name.is(current.name.property.value());
+                            b.p = current.p;
+                            current.p.child(b);
+                            current = b;
+                            current.a=true;
+                            String value = tokens.get(n + 1);
+                            if (value.equals("/delimiter{")) {
+                                //
+                            } else {
+                                current.value.is(value);
+                            }
+                        } else {
+                            String name = tokens.get(n + 1);
+
+                            Bough b = new Bough().name.is(name);
+                            b.p = current.p;
+                            current.p.child(b);
+                            current = b;
+                            String value = tokens.get(n + 3);
+                            if (!(value.equals("/delimiter{") || value.equals("/delimiter["))) {
+                                current.value.is(value);
+                            }
+                        }
+                    } else {
+                        if (tokens.get(n).equals("/delimiter}")) {
+                            if (current.p != null) {
+                                current = current.p;
+                            }
+                        } else {
+                            if (tokens.get(n).equals("/delimiter[")) {
+                                String value = tokens.get(n + 1);
+                                if (!(value.equals("/delimiter{") || value.equals("/delimiter["))) {
+                                    current.value.is(value);
+                                }
+                                current.a = true;
+                            } else {
+                                if (tokens.get(n).equals("/delimiter]")) {
+                                    current.a = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return current;
+    }
+
     public static Bough parseXML(String data) {
         final It<Bough> current = new It<Bough>().value(new Bough());
 
@@ -91,22 +212,24 @@ public class Bough {
                 public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
                     Bough b = new Bough().name.is(qName);
                     if (current.value() != null) {
+                        b.p = current.value();
                         current.value().child(b);
                     }
                     current.value(b);
                     for (int i = 0; i < attributes.getLength(); i++) {
-                        current.value().child(new Bough()//
+                        Bough bb = new Bough()//
                                 .name.is(attributes.getQName(i))//
                                 .value.is(attributes.getValue(i))//
-                                .attribute.is(true)//
-                                );
+                                .attribute.is(true);
+                        bb.p = current.value();
+                        current.value().child(bb);
                     }
                 }
 
                 public void endElement(String uri, String localName, String qName) throws SAXException {
                     String c = current.value().value.property.value();
                     current.value().value.is(c.trim());
-                    current.value(current.value().parent);
+                    current.value(current.value().p);
                 }
 
                 public void characters(char ch[], int start, int length) throws SAXException {
@@ -139,9 +262,38 @@ public class Bough {
         System.out.println("parsed tree");
         System.out.println(sb.toString());
         /*
+         sb = new StringBuilder();
+         String testPath = "D:\\testdata\\AndroidExchange_12-_HRC01_0000000072.xml";
+         java.io.File file = new java.io.File(testPath);
+         try {
+         java.io.InputStream in = new FileInputStream(file);
+         byte[] bytes = new byte[(int) file.length()];
+         int len = bytes.length;
+         int total = 0;
+         while (total < len) {
+         int result = in.read(bytes, total, len - total);
+         if (result == -1) {
+         break;
+         }
+         total = total + result;
+         }
+         String dat = new String(bytes);
+
+         Bough testXML = Bough.parseXML(dat);
+         dumpXML(sb, testXML, "");
+         System.out.println("big tree");
+         System.out.println(sb.toString());
+         } catch (Throwable tt) {
+         tt.printStackTrace();
+         }
+         */
+
+
+        /*
         sb = new StringBuilder();
-        String testPath = "D:\\testdata\\AndroidExchange_12-_HRC01_0000000072.xml";
+        String testPath = "D:\\testdata\\test.json";
         java.io.File file = new java.io.File(testPath);
+        String dat = "";
         try {
             java.io.InputStream in = new FileInputStream(file);
             byte[] bytes = new byte[(int) file.length()];
@@ -154,15 +306,17 @@ public class Bough {
                 }
                 total = total + result;
             }
-            String dat = new String(bytes);
-
-            Bough testXML = Bough.parseXML(dat);
+            dat = new String(bytes);
+            System.out.println("json parse");
+            Bough testXML = Bough.parseJSON(dat);
             dumpXML(sb, testXML, "");
-            System.out.println("big tree");
+            System.out.println("json tree");
             System.out.println(sb.toString());
+
         } catch (Throwable tt) {
             tt.printStackTrace();
         }
+
         */
     }
 }
