@@ -20,7 +20,7 @@ public class Bough {
     public boolean a = false;
     public NoteProperty<Bough> name = new NoteProperty(this);
     public NoteProperty<Bough> value = new NoteProperty(this);
-    private Vector<Bough> children = new Vector<Bough>();
+    public Vector<Bough> children = new Vector<Bough>();
     public ToggleProperty<Bough> attribute = new ToggleProperty<Bough>(this);
 
     public Bough child(Bough b) {
@@ -28,10 +28,10 @@ public class Bough {
         //b.parent = this;
         return this;
     }
-
+/*
     public Vector<Bough> children() {
         return children;
-    }
+    }*/
 
     public Bough child(String n) {
         for (int i = 0; i < children.size(); i++) {
@@ -44,7 +44,7 @@ public class Bough {
         return b;
     }
 
-    public Vector<Bough> select(String n) {
+    public Vector<Bough> children(String n) {
         Vector<Bough> c = new Vector<Bough>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i).name.property.value().equals(n)) {
@@ -242,7 +242,7 @@ public class Bough {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        return current.value().children().get(0);
+        return current.value().children.get(0);
     }
 
     public static void main(String[] a) {
