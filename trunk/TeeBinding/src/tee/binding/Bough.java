@@ -261,6 +261,7 @@ public class Bough {
         dumpXML(sb, parseXML(xml), "");
         System.out.println("parsed tree");
         System.out.println(sb.toString());
+        Bough b2 =  Bough.parseXML(xml);
         /*
          sb = new StringBuilder();
          String testPath = "D:\\testdata\\AndroidExchange_12-_HRC01_0000000072.xml";
