@@ -28,10 +28,10 @@ public class Bough {
         //b.parent = this;
         return this;
     }
-/*
-    public Vector<Bough> children() {
-        return children;
-    }*/
+    /*
+     public Vector<Bough> children() {
+     return children;
+     }*/
 
     public Bough child(String n) {
         for (int i = 0; i < children.size(); i++) {
@@ -156,7 +156,7 @@ public class Bough {
                             b.p = current.p;
                             current.p.child(b);
                             current = b;
-                            current.a=true;
+                            current.a = true;
                             String value = tokens.get(n + 1);
                             if (value.equals("/delimiter{")) {
                                 //
@@ -204,7 +204,7 @@ public class Bough {
 
     public static Bough parseXML(String data) {
         final It<Bough> current = new It<Bough>().value(new Bough());
-
+        final StringBuilder stringBuilder = new StringBuilder();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -212,9 +212,11 @@ public class Bough {
                 public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
                     Bough b = new Bough().name.is(qName);
                     if (current.value() != null) {
+                        current.value().value.is(stringBuilder.toString().trim());
                         b.p = current.value();
                         current.value().child(b);
                     }
+                    stringBuilder.delete(0, stringBuilder.length());
                     current.value(b);
                     for (int i = 0; i < attributes.getLength(); i++) {
                         Bough bb = new Bough()//
@@ -227,14 +229,19 @@ public class Bough {
                 }
 
                 public void endElement(String uri, String localName, String qName) throws SAXException {
-                    String c = current.value().value.property.value();
-                    current.value().value.is(c.trim());
+                    //String c = current.value().value.property.value();
+                    //current.value().value.is(c.trim());
+                    current.value().value.is( stringBuilder.toString().trim());
                     current.value(current.value().p);
+                    stringBuilder.delete(0, stringBuilder.length());
+                    stringBuilder.append(current.value().value.property.value());
                 }
 
                 public void characters(char ch[], int start, int length) throws SAXException {
-                    String c = current.value().value.property.value();
-                    current.value().value.is(c + new String(ch, start, length));
+                    //String c = current.value().value.property.value();
+                    //current.value().value.is(c + new String(ch, start, length));
+                    //System.out.println("-----------"+ch.length);
+                    stringBuilder.append(ch,start,length);
                 }
             };
             InputStream is = new ByteArrayInputStream(data.getBytes("UTF-8"));
@@ -261,7 +268,7 @@ public class Bough {
         dumpXML(sb, parseXML(xml), "");
         System.out.println("parsed tree");
         System.out.println(sb.toString());
-        Bough b2 =  Bough.parseXML(xml);
+        Bough b2 = Bough.parseXML(xml);
         /*
          sb = new StringBuilder();
          String testPath = "D:\\testdata\\AndroidExchange_12-_HRC01_0000000072.xml";
@@ -291,33 +298,33 @@ public class Bough {
 
 
         /*
-        sb = new StringBuilder();
-        String testPath = "D:\\testdata\\test.json";
-        java.io.File file = new java.io.File(testPath);
-        String dat = "";
-        try {
-            java.io.InputStream in = new FileInputStream(file);
-            byte[] bytes = new byte[(int) file.length()];
-            int len = bytes.length;
-            int total = 0;
-            while (total < len) {
-                int result = in.read(bytes, total, len - total);
-                if (result == -1) {
-                    break;
-                }
-                total = total + result;
-            }
-            dat = new String(bytes);
-            System.out.println("json parse");
-            Bough testXML = Bough.parseJSON(dat);
-            dumpXML(sb, testXML, "");
-            System.out.println("json tree");
-            System.out.println(sb.toString());
+         sb = new StringBuilder();
+         String testPath = "D:\\testdata\\test.json";
+         java.io.File file = new java.io.File(testPath);
+         String dat = "";
+         try {
+         java.io.InputStream in = new FileInputStream(file);
+         byte[] bytes = new byte[(int) file.length()];
+         int len = bytes.length;
+         int total = 0;
+         while (total < len) {
+         int result = in.read(bytes, total, len - total);
+         if (result == -1) {
+         break;
+         }
+         total = total + result;
+         }
+         dat = new String(bytes);
+         System.out.println("json parse");
+         Bough testXML = Bough.parseJSON(dat);
+         dumpXML(sb, testXML, "");
+         System.out.println("json tree");
+         System.out.println(sb.toString());
 
-        } catch (Throwable tt) {
-            tt.printStackTrace();
-        }
+         } catch (Throwable tt) {
+         tt.printStackTrace();
+         }
 
-        */
+         */
     }
 }
