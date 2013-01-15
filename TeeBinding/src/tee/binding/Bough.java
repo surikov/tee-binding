@@ -55,6 +55,9 @@ public class Bough {
     }
 
     public static String safeEncodedString(String s) {
+        if (s == null) {
+            return "";
+        }
         s = s.replaceAll("\"", "&quot;");
         return s;
     }
@@ -228,20 +231,22 @@ public class Bough {
                     }
                 }
 
+                @Override
                 public void endElement(String uri, String localName, String qName) throws SAXException {
                     //String c = current.value().value.property.value();
                     //current.value().value.is(c.trim());
-                    current.value().value.is( stringBuilder.toString().trim());
+                    current.value().value.is(stringBuilder.toString().trim());
                     current.value(current.value().p);
                     stringBuilder.delete(0, stringBuilder.length());
                     stringBuilder.append(current.value().value.property.value());
                 }
 
+                @Override
                 public void characters(char ch[], int start, int length) throws SAXException {
                     //String c = current.value().value.property.value();
                     //current.value().value.is(c + new String(ch, start, length));
                     //System.out.println("-----------"+ch.length);
-                    stringBuilder.append(ch,start,length);
+                    stringBuilder.append(ch, start, length);
                 }
             };
             InputStream is = new ByteArrayInputStream(data.getBytes("UTF-8"));
