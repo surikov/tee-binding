@@ -16,7 +16,7 @@ public class About {
      * @return
      */
     public static String getVersion() {
-	return "1.5.8";
+	return "1.6.0";
     }
     /**
      * 

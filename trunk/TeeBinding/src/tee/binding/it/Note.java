@@ -21,6 +21,11 @@ public class Note extends It<String> {
 	return this;
     }
     @Override
+    public Note afterChange(Task newValue,boolean dontFire) {
+	super.afterChange(newValue,dontFire);
+	return this;
+    }
+    @Override
     public Note value(String newValue) {
 	super.value(newValue);
 	return this;

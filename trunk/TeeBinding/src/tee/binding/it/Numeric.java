@@ -99,6 +99,11 @@ public class Numeric extends It<Double> {
         super.afterChange(newValue);
         return this;
     }
+    @Override
+    public Numeric afterChange(Task newValue,boolean dontFire) {
+        super.afterChange(newValue,dontFire);
+        return this;
+    }
 
     /**
      * 
