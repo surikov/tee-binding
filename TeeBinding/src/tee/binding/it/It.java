@@ -64,8 +64,20 @@ public class It<Kind> {
      @return object itself
      */
     public It<Kind> afterChange(Task it) {
-	this.afterChange = it;
+	/*this.afterChange = it;
 	doAfterChange();
+	return this;*/
+        return afterChange(it,false);
+    }
+     /**
+     assign trigger
+     @param it trigger
+     @return object itself
+     */
+    public It<Kind> afterChange(Task it,boolean dontFire) {
+	this.afterChange = it;
+        if(!dontFire){
+	doAfterChange();}
 	return this;
     }
     private void doAfterChange() {

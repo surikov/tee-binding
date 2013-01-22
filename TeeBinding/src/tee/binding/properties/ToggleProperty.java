@@ -17,4 +17,8 @@ public class ToggleProperty<Owner> {
 	property.bind(it);
 	return owner;
     }
+      public Owner is(It<Boolean> it) {
+	property.bind(it);
+	return owner;
+    }
 }

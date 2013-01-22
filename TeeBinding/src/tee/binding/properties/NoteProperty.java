@@ -17,4 +17,8 @@ public class NoteProperty<Owner> {
 	property.bind(it);
 	return owner;
     }
+    public Owner is(It<String> it) {
+	property.bind(it);
+	return owner;
+    }
 }

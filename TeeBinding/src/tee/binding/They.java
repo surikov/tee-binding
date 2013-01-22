@@ -51,11 +51,16 @@ public class They<Kind> {
     private boolean lockValue = false;
 
     public They<Kind> afterChange(Task it) {
+        //this.afterChange = it;
+        //doAfterChange();
+        return afterChange(it,false);
+    }
+public They<Kind> afterChange(Task it,boolean dontFire) {
         this.afterChange = it;
-        doAfterChange();
+        if(!dontFire){
+        doAfterChange();}
         return this;
     }
-
     public void doAfterChange() {
         if (!lockDoAfterChange) {
             lockDoAfterChange = true;

@@ -17,6 +17,10 @@ public class Toggle extends It<Boolean> {
 	super.afterChange(newValue);
 	return this;
     }
+     @Override public Toggle afterChange(Task newValue,boolean dontFire) {
+	super.afterChange(newValue,dontFire);
+	return this;
+    }
     /**
      * 
      * @param value

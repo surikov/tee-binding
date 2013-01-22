@@ -21,4 +21,8 @@ public class NumericProperty<Owner> {
 	property.bind(it);
 	return owner;
     }
+     public Owner is(It<Double> it) {
+	property.bind(it);
+	return owner;
+    }
 }
