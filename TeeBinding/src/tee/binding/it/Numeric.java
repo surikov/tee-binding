@@ -10,11 +10,12 @@ import tee.binding.Calculation;
 import tee.binding.task.Task;
 
 /**
- * 
+ *
  * @author User
  */
 public class Numeric extends It<Double> {
 
+    static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private It<String> _string = null;
     //private Numeric me = this;
     private Numeric _otherwise = null;
@@ -26,7 +27,7 @@ public class Numeric extends It<Double> {
 
     @Override
     protected void adjust() {
-        if (null==this._value) {
+        if (null == this._value) {
             this._value = 0.0;
         }
         if (Double.isNaN(this._value)) {
@@ -49,7 +50,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param newValue
      * @return
      */
@@ -59,7 +60,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -75,7 +76,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -85,7 +86,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -99,14 +100,15 @@ public class Numeric extends It<Double> {
         super.afterChange(newValue);
         return this;
     }
+
     @Override
-    public Numeric afterChange(Task newValue,boolean dontFire) {
-        super.afterChange(newValue,dontFire);
+    public Numeric afterChange(Task newValue, boolean dontFire) {
+        super.afterChange(newValue, dontFire);
         return this;
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -116,14 +118,13 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
     public Numeric plus(Numeric value) {
         final It<Double> fvalue = value;
         final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() + fvalue.value())) {
-
             @Override
             public Double calculateFirst() {
                 if (second() == null) {
@@ -147,7 +148,6 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 clc.second().value(clc.first().value() + fvalue.value());
@@ -157,7 +157,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -167,7 +167,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -177,7 +177,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -187,14 +187,13 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
     public Numeric multiply(Numeric value) {
         final It<Double> fvalue = value;
         final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() * fvalue.value())) {
-
             @Override
             public Double calculateFirst() {
                 if (second() == null) {
@@ -221,7 +220,6 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 clc.second().value(clc.first().value() * fvalue.value());
@@ -231,7 +229,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -241,7 +239,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -251,7 +249,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -261,14 +259,13 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
     public Numeric divide(Numeric value) {
         final Numeric fvalue = value;
         final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() / fvalue.value())) {
-
             @Override
             public Double calculateFirst() {
                 if (second() == null) {
@@ -295,7 +292,6 @@ public class Numeric extends It<Double> {
             }
         };
         new Numeric().afterChange(new Task() {
-
             @Override
             public void doTask() {
                 clc.second().value(clc.first().value() / fvalue.value());
@@ -305,7 +301,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -315,7 +311,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -325,7 +321,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
@@ -335,14 +331,13 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return
      */
     public Numeric minus(Numeric value) {
         final It<Double> fvalue = value;
         final Calculation<Double> clc = new Calculation<Double>(this, new Numeric().value(value() - fvalue.value())) {
-
             @Override
             public Double calculateFirst() {
                 if (second() == null) {
@@ -366,7 +361,6 @@ public class Numeric extends It<Double> {
             }
         };
         new It<Double>().bind(fvalue).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 clc.second().value(clc.first().value() - fvalue.value());
@@ -376,7 +370,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param bb
      * @return
      */
@@ -384,14 +378,12 @@ public class Numeric extends It<Double> {
         final Numeric me = this;
         final Toggle retvalue = new Toggle().value(me.value().equals(bb.value()));
         new Numeric().bind(me).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(me.value().equals(bb.value()));
             }
         });
         new Numeric().bind(bb).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(me.value().equals(bb.value()));
@@ -401,7 +393,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param bb
      * @return
      */
@@ -411,14 +403,12 @@ public class Numeric extends It<Double> {
         //final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(aa.value() < bb.value());
         new Numeric().bind(aa).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() < bb.value());
             }
         });
         new Numeric().bind(bb).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() < bb.value());
@@ -428,7 +418,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param bb
      * @return
      */
@@ -438,14 +428,12 @@ public class Numeric extends It<Double> {
         //final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(aa.value() > bb.value());
         new Numeric().bind(aa).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() > bb.value());
             }
         });
         new Numeric().bind(bb).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() > bb.value());
@@ -455,7 +443,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param bb
      * @return
      */
@@ -465,14 +453,12 @@ public class Numeric extends It<Double> {
         //final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(aa.value() >= bb.value());
         new Numeric().bind(aa).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() >= bb.value());
             }
         });
         new Numeric().bind(bb).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() >= bb.value());
@@ -482,7 +468,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param bb
      * @return
      */
@@ -492,14 +478,12 @@ public class Numeric extends It<Double> {
         //final Numeric bb = b;
         final Toggle retvalue = new Toggle().value(aa.value() <= bb.value());
         new Numeric().bind(aa).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() <= bb.value());
             }
         });
         new Numeric().bind(bb).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 retvalue.value(aa.value() <= bb.value());
@@ -509,7 +493,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -518,7 +502,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -528,7 +512,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -537,7 +521,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -546,7 +530,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -555,7 +539,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -565,7 +549,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -575,7 +559,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -585,7 +569,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -595,7 +579,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -605,23 +589,29 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param s
      * @return
      */
     public static double string2double(String s) {
+        if (s == null) {
+            return 0;
+        }
+        if (s.length() == 0) {
+            return 0;
+        }
         double dd = 0;
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
+
         try {
             dd = numberFormat.parse(s.replaceAll(",", "\\.")).doubleValue();
         } catch (Throwable t) {
-            t.printStackTrace();
+            //t.printStackTrace();
         }
         return dd;
     }
 
     /**
-     * 
+     *
      * @return
      */
     public Note asNote() {
@@ -629,14 +619,13 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public It<String> asString() {
         if (_string == null) {
             final Numeric me = this;
             _string = new It<String>().afterChange(new Task() {
-
                 @Override
                 public void doTask() {
                     if (_string != null) {
@@ -654,7 +643,6 @@ public class Numeric extends It<Double> {
                 }
             }).value(new java.math.BigDecimal(value()).toString());
             new It<Double>().bind(this).afterChange(new Task() {
-
                 @Override
                 public void doTask() {
                     _string.value(new java.math.BigDecimal(value()).toString());
@@ -669,7 +657,7 @@ public class Numeric extends It<Double> {
      }*/
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -677,7 +665,6 @@ public class Numeric extends It<Double> {
         final Numeric me = this;
         final Numeric when = new Numeric();
         new Toggle().bind(it).afterChange(new Task() {
-
             @Override
             public void doTask() {
                 //retvalue.value(me.value() + appendNote.value());
@@ -697,7 +684,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -710,7 +697,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -723,7 +710,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param it
      * @return
      */
@@ -736,7 +723,7 @@ public class Numeric extends It<Double> {
     }
 
     /**
-     * 
+     *
      * @param a
      */
     public static void main(String a[]) {
