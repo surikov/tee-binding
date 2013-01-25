@@ -62,6 +62,12 @@ public class Bough {
         return s;
     }
 
+    public String dumpXML() {
+        StringBuilder sb = new StringBuilder();
+        Bough.dumpXML(sb, this, "");
+        return sb.toString();
+    }
+
     public static void dumpXML(StringBuilder sb, Bough b, String pad) {
 
         sb.append("\n" + pad + "<" + b.name.property.value());
