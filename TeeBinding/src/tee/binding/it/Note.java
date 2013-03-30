@@ -30,6 +30,21 @@ public class Note extends It<String> {
 	super.value(newValue);
 	return this;
     }
+     public Note read() {
+	final Note r = new Note().value(value());
+	final Note watcher = new Note().bind(this);
+	watcher.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	r.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	return r;
+    }
     /**
      * 
      * @param it

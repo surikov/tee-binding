@@ -37,6 +37,21 @@ public class Toggle extends It<Boolean> {
 	});
 	return retvalue;
     }
+    public Toggle read() {
+	final Toggle r = new Toggle().value(value());
+	final Toggle watcher = new Toggle().bind(this);
+	watcher.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	r.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	return r;
+    }
     /**
      * 
      * @param value
