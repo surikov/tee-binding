@@ -58,7 +58,21 @@ public class Numeric extends It<Double> {
         super.value(newValue.doubleValue());
         return this;
     }
-
+    public Numeric read() {
+	final Numeric r = new Numeric().value(value());
+	final Numeric watcher = new Numeric().bind(this);
+	watcher.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	r.afterChange(new Task() {
+	    @Override public void doTask() {
+		r.value(watcher.value());
+	    }
+	});
+	return r;
+    }
     /**
      *
      * @param it
