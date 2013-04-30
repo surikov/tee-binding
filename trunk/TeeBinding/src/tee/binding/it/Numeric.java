@@ -663,7 +663,7 @@ public class Numeric extends It<Double> {
                                 me.value(string2double(_string.value()));
                             //} catch (Throwable t) {
                                 //t.printStackTrace();
-                                System.out.println("can't parse numeric " + _string.value());
+                                //System.out.println("can't parse numeric " + _string.value());
                             //}
                         }
                     }
