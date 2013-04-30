@@ -58,21 +58,25 @@ public class Numeric extends It<Double> {
         super.value(newValue.doubleValue());
         return this;
     }
+
     public Numeric read() {
-	final Numeric r = new Numeric().value(value());
-	final Numeric watcher = new Numeric().bind(this);
-	watcher.afterChange(new Task() {
-	    @Override public void doTask() {
-		r.value(watcher.value());
-	    }
-	});
-	r.afterChange(new Task() {
-	    @Override public void doTask() {
-		r.value(watcher.value());
-	    }
-	});
-	return r;
+        final Numeric r = new Numeric().value(value());
+        final Numeric watcher = new Numeric().bind(this);
+        watcher.afterChange(new Task() {
+            @Override
+            public void doTask() {
+                r.value(watcher.value());
+            }
+        });
+        r.afterChange(new Task() {
+            @Override
+            public void doTask() {
+                r.value(watcher.value());
+            }
+        });
+        return r;
     }
+
     /**
      *
      * @param it
@@ -629,16 +633,25 @@ public class Numeric extends It<Double> {
      * @return
      */
     public Note asNote() {
-        return new Note().bind(asString());
+        return asNote("");
+    }
+
+    public Note asNote(String format) {
+        return new Note().bind(asString(format));
+    }
+
+    public It<String> asString() {
+        return asString("");
     }
 
     /**
      *
      * @return
      */
-    public It<String> asString() {
+    public It<String> asString(String format) {
         if (_string == null) {
             final Numeric me = this;
+            final DecimalFormat decimalFormat=new DecimalFormat(format);
             _string = new It<String>().afterChange(new Task() {
                 @Override
                 public void doTask() {
@@ -646,20 +659,22 @@ public class Numeric extends It<Double> {
                         if (_string.value() == null || _string.value().length() < 1) {
                             me.value(0);
                         } else {
-                            try {
+                            //try {
                                 me.value(string2double(_string.value()));
-                            } catch (Throwable t) {
+                            //} catch (Throwable t) {
                                 //t.printStackTrace();
                                 System.out.println("can't parse numeric " + _string.value());
-                            }
+                            //}
                         }
                     }
                 }
-            }).value(new java.math.BigDecimal(value()).toString());
+            //}).value(new java.math.BigDecimal(value()).toString());
+            }).value(decimalFormat.format(value()));
             new It<Double>().bind(this).afterChange(new Task() {
                 @Override
                 public void doTask() {
-                    _string.value(new java.math.BigDecimal(value()).toString());
+                   _string.value( decimalFormat.format(value()));
+                    //_string.value(new java.math.BigDecimal(value()).toString());
                 }
             });
         }
