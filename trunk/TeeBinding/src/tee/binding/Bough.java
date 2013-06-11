@@ -260,7 +260,11 @@ public class Bough {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        return current.value().children.get(0);
+        if (current.value().children.size() > 0) {
+            return current.value().children.get(0);
+        } else {
+            return null;
+        }
     }
 
     public static void main(String[] a) {
